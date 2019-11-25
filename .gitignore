@@ -6,6 +6,7 @@ pw-poll/.pnp
 pw-poll.pnp.js
 
 /backend/.env
+/backend/node_modules
 # testing
 pw-poll/coverage
 
