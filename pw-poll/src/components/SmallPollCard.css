@@ -1,0 +1,33 @@
+.card-sm {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid grey;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 20% 50% 10% 10% auto;
+  grid-column-gap: 20px;
+  align-items: center;
+}
+.card-sm:first-child {
+  border-top: 1px solid grey;
+}
+.card-title-sm {
+  font-family: "Oxygen";
+  font-size: 1.1em;
+  grid-column: 2/3;
+}
+.card-desc-sm {
+  grid-column: 3/4;
+  font-family: "Montserrat";
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+}
+.card-desc-sm::first-line {
+}
+.card-close-date-sm {
+  grid-column: 5/6;
+}
+.card-open-date-sm {
+  grid-column: 4/5;
+}

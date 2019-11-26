@@ -11,6 +11,7 @@ router.get("/", async (req, res) => {
     res.json({ message: err });
   }
 });
+
 router.get("/:pollName", (req, res) => {
   res.send("This should be a poll called " + req.params.pollName);
 });
@@ -33,10 +34,17 @@ router.post("/create", async (req, res) => {
     res.json({ message: err });
   }
 });
-router.delete("/delete/:id", (req, res) => {
-  Poll.findByIdAndRemove(req.params.id, { select: "title" }, removed => {
-    res.json(removed);
-  });
+router.delete("/delete/:id", async (req, res) => {
+  Poll.findByIdAndRemove(
+    req.params.id,
+    { useFindAndModify: false },
+    (err, removed) => {
+      if (err) {
+        console.log(err);
+        res.json({ message: "Server Error" });
+      } else res.json(removed);
+    }
+  );
 });
 
 module.exports = router;

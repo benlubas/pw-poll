@@ -1,0 +1,52 @@
+#logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+#logo path:nth-child(1) {
+  stroke-dasharray: 198;
+  stroke-dashoffset: 198;
+  animation: introduce 3s ease-in-out alternate infinite;
+}
+#logo path:nth-child(2) {
+  stroke-dasharray: 289;
+  stroke-dashoffset: 289;
+  animation: introduce 3s ease-in-out alternate infinite;
+}
+#logo path:nth-child(3) {
+  stroke-dasharray: 337.6;
+  stroke-dashoffset: 337.6;
+  animation: introduce 3s ease-in-out alternate infinite;
+}
+#logo path:nth-child(4) {
+  stroke-dasharray: 374;
+  stroke-dashoffset: 374;
+  animation: introduce 3s ease-in-out alternate infinite;
+}
+#logo path:nth-child(5) {
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: introduce 3s ease-in-out alternate infinite;
+}
+#logo path:nth-child(6) {
+  stroke-dasharray: 281.6;
+  stroke-dashoffset: 281.6;
+  animation: introduce 3s ease-in-out alternate infinite;
+}
+#logo path:nth-child(7) {
+  stroke-dasharray: 462;
+  stroke-dashoffset: 462;
+  animation: introduce 3s ease-in-out alternate infinite;
+}
+.dot {
+  stroke-dasharray: 37;
+  stroke-dashoffset: 37;
+  animation: introduce 3s ease-in-out alternate infinite;
+}
+@keyframes introduce {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
