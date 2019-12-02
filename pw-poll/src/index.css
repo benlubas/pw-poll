@@ -1,5 +1,15 @@
 @import url("https://fonts.googleapis.com/css?family=Oxygen&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+:root {
+  --danger: #d44c3a;
+  --warning: #e79324;
+  --success: #29ce1a;
+  --accent: #f85932;
+  --primary: #49c5ff;
+  --outline: #a7a7a7;
+  --darker: #0000001e;
+  --lighter: #ffffff1e;
+}
 body {
   margin: 0;
   font-family: "Montserrat sans-serif";

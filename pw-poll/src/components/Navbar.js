@@ -1,21 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { titlecase } from "../pipes";
+import "./navbar.css";
 
 const Navbar = props => {
   return (
-    <div>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/polls">Polls</Link>
-        </li>
-        <li>
-          <Link to="/faq">FAQ</Link>
-        </li>
-      </ul>
-    </div>
+    <nav>
+      {props.pages.map((value, index) => (
+        <div
+          style={props.selected === value ? { color: "var(--accent)" } : {}}
+          onClick={() => props.set(value)}
+        >
+          {titlecase(value)}
+        </div>
+      ))}
+    </nav>
   );
 };
 

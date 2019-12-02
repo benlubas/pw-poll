@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const AddPollTest = props => {
   const [counter, increment] = useState(0);
-  const url = "http://localhost:5000/polls/create";
+  const url = "http://localhost:5000/polls/";
   const postBody = {
     title: "Poll " + counter,
     desc:

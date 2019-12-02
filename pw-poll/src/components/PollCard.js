@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import "./pollCard.css";
 import { titlecase, dateFormat } from "./../pipes";
-import { useDelete } from "../hooks/useFetch";
+import { useHov } from "../hooks/useHov";
 
 const PollCard = props => {
-  const [hov, setHov] = useState(false);
+  const [hovRef, hov] = useHov();
   const [state, setState] = useState({ removed: false });
 
   return (
-    <div className={state.removed ? "removed-card card" : "card"}>
+    <div
+      ref={hovRef}
+      style={hov ? { background: "var(--darker)" } : {}}
+      className={state.removed ? "removed-card card" : "card"}
+    >
       <div className="card-title">
         {titlecase(props.title)} {state.removed ? "(REMOVED)" : ""}
       </div>

@@ -9,12 +9,21 @@ const url = "http://localhost:5000/";
 
 const PollsPage = () => {
   const [updater, setUpdater] = useState(0);
-  const [state, setState] = useState({ listSM: false });
+  const [state, setState] = useState({ listSM: true });
   const { data, loading } = useFetch(url + "polls/", updater);
+  const push = async body => {
+    const result = await fetch(url + "polls/", {
+      method: "PUSH",
+      body: JSON.stringify(body)
+    });
+    return result;
+  };
   const remove = async id => {
-    const result = await fetch(url + "polls/delete/" + id, {
+    const result = await fetch(url + "polls/" + id, {
       method: "DELETE"
     });
+    console.log(result);
+    return result;
   };
   const bigList = loading ? (
     <LoadingScreen />
@@ -28,6 +37,7 @@ const PollsPage = () => {
         key={pollData._id}
         dbID={pollData._id}
         remove={remove}
+        recov={push}
       />
     ))
   );
@@ -43,6 +53,7 @@ const PollsPage = () => {
         key={d._id}
         dbID={d._id}
         remove={remove}
+        recov={push}
       />
     ))
   );
@@ -63,7 +74,7 @@ const PollsPage = () => {
           Toggle List Display
         </div>
       </div>
-      <div>{state.listSM ? bigList : smallList}</div>
+      <div>{state.listSM ? smallList : bigList}</div>
     </>
   );
 };

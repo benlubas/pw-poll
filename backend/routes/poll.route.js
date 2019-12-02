@@ -5,7 +5,7 @@ const Poll = require("./../models/poll.model");
 // Get requests for the polls
 router.get("/", async (req, res) => {
   try {
-    const foundPolls = await Poll.find();
+    const foundPolls = await Poll.find().sort({ openDate: 1 });
     res.json(foundPolls);
   } catch (err) {
     res.json({ message: err });
@@ -17,7 +17,7 @@ router.get("/:pollName", (req, res) => {
 });
 
 // Post Request to Create a poll
-router.post("/create", async (req, res) => {
+router.post("/", async (req, res) => {
   const poll = new Poll({
     title: req.body.title,
     desc: req.body.desc,
@@ -34,7 +34,7 @@ router.post("/create", async (req, res) => {
     res.json({ message: err });
   }
 });
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   Poll.findByIdAndRemove(
     req.params.id,
     { useFindAndModify: false },
@@ -42,7 +42,7 @@ router.delete("/delete/:id", async (req, res) => {
       if (err) {
         console.log(err);
         res.json({ message: "Server Error" });
-      } else res.json(removed);
+      } else res.json(removed.body);
     }
   );
 });

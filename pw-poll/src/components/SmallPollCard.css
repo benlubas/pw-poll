@@ -1,15 +1,21 @@
 .card-sm {
   padding-top: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--outline);
   width: 100%;
   display: grid;
-  grid-template-columns: auto 20% 50% 10% 10% auto;
+  grid-template-columns: auto 20% 40% 10% 10% 10% auto;
   grid-column-gap: 20px;
   align-items: center;
 }
+.removed-sm {
+  background: linear-gradient(to right, var(--danger) 0%, rgba(0, 0, 0, 0) 10px),
+    linear-gradient(to left, var(--danger) 0%, rgba(0, 0, 0, 0) 10px),
+    linear-gradient(to top, var(--danger) 0%, rgba(0, 0, 0, 0) 10px),
+    linear-gradient(to bottom, var(--danger) 0%, rgba(0, 0, 0, 0) 10px);
+}
 .card-sm:first-child {
-  border-top: 1px solid grey;
+  border-top: 1px solid var(--outline);
 }
 .card-title-sm {
   font-family: "Oxygen";
@@ -23,11 +29,24 @@
   text-overflow: ellipsis;
   cursor: default;
 }
-.card-desc-sm::first-line {
-}
 .card-close-date-sm {
   grid-column: 5/6;
 }
 .card-open-date-sm {
   grid-column: 4/5;
+}
+.recov-btn-sm {
+  cursor: pointer;
+  background-color: var(--success);
+  padding: 5px;
+  grid-column: 6/7;
+  margin: 0px;
+  position: relative;
+  z-index: 3;
+}
+.delete-btn-sm {
+  cursor: pointer;
+  background-color: var(--danger);
+  padding: 5px;
+  grid-column: 6/7;
 }
