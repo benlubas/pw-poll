@@ -3,31 +3,31 @@ const mongoose = require("mongoose");
 const PollSchema = mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
+    trim: true,
+    lowercase: true,
+    maxlength: 100
   },
-  desc: {
-    type: String,
-    required: true
-  },
-  openDate: {
-    type: Date,
-    default: Date.now()
-  },
+  desc: { type: String, required: true, trim: true, maxlength: 1500 },
+  openDate: { type: Date, default: Date.now() },
   closeDate: {
     type: Date,
-    default: Date.now()
+    default: Date.now() + 7 * 24 * 60 * 60 * 1000 //* one week from current time.
   },
-  viewInProgress: {
-    type: Boolean,
-    default: false
-  },
-  pollType: {
+  viewInProgress: { type: Boolean, default: false },
+  //results are viewable by
+  viewableBy: {
     type: String,
-    required: true
-  },
-  typeData: {
-    type: JSON,
-    required: true
+    enum: ["students", "teachers", "admins", "sponsors", "all"] //* students - must login | all - no login required
+  }
+});
+
+PollSchema.pre("save", () => {
+  if (this.viewableBy === undefined) {
+    this.viewableBy = "sponsors";
+  }
+  if (this.viewInProgress === undefined) {
+    this.viewInProgress = true;
   }
 });
 

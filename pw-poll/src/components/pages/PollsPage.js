@@ -2,22 +2,15 @@ import React, { useState } from "react";
 import { useFetch, useDelete } from "../../hooks/useFetch";
 import LoadingScreen from "../LoadingScreen";
 import PollCard from "./../PollCard";
-import SmallPollCard from "./../SmallPollCard";
 import AddPollTest from "./../AddPollTest";
 
 const url = "http://localhost:5000/";
 
 const PollsPage = () => {
   const [updater, setUpdater] = useState(0);
-  const [state, setState] = useState({ listSM: true });
+  const [state, setState] = useState({ small: false });
   const { data, loading } = useFetch(url + "polls/", updater);
-  const push = async body => {
-    const result = await fetch(url + "polls/", {
-      method: "PUSH",
-      body: JSON.stringify(body)
-    });
-    return result;
-  };
+
   const remove = async id => {
     const result = await fetch(url + "polls/" + id, {
       method: "DELETE"
@@ -25,11 +18,12 @@ const PollsPage = () => {
     console.log(result);
     return result;
   };
-  const bigList = loading ? (
+  const pollContent = loading ? (
     <LoadingScreen />
   ) : (
     data.map((pollData, index) => (
       <PollCard
+        small={state.small}
         title={pollData.title}
         desc={pollData.desc}
         openDate={pollData.openDate}
@@ -37,23 +31,6 @@ const PollsPage = () => {
         key={pollData._id}
         dbID={pollData._id}
         remove={remove}
-        recov={push}
-      />
-    ))
-  );
-  const smallList = loading ? (
-    <LoadingScreen />
-  ) : (
-    data.map(d => (
-      <SmallPollCard
-        title={d.title}
-        desc={d.desc}
-        openDate={d.openDate}
-        closeDate={d.closeDate}
-        key={d._id}
-        dbID={d._id}
-        remove={remove}
-        recov={push}
       />
     ))
   );
@@ -66,15 +43,15 @@ const PollsPage = () => {
             flexGrow: "1",
             padding: "10px",
             margin: "10px",
-            backgroundColor: "lightblue",
+            background: "var(--red-grad)",
             cursor: "pointer"
           }}
-          onClick={() => setState({ ...state, listSM: !state.listSM })}
+          onClick={() => setState({ ...state, small: !state.small })}
         >
           Toggle List Display
         </div>
       </div>
-      <div>{state.listSM ? smallList : bigList}</div>
+      <div>{pollContent}</div>
     </>
   );
 };

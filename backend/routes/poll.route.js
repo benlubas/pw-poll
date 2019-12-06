@@ -11,6 +11,14 @@ router.get("/", async (req, res) => {
     res.json({ message: err });
   }
 });
+router.get("/:id", async (req, res) => {
+  try {
+    const foundPolls = await Poll.find({ _id: req.params.id });
+    res.json(foundPolls);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
 
 router.get("/:pollName", (req, res) => {
   res.send("This should be a poll called " + req.params.pollName);
@@ -24,8 +32,7 @@ router.post("/", async (req, res) => {
     openDate: req.body.openDate,
     closeDate: req.body.closeDate,
     viewInProgress: req.body.viewInProgress,
-    pollType: req.body.pollType,
-    typeData: req.body.typeData
+    viewableBy: req.body.viewableBy
   });
   try {
     const savedPoll = await poll.save();
@@ -34,6 +41,22 @@ router.post("/", async (req, res) => {
     res.json({ message: err });
   }
 });
+
+router.put("/:pollId/vote", async (req, res) => {
+  Poll.findByIdAndUpdate(
+    req.params.pollId,
+    { $push: req.body },
+    (err, updated) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json(err);
+      } else {
+        res.json(updated);
+      }
+    }
+  );
+});
+
 router.delete("/:id", async (req, res) => {
   Poll.findByIdAndRemove(
     req.params.id,
@@ -42,7 +65,7 @@ router.delete("/:id", async (req, res) => {
       if (err) {
         console.log(err);
         res.json({ message: "Server Error" });
-      } else res.json(removed.body);
+      } else res.json(removed);
     }
   );
 });

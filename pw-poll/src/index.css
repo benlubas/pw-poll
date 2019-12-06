@@ -1,16 +1,48 @@
 @import url("https://fonts.googleapis.com/css?family=Oxygen&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
 :root {
-  --danger: #d44c3a;
-  --warning: #e79324;
-  --success: #29ce1a;
-  --accent: #f85932;
-  --primary: #49c5ff;
-  --outline: #a7a7a7;
+  --page-bg-dark: #38393b;
+  --page-bg-light: #d8d8d8;
+  --danger: #ffffff00;
+  --blue: #0003a1;
+  --cyan: #00ccff;
+  --red: #cc2813;
+  --r: #ff25ab;
+  --outline: white;
   --darker: #0000001e;
   --lighter: #ffffff1e;
+  --blue-grad: linear-gradient(-45deg, var(--blue) 0%, var(--cyan) 100%);
+  --red-grad: linear-gradient(-45deg, var(--r) 0%, var(--red) 100%);
+}
+.btn {
+  position: relative;
+  display: inline-block;
+  margin: 40px; /* normally 10px */
+  background: var(--blue-grad);
+  border: 3px solid var(--blue-grad);
+  padding: 10px;
+  overflow: hidden;
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 2%;
+  left: 2%;
+  width: 96%;
+  height: 96%;
+  background: var(--page-bg-dark);
+  z-index: 4;
+  animation: anim 2s linear forwards;
+}
+@keyframes anim {
+  to {
+    transform: translateY(105%);
+  }
 }
 body {
+  background: var(--page-bg-dark);
+  color: white;
   margin: 0;
   font-family: "Montserrat sans-serif";
   -webkit-font-smoothing: antialiased;

@@ -1,43 +1,62 @@
-:root {
-  --removeRed: #f12e2e;
-}
 .card {
   margin: 10px;
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid black;
+  border: 3px solid var(--outline);
   display: flex;
   flex-direction: column;
   padding: 15px;
 }
-.removed-card {
-  background-color: lightgrey;
-  border: 1px solid var(--removeRed);
-}
-.removed-card::after {
-  content: attr("div");
-  background-color: black;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 3;
-}
-.card-title {
+.card .card-title {
   font: 1.2em "Oxygen";
   border-bottom: 1px solid #00000033;
 }
-.card-body {
+.card .card-body {
   margin-top: 10px;
   font-family: "Montserrat";
 }
-.del-btn {
+.card .del-btn {
   padding: 10px;
-  background-color: var(--removeRed);
+  background-color: var(--danger);
   width: 100px;
   border-radius: 5px;
   border: 1px solid black;
   margin: 10px;
   cursor: pointer;
+}
+.card-sm {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--outline);
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 20% 40% 10% 10% 10% auto;
+  grid-column-gap: 20px;
+  align-items: center;
+}
+.card-sm:first-child {
+  border-top: 1px solid var(--outline);
+}
+.card-sm .card-title {
+  font-family: "Oxygen";
+  font-size: 1.1em;
+  grid-column: 2/3;
+}
+.card-sm .card-desc {
+  grid-column: 3/4;
+  font-family: "Montserrat";
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+}
+.card-sm .close-date {
+  grid-column: 5/6;
+}
+.card-sm .open-date {
+  grid-column: 4/5;
+}
+.card-sm .delete-btn {
+  cursor: pointer;
+  background-color: var(--danger);
+  padding: 5px;
+  grid-column: 6/7;
 }

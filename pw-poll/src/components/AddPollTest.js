@@ -35,7 +35,7 @@ const AddPollTest = props => {
     <div
       style={{
         flexGrow: "1",
-        backgroundColor: "green",
+        background: "var(--blue-grad)",
         padding: "10px",
         margin: "10px",
         cursor: "pointer"

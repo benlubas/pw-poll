@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import "./App.css";
 import HomePage from "./components/pages/HomePage";
 import PollsPage from "./components/pages/PollsPage";
-import TestDB from "./testDB";
+import TestDB from "./components/pages/testDB";
 
 function App() {
   const [page, setPage] = useState("test");

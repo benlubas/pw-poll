@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Plymouth Whitemarsh Polling Site
 
 this is just my Adv Web Dev project. The site will be created with React, Node, Mongo and Express

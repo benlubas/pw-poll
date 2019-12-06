@@ -1,11 +1,12 @@
 import React from "react";
-import AddPollTest from "./components/AddPollTest";
-import AddPollForm from "./components/AddPollForm";
+import AddPollTest from "../AddPollTest";
+import AddPollForm from "../form/AddPollForm";
 
 const TestDB = props => {
   return (
     <>
       <AddPollTest />
+      <div className="btn">A Test Button</div>
       <AddPollForm />
     </>
   );
