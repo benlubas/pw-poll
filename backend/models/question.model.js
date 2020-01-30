@@ -11,6 +11,7 @@ const QuestionSchema = mongoose.Schema({
 });
 
 // TODO: This might not be necessary.
+//* I don't think it is.
 // QuestionSchema.pre("save", function() {
 //   if (this.options === undefined) {
 //     this.options === null;

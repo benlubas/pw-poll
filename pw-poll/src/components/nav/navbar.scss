@@ -9,10 +9,10 @@ nav {
   align-items: center;
   margin-left: auto;
   font-size: 2rem;
-}
-nav div {
-  cursor: pointer;
-}
-nav div .current {
-  color: var(--primary);
+  div {
+    cursor: pointer;
+    .current {
+      color: var(--primary);
+    }
+  }
 }

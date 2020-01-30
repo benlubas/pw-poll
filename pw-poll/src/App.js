@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Router, Link, Route } from "react-router";
-import Navbar from "./components/Navbar";
+// import { Router, Link, Route } from "react-router";
+import Navbar from "./components/nav/Navbar";
 import "./App.css";
-import HomePage from "./components/pages/HomePage";
+// import HomePage from "./components/pages/HomePage";
 import PollsPage from "./components/pages/PollsPage";
 import TestDB from "./components/pages/testDB";
+import HomePage from "./components/pages/HomePage";
 
 function App() {
   const [page, setPage] = useState("test");
@@ -17,6 +18,8 @@ function App() {
         <PollsPage />
       ) : page === "test" ? (
         <TestDB />
+      ) : page === "home" ? (
+        <HomePage />
       ) : (
         <div>no page "{page}" found</div>
       )}

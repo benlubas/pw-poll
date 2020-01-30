@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./pollCard.css";
-import { titlecase, dateFormat } from "./../pipes";
-import { useHov } from "../hooks/useHov";
+import { titlecase, dateFormat } from "../../pipes";
+import { useHov } from "../../hooks/useHov";
 
 const PollCard = props => {
   const [hovRef, hov] = useHov();

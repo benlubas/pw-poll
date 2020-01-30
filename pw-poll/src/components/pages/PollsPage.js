@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFetch, useDelete } from "../../hooks/useFetch";
-import LoadingScreen from "../LoadingScreen";
-import PollCard from "./../PollCard";
+import LoadingScreen from "../loadingScreen/LoadingScreen";
+import PollCard from "../pollCard/PollCard";
 import AddPollTest from "./../AddPollTest";
 
 const url = "http://localhost:5000/";
@@ -43,7 +43,7 @@ const PollsPage = () => {
             flexGrow: "1",
             padding: "10px",
             margin: "10px",
-            background: "var(--red-grad)",
+            background: "var(--red)",
             cursor: "pointer"
           }}
           onClick={() => setState({ ...state, small: !state.small })}

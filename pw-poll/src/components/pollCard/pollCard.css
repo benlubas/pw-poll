@@ -2,18 +2,26 @@
   margin: 10px;
   padding: 10px;
   border: 3px solid var(--outline);
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   padding: 15px;
 }
+
 .card .card-title {
   font: 1.2em "Oxygen";
   border-bottom: 1px solid #00000033;
 }
+
 .card .card-body {
   margin-top: 10px;
   font-family: "Montserrat";
 }
+
 .card .del-btn {
   padding: 10px;
   background-color: var(--danger);
@@ -23,40 +31,62 @@
   margin: 10px;
   cursor: pointer;
 }
+
 .card-sm {
   padding-top: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--outline);
   width: 100%;
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: auto 20% 40% 10% 10% 10% auto;
+  -ms-grid-columns: auto 20% 40% 10% 10% 10% auto;
+      grid-template-columns: auto 20% 40% 10% 10% 10% auto;
   grid-column-gap: 20px;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
+
 .card-sm:first-child {
   border-top: 1px solid var(--outline);
 }
+
 .card-sm .card-title {
   font-family: "Oxygen";
   font-size: 1.1em;
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
   grid-column: 2/3;
 }
+
 .card-sm .card-desc {
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
   grid-column: 3/4;
   font-family: "Montserrat";
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: default;
 }
+
 .card-sm .close-date {
+  -ms-grid-column: 5;
+  -ms-grid-column-span: 1;
   grid-column: 5/6;
 }
+
 .card-sm .open-date {
+  -ms-grid-column: 4;
+  -ms-grid-column-span: 1;
   grid-column: 4/5;
 }
+
 .card-sm .delete-btn {
-  cursor: pointer;
   background-color: var(--danger);
   padding: 5px;
+  -ms-grid-column: 6;
+  -ms-grid-column-span: 1;
   grid-column: 6/7;
+  cursor: pointer;
 }
+/*# sourceMappingURL=pollCard.css.map */
