@@ -1,5 +1,5 @@
 .alert {
-  color: var(--success);
+  color: black;
   padding: 10px;
   margin: 10px;
   width: calc(100% - 20px);
@@ -22,9 +22,13 @@
 }
 
 .alert .title .close {
-  margin-left: auto;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  transform: translateY(10%);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.9rem;
+  margin-right: 3px;
 }
 
 .alert .subtext {

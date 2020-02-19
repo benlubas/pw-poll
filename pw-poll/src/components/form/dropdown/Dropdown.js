@@ -1,41 +1,46 @@
-import React, { useState, useRef } from "react";
-import { useHov } from "./../../../hooks/useHov";
+import React, { useState } from "react";
+import "./dropdown.css";
 
+//?  @param values Array
+//?  @param value String
+//?  @param onChange () => {}
 export default function Dropdown(props) {
-  const [value, setValue] = useState(
-    props.initialVal === undefined ? "Chose a Value" : props.initialVal
-  );
-  const onUpdate = props.onUpdate;
-  const ref = useRef(null);
+  const [state, setState] = useState({
+    focus: false,
+    clicked: false
+  });
 
   return (
-    <div className="dropdown">
-      <button
-        onClick={e => {
-          e.preventDefault();
-          ref.current.style.display =
-            ref.current.style.display === "inline-block"
-              ? "none"
-              : "inline-block";
-        }}
-        className="dropbtn"
+    <div
+      className={`dropWrapper${
+        props.value !== "" || state.focus ? " underline" : ""
+      }`}
+    >
+      <div
+        className={`dropLabel ${
+          state.focus || props.value !== "" ? "labelActive" : ""
+        }`}
       >
-        {value}
-      </button>
-      <div ref={ref} className="content">
-        {props.values.map((val, index) => (
-          <span
-            onClick={() => {
-              setValue(val);
-              onUpdate(val);
-              ref.current.style.display = "none";
-            }}
-            key={val + index}
-          >
-            {val}
-          </span>
-        ))}
+        {props.label === undefined ? "" : props.label}
       </div>
+      <select
+        className={`select ${
+          state.focus || props.value !== "" ? "selectActive" : ""
+        }`}
+        onFocus={() => setState({ focus: true, clicked: true })}
+        onBlur={() => setState({ ...state, focus: false })}
+        onChange={e => {
+          props.onChange(e.target.value);
+        }}
+        type="text"
+      >
+        {!state.clicked ? <option value="-1"></option> : null}
+        {props.values.map((val, i) => (
+          <option key={val + i} value={val}>
+            {val}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

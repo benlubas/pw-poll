@@ -42,21 +42,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:pollId/vote", async (req, res) => {
-  Poll.findByIdAndUpdate(
-    req.params.pollId,
-    { $push: req.body },
-    (err, updated) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json(err);
-      } else {
-        res.json(updated);
-      }
-    }
-  );
-});
-
 router.delete("/:id", async (req, res) => {
   Poll.findByIdAndRemove(
     req.params.id,

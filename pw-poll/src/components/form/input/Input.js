@@ -1,32 +1,33 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
 import "./input.css";
 
 export default function Input(props) {
-  const [state, setState] = useState({
-    value: props.default === undefined ? "" : props.default,
-    focus: false
-  });
+  const [focus, setFocus] = useState(false);
 
   return (
     <div
+      style={{ width: props.width || "150px" }}
       className={`inputWrapper${
-        state.value !== "" || state.focus ? " underline" : ""
+        props.value !== "" || focus ? " underline" : ""
       }`}
     >
-      <div
-        className={`label ${state.focus || state.value !== "" ? "active" : ""}`}
-      >
+      <div className={`label ${focus || props.value !== "" ? "active" : ""}`}>
         {props.label === undefined ? "" : props.label}
       </div>
       <input
+        onKeyUp={e => {
+          if (props.onEnter !== undefined && e.keyCode === 13) {
+            props.onEnter();
+          }
+          e.preventDefault();
+        }}
         className="input"
-        value={state.value}
-        onFocus={() => setState({ ...state, focus: true })}
-        onBlur={() => setState({ ...state, focus: false })}
+        value={props.value}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
         onChange={e => {
-          setState({ ...state, value: e.target.value });
-          props.onChange(state.value);
+          props.onChange(e.target.value);
         }}
         type="text"
       />

@@ -27,10 +27,7 @@ const PollCard = props => {
       <div
         onClick={
           !props.size
-            ? () => {
-                setState({ ...state, expanded: !state.expanded });
-                console.log(state);
-              }
+            ? () => setState({ ...state, expanded: !state.expanded })
             : null
         }
         className="card-desc"

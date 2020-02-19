@@ -1,20 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Papa from "papaparse";
 import { useFetch } from "../../hooks/useFetch";
-import Dropdown from "./dropdown/Dropdown";
+// import Select from "@material-ui/core/Select";
+// import MenuItem from "@material-ui/core/MenuItem";
+// import InputLabel from "@material-ui/core/InputLabel";
+
 import Alert from "./../alert/Alert";
 import LoadingScreen from "./../loadingScreen/LoadingScreen";
+import Dropdown from "./dropdown/Dropdown";
+import FileUpload from "./../form/fileUpload/FileUpload";
 
 export default function UploadCSV() {
   const [state, setState] = useState("waiting");
-  const fileRef = useRef(null);
-  const selectRef = useRef(null);
+  const [file, setFile] = useState(null);
   const groupOptions = useFetch(`http://localhost:5000/group`);
-  const [group, setGroup] = useState(-1);
+  const [group, setGroup] = useState("");
 
   const parseFile = async () => {
     setState("loading");
-    const file = fileRef.current.files[0];
+
     // console.log("file: ", file);
     let done = null;
     Papa.parse(file, {
@@ -48,46 +52,30 @@ export default function UploadCSV() {
       });
       setState("done");
       return await result.json();
-      // const usable = await result.json();
-      // console.log(usable);
-      // console.log("new students: ", newStudents);
     } catch (err) {
       console.error(err);
     }
   };
   return state === "waiting" || "done" || "addFile" ? (
     <>
-      <form>
-        <label>Upload Files: </label>
-        <input
-          ref={fileRef}
-          id="files"
-          name="files"
-          type="file"
-          accept=".csv"
-          required
-        />
-        <Dropdown
-          values={
-            groupOptions.loading
-              ? ["loading"]
-              : groupOptions.data.map(val => val.name)
-          }
-          onUpdate={val => setGroup(val)}
-          initialVal={"Graduation Year"}
-        />
-
-        <div
-          onClick={() =>
-            fileRef.current.files.length !== 0
-              ? parseFile()
-              : setState("addFile")
-          }
-          className="formSubmit"
-        >
-          Upload File
-        </div>
-      </form>
+      <FileUpload onChange={val => setFile(val)} label="Upload Student List" />
+      <Dropdown
+        label="Group"
+        onChange={val => setGroup(val)}
+        values={
+          groupOptions.loading
+            ? ["loading..."]
+            : groupOptions.data.map(val => val.name)
+        }
+        value={group}
+      />
+      <br />
+      <div
+        onClick={() => (file !== null ? parseFile() : setState("addFile"))}
+        className="formSubmit"
+      >
+        Upload File
+      </div>
       {state === "done" ? (
         <Alert onClose={() => setState("waiting")} varient="success">
           Done!

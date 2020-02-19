@@ -1,17 +1,21 @@
 import React from "react";
 import AddPollTest from "../AddPollTest";
-import AddPollForm from "../form/AddPollForm";
+
 import UploadCSV from "../form/UploadCSV";
 import CreateGroup from "./../form/CreateGroup";
+import Checkbox from "../form/checkbox/Checkbox";
 
 const TestDB = props => {
   return (
     <>
       <AddPollTest />
-      <div className="btn">A Test Button</div>
-      <AddPollForm />
       <UploadCSV />
       <CreateGroup />
+      <Checkbox
+        checkVal="Test"
+        onChange={val => console.log(val)}
+        label="Test:"
+      />
     </>
   );
 };

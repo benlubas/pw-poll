@@ -8,13 +8,14 @@ export default function Alert(props) {
   );
   return show ? (
     <div
-      className={`alert ${props.varient === undefined ? null : props.varient}`}
+      className={`alert ${
+        props.varient === undefined ? "warning" : props.varient
+      }`}
     >
       <div className="title">
         {props.children}
         <div
           onClick={() => {
-            props.onClose();
             setShow(false);
           }}
           className="pointer close"

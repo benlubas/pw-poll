@@ -1,36 +1,47 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Input from "./input/Input";
+import Alert from "./../alert/Alert";
 
 export default function CreateGroup() {
-  const [state, setState] = useState("waiting");
-  const [value, setVal] = useState("New Student Group");
+  const [state, setState] = useState({
+    value: "",
+    alert: false,
+    submitted: null
+  });
   const validateAndSubmit = async () => {
-    console.log("value: ", value);
-    setState("sending");
-    //valid date, throw it into the DB.
-    const result = await fetch("http://localhost:5000/group", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name: value })
-    });
-    setState("done");
+    if (state.value.trim() !== "") {
+      let result = await fetch("http://localhost:5000/group", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: state.value.trim() })
+      });
+      result = await result.json();
+      setState({ value: "", alert: true, submitted: result.name });
+    }
   };
-
-  let getVal;
+  const successAlert = (
+    <Alert
+      varient="success"
+      onClose={() => setState({ ...state, alert: false })}
+    >
+      You have successfully created a group named {state.submitted}
+    </Alert>
+  );
   return (
-    <form>
-      <label HTMLfor="year">Create New Group</label>
+    <div>
       <Input
+        onEnter={() => validateAndSubmit()}
+        value={state.value}
         label="Group Name"
-        onChange={newValue => setVal(newValue)}
-        getVal={getVal}
+        onChange={newValue => setState({ ...state, value: newValue })}
       />
-      <div className="formSubmit" onClick={() => validateAndSubmit()}>
+      <div className="formSubmit disabled" onClick={() => validateAndSubmit()}>
         Finalize
       </div>
-    </form>
+      {state.alert ? successAlert : null}
+    </div>
   );
 }

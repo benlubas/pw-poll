@@ -9,8 +9,8 @@ const PollSchema = mongoose.Schema({
     maxlength: 100
   },
   desc: { type: String, required: true, trim: true, maxlength: 1500 },
-  openDate: { type: Date, default: Date.now() },
-  closeDate: {
+  startDate: { type: Date, default: Date.now() },
+  endDate: {
     type: Date,
     default: Date.now() + 7 * 24 * 60 * 60 * 1000 //* one week from current time.
   },
@@ -18,7 +18,8 @@ const PollSchema = mongoose.Schema({
   //results are viewable by
   viewableBy: {
     type: String,
-    enum: ["students", "teachers", "admins", "sponsors", "all"] //* students - must login | all - no login required
+    enum: ["students", "teachers", "admins", "sponsors", "all"], //* students - must login | all - no login required
+    required: false
   }
 });
 

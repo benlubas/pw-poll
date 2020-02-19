@@ -1,0 +1,76 @@
+::-webkit-datetime-edit-text {
+  color: #00000000;
+}
+::-webkit-datetime-edit-month-field {
+  color: #00000000;
+}
+::-webkit-datetime-edit-day-field {
+  color: #00000000;
+}
+::-webkit-datetime-edit-year-field {
+  color: #00000000;
+}
+.dateInput {
+  font-size: 1.1rem;
+  color: black;
+  border: none;
+  border-bottom: 1px solid var(--default);
+  background: transparent;
+  outline: none;
+  padding: 5px;
+  padding-bottom: 5px;
+  margin: 10px 5px 0px 5px;
+}
+.dateWrapper::after {
+  content: "";
+  width: 97%;
+  height: 3px;
+  position: absolute;
+  top: 95%;
+  left: 0%;
+  background: var(--primary);
+  transform: translateX(-100%);
+  transition: all 0.25s ease-in-out;
+}
+.underline::after {
+  transform: translate(2%);
+}
+.dateWrapper {
+  position: relative;
+  padding-top: 5px;
+  display: inline-block;
+  overflow: hidden;
+}
+.dateLabel {
+  font-size: 1.1rem;
+  font-family: var(--body-font);
+  position: absolute;
+  color: var(--default);
+  top: 7px;
+  left: 20px;
+  transform: translateY(75%);
+  transition: all 0.25s ease-in-out;
+  pointer-events: none;
+}
+.dateActive {
+  transform: translateY(-10%);
+  top: 5px;
+  left: 10px;
+  font-size: 0.85rem;
+  color: var(--primary);
+}
+.inputActive {
+  color: var(--text-color);
+}
+.inputActive::-webkit-datetime-edit-text {
+  color: black;
+}
+.inputActive::-webkit-datetime-edit-month-field {
+  color: black;
+}
+.inputActive::-webkit-datetime-edit-day-field {
+  color: black;
+}
+.inputActive::-webkit-datetime-edit-year-field {
+  color: black;
+}

@@ -1,5 +1,3 @@
-import React from "react";
-
 export const titlecase = str => {
   return str
     .split(" ")

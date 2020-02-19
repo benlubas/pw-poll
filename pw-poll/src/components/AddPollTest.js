@@ -25,7 +25,7 @@ const AddPollTest = props => {
         },
         body: JSON.stringify(postBody)
       });
-      const useable = await newPoll.json();
+      await newPoll.json();
       props.forceUpdate();
     } catch (err) {
       console.error(err);

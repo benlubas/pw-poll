@@ -1,0 +1,67 @@
+.fileInputWrapper {
+  display: inline-block;
+  position: relative;
+  width: 200px;
+  border-bottom: 1px solid var(--default);
+  padding: 5px;
+  margin: 10px;
+  font-size: 1.1rem;
+  color: var(--default);
+}
+
+.fileInputWrapper .fileIcon {
+  height: 80%;
+  margin-left: 4px;
+  margin-top: 1px;
+}
+
+.fileInputWrapper .iconBg {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  padding: 4px;
+  margin: 3px;
+  background: transparent;
+  border-radius: 50%;
+}
+
+.fileInputWrapper::after {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 100%;
+  width: 0%;
+  height: 3px;
+  background: var(--primary);
+  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+
+.fileInputWrapper.underline:after {
+  width: 105%;
+}
+
+.hov {
+  color: var(--primary);
+}
+
+.factive {
+  color: var(--text-color);
+}
+
+.fileInput {
+  opacity: 0%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  color: #00000000;
+  outline: none;
+  border: none;
+  border-radius: 0px;
+}
+/*# sourceMappingURL=fileUpload.css.map */

@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//? @param gradYear Number
+//? @param name String
 router.post("/", async (req, res) => {
   const group = new Group({
     name: req.body.name
@@ -52,7 +52,7 @@ router.put("/students/:name", async (req, res) => {
         });
         res.end();
       } else {
-        Class.findOneAndUpdate(
+        Group.findOneAndUpdate(
           { name: req.params.name },
           { $addToSet: req.body },
           { useFindAndModify: false },
@@ -86,5 +86,10 @@ router.delete("/:id", async (req, res) => {
     }
   );
 });
-
+router.delete("/all/reallyAll", async (req, res) => {
+  Group.deleteMany({}, () => {
+    console.log("Group has been dropped");
+  });
+  res.json({ message: "It's all gone" });
+});
 module.exports = router;

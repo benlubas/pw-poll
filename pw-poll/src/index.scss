@@ -4,32 +4,61 @@ $successBg: #82e26a;
 $warningBg: #ffdc15;
 
 :root {
-  --page-bg-dark: #4a4b4d;
-  --page-bg-light: #d8d8d8;
-  --danger: #ffffff00;
+  //colors;
+  --default: #3f3f3f;
+  --page-bg: white;
   --blue: #0003a1;
-  --light-blue: #1157c0;
-  --blue-grad: linear-gradient(45deg, var(--blue), var(--light-blue));
+  --primary: #1157c0;
+  --blue-grad: linear-gradient(45deg, var(--blue), var(--primary));
   --cyan: #00ccff;
   --red: #cc2813;
-  --success-bg: #82e26a;
-  --success: #000000;
+  --success: #82e26a;
+  --danger: #d12e2e;
+  --warning: #ffdc15;
   --r: #ff25ab;
-  --outline: white;
+  --outline: black;
+
+  --text-color: black;
+
+  //fonts;
+  --body-font: "Oxygen";
+  --title-font: "Montserrat";
+}
+* {
+  font-family: var(--body-font);
+  color: var(--text-color);
 }
 body {
-  background: var(--page-bg-dark);
+  background: var(--page-bg);
   color: white;
   margin: 0;
   font-family: "Montserrat sans-serif";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.btn {
+  padding: 10px;
+  margin: 5px;
+  display: inline-block;
+  color: white;
+  background: var(--default);
+  border: none;
+  outline: none;
+  font-family: var(--body-font);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
 .success {
-  background: $successBg;
+  background: var(--success);
+  color: black;
 }
 .warning {
-  background: $warningBg;
+  background: var(--warning);
+  color: black;
+}
+.danger {
+  background: var(--danger);
+  color: black;
 }
 .pointer {
   cursor: pointer;
@@ -44,5 +73,12 @@ body {
   display: inline-block;
   cursor: pointer;
 }
+.paper {
+  background: white;
+  filter: drop-shadow(10px);
+}
 
-@import "./components/form/dropdown/dropdown.scss";
+.flex-container {
+  display: flex;
+  align-items: center;
+}

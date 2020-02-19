@@ -12,11 +12,12 @@ export const useHov = () => {
       ref.current.addEventListener("mouseover", handelMouseOver);
       ref.current.addEventListener("mouseleave", handelMouseLeave);
 
+      const r = ref.current;
       return () => {
-        ref.current.removeEventListener("mouseover", handelMouseOver);
-        ref.current.removeEventListener("mouseleave", handelMouseLeave);
+        r.removeEventListener("mouseover", handelMouseOver);
+        r.removeEventListener("mouseleave", handelMouseLeave);
       };
     }
-  }, [ref.current]);
+  });
   return [ref, state];
 };

@@ -1,22 +1,30 @@
 @import url("https://fonts.googleapis.com/css?family=Oxygen&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
 :root {
-  --page-bg-dark: #4a4b4d;
-  --page-bg-light: #d8d8d8;
-  --danger: #ffffff00;
+  --default: #3f3f3f;
+  --page-bg: white;
   --blue: #0003a1;
-  --light-blue: #1157c0;
-  --blue-grad: linear-gradient(45deg, var(--blue), var(--light-blue));
+  --primary: #1157c0;
+  --blue-grad: linear-gradient(45deg, var(--blue), var(--primary));
   --cyan: #00ccff;
   --red: #cc2813;
-  --success-bg: #82e26a;
-  --success: #000000;
+  --success: #82e26a;
+  --danger: #d12e2e;
+  --warning: #ffdc15;
   --r: #ff25ab;
-  --outline: white;
+  --outline: black;
+  --text-color: black;
+  --body-font: "Oxygen";
+  --title-font: "Montserrat";
+}
+
+* {
+  font-family: var(--body-font);
+  color: var(--text-color);
 }
 
 body {
-  background: var(--page-bg-dark);
+  background: var(--page-bg);
   color: white;
   margin: 0;
   font-family: "Montserrat sans-serif";
@@ -24,12 +32,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.btn {
+  padding: 10px;
+  margin: 5px;
+  display: inline-block;
+  color: white;
+  background: var(--default);
+  border: none;
+  outline: none;
+  font-family: var(--body-font);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
 .success {
-  background: #82e26a;
+  background: var(--success);
+  color: black;
 }
 
 .warning {
-  background: #ffdc15;
+  background: var(--warning);
+  color: black;
+}
+
+.danger {
+  background: var(--danger);
+  color: black;
 }
 
 .pointer {
@@ -47,51 +75,18 @@ body {
   cursor: pointer;
 }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
+.paper {
+  background: white;
+  -webkit-filter: drop-shadow(10px);
+          filter: drop-shadow(10px);
 }
 
-.dropdown:hover .dropbtn {
-  background: #5eda3f;
-}
-
-.dropdown .dropbtn {
-  background-color: var(--success-bg);
-  display: block;
-  color: var(--success);
-  min-width: 150px;
-  outline: none;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-.dropdown .content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 150px;
-  -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  top: 40px;
-  left: 0px;
-}
-
-.dropdown .content span {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown .content span:hover {
-  background: #caf3bf;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: #5eda3f;
+.flex-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 /*# sourceMappingURL=index.css.map */

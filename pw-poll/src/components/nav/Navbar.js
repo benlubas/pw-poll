@@ -6,7 +6,7 @@ const Navbar = props => {
     <nav>
       {props.pages.map((value, index) => (
         <div
-          style={props.selected === value ? { color: "var(--blue)" } : {}}
+          style={props.selected === value ? { color: "var(--primary)" } : {}}
           onClick={() => props.set(value)}
           key={value + index}
         >

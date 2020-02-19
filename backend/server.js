@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000;
 //Middlewares
 app.use(cors());
 app.use(express.json());
-app.use("/polls", pollRouter);
+app.use("/poll", pollRouter);
 app.use("/group", groupRouter);
 app.use("/question", questionRouter);
 app.use("/admin", adminRouter);
@@ -32,19 +32,25 @@ mongoose.connect(
     console.log("Connected to MongoDB");
   }
 );
-// const conn = sql.createConnection({
-//   host: "localhost:8080",
-//   user: "benlubas",
-//   password: process.env.SQL_PW
-// });
-//? this should work, but I can't get the SQL server running locally, so we're
-//? gonna wait for Engel to give us access to the real one
-// conn.connect(err => {
-//   if (err) throw err;
-//   else {
-//     console.log("Connected to SQL DB");
-//   }
-// });
+const conn = sql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "allTheStudents"
+});
+conn.connect(err => {
+  if (err) throw err;
+  else {
+    // const sql = "SELECT email FROM students WHERE id='14468'";
+    // conn.query(sql, (err, res) => {
+    //   if (err) throw err;
+    //   else {
+    //     console.log(res);
+    //   }
+    // });
+    console.log("Connected to SQL DB");
+  }
+});
 
 app.listen(port, () => {
   console.log("listening at port " + port);
