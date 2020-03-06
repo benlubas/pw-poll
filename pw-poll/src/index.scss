@@ -21,8 +21,15 @@ $warningBg: #ffdc15;
   --text-color: black;
 
   //fonts;
-  --body-font: "Oxygen";
+  --body-font: "Montserrat";
   --title-font: "Montserrat";
+
+  --ta-width: 50%;
+}
+@media (max-width: 680px) {
+  :root {
+    --ta-width: 100%;
+  }
 }
 * {
   font-family: var(--body-font);
@@ -48,6 +55,11 @@ body {
   font-size: 1.1rem;
   cursor: pointer;
 }
+.btn-small {
+  padding: 5px;
+  margin: 0px;
+  font-size: 0.95rem;
+}
 .success {
   background: var(--success);
   color: black;
@@ -59,6 +71,13 @@ body {
 .danger {
   background: var(--danger);
   color: black;
+}
+.primary {
+  background: var(--primary);
+  color: white;
+}
+.wide {
+  width: 100%;
 }
 .pointer {
   cursor: pointer;
@@ -81,4 +100,12 @@ body {
 .flex-container {
   display: flex;
   align-items: center;
+}
+.bold {
+  font-weight: bold;
+}
+
+svg {
+  display: inline-block;
+  margin: 5px;
 }

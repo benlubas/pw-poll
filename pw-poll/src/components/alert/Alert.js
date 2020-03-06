@@ -9,7 +9,7 @@ export default function Alert(props) {
   return show ? (
     <div
       className={`alert ${
-        props.varient === undefined ? "warning" : props.varient
+        props.variant === undefined ? "warning" : props.variant
       }`}
     >
       <div className="title">

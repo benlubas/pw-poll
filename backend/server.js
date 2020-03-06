@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const sql = require("mysql");
+// const sql = require("mysql");
 
 require("dotenv").config();
 
@@ -32,25 +32,25 @@ mongoose.connect(
     console.log("Connected to MongoDB");
   }
 );
-const conn = sql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "allTheStudents"
-});
-conn.connect(err => {
-  if (err) throw err;
-  else {
-    // const sql = "SELECT email FROM students WHERE id='14468'";
-    // conn.query(sql, (err, res) => {
-    //   if (err) throw err;
-    //   else {
-    //     console.log(res);
-    //   }
-    // });
-    console.log("Connected to SQL DB");
-  }
-});
+// const conn = sql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "allTheStudents"
+// });
+// conn.connect(err => {
+//   if (err) throw err;
+//   else {
+//     const sql = "SELECT email FROM students WHERE id='14468'";
+//     conn.query(sql, (err, res) => {
+//       if (err) throw err;
+//       else {
+//         console.log(res);
+//       }
+//     });
+//     console.log("Connected to SQL DB");
+//   }
+// });
 
 app.listen(port, () => {
   console.log("listening at port " + port);

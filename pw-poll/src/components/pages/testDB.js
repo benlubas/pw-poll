@@ -1,14 +1,12 @@
 import React from "react";
-import AddPollTest from "../AddPollTest";
 
 import UploadCSV from "../form/UploadCSV";
 import CreateGroup from "./../form/CreateGroup";
 import Checkbox from "../form/checkbox/Checkbox";
 
-const TestDB = props => {
+const TestDB = () => {
   return (
     <>
-      <AddPollTest />
       <UploadCSV />
       <CreateGroup />
       <Checkbox

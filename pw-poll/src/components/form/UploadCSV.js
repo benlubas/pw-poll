@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Papa from "papaparse";
 import { useFetch } from "../../hooks/useFetch";
+import { url } from "./../../url";
 // import Select from "@material-ui/core/Select";
 // import MenuItem from "@material-ui/core/MenuItem";
 // import InputLabel from "@material-ui/core/InputLabel";
@@ -13,7 +14,7 @@ import FileUpload from "./../form/fileUpload/FileUpload";
 export default function UploadCSV() {
   const [state, setState] = useState("waiting");
   const [file, setFile] = useState(null);
-  const groupOptions = useFetch(`http://localhost:5000/group`);
+  const [groupOptions, groupOptionsLoading] = useFetch(url + `group/`);
   const [group, setGroup] = useState("");
 
   const parseFile = async () => {
@@ -41,8 +42,8 @@ export default function UploadCSV() {
       let newStudents = info.map(val => val.Email);
       newStudents = { students: newStudents };
 
-      const url = `http://localhost:5000/group/students/${name}`;
-      const result = await fetch(url, {
+      const studUrl = url + `group/students/${name}`;
+      const result = await fetch(studUrl, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -63,9 +64,9 @@ export default function UploadCSV() {
         label="Group"
         onChange={val => setGroup(val)}
         values={
-          groupOptions.loading
+          groupOptionsLoading
             ? ["loading..."]
-            : groupOptions.data.map(val => val.name)
+            : groupOptions.map(val => val.name)
         }
         value={group}
       />

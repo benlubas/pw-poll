@@ -14,8 +14,15 @@
   --r: #ff25ab;
   --outline: black;
   --text-color: black;
-  --body-font: "Oxygen";
+  --body-font: "Montserrat";
   --title-font: "Montserrat";
+  --ta-width: 50%;
+}
+
+@media (max-width: 680px) {
+  :root {
+    --ta-width: 100%;
+  }
 }
 
 * {
@@ -45,6 +52,12 @@ body {
   cursor: pointer;
 }
 
+.btn-small {
+  padding: 5px;
+  margin: 0px;
+  font-size: 0.95rem;
+}
+
 .success {
   background: var(--success);
   color: black;
@@ -58,6 +71,15 @@ body {
 .danger {
   background: var(--danger);
   color: black;
+}
+
+.primary {
+  background: var(--primary);
+  color: white;
+}
+
+.wide {
+  width: 100%;
 }
 
 .pointer {
@@ -88,5 +110,14 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+svg {
+  display: inline-block;
+  margin: 5px;
 }
 /*# sourceMappingURL=index.css.map */

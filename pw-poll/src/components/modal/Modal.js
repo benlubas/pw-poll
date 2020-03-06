@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import { CircleXSVG } from "./../svg";
 import "./modal.css";
 
 const modalRoot = document.getElementById("modal-root");
@@ -11,10 +12,10 @@ export const ModalSet = props => {
     <>
       <div
         ref={props.triggerRef !== undefined ? props.triggerRef : null}
-        className={"btn " + color}
+        className={props.customTrigger ? "" : "btn " + color}
         onClick={() => setShown(true)}
       >
-        {props.trigger}
+        {props.customTrigger || props.trigger}
       </div>
       {shown ? (
         <Modal {...props} title={props.title} onClose={() => setShown(false)}>
@@ -40,7 +41,7 @@ const Modal = props => {
         <div className="modal-header">
           {props.title}
           <button href="#" onClick={props.onClose} className="modal-close">
-            X
+            <CircleXSVG />
           </button>
           <hr />
         </div>

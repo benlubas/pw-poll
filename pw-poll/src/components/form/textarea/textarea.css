@@ -1,0 +1,165 @@
+.taWrapper {
+  position: relative;
+  margin: 5px;
+  margin-top: 15px;
+  display: inline-block;
+}
+.outlines {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+.outlines span {
+  position: absolute;
+  width: 25px;
+  height: 1px;
+  background: var(--default);
+  transform-origin: left;
+  /* transition: height 0.15s ease-in-out; */
+}
+.taActives span {
+  height: 2px;
+  background: var(--primary);
+}
+.outlines span:nth-child(1) {
+  transform: rotate(0deg);
+  top: 0px;
+  left: 0px;
+}
+.outlines span:nth-child(2) {
+  transform: rotate(90deg);
+  top: 0px;
+  left: 0px;
+}
+.outlines span:nth-child(3) {
+  transform: rotate(0deg);
+  bottom: -2px;
+  right: 0px;
+}
+.outlines span:nth-child(4) {
+  transform: rotate(-90deg);
+  top: 100%;
+  left: 100%;
+}
+.outlines span:nth-child(5) {
+  transform: rotate(0deg);
+  bottom: -2px;
+  left: 0px;
+  width: 0px;
+}
+.outlines span:nth-child(6) {
+  transform: rotate(0deg);
+  top: 0px;
+  right: 0px;
+  width: 0px;
+}
+.taActives span:nth-child(1) {
+  animation: inside 0.25s linear forwards;
+}
+.taActives span:nth-child(2) {
+  /* top: calc(100% - 25px); */
+  animation: outsideLeft 0.25s linear forwards;
+}
+.taActives span:nth-child(5) {
+  animation: newSpan 0.25s linear forwards;
+}
+.taActives span:nth-child(3) {
+  animation: inside 0.25s linear forwards;
+}
+.taActives span:nth-child(4) {
+  animation: outsideRight 0.25s linear forwards;
+}
+.taActives span:nth-child(6) {
+  animation: newSpan 0.25s linear forwards;
+}
+
+.taUnderline:after {
+  transform: translate(0%);
+}
+.taLabel {
+  font-size: 1.1rem;
+  font-family: var(--body-font);
+  position: absolute;
+  color: var(--default);
+  top: -5px;
+  left: 20px;
+  transform: translateY(75%);
+  pointer-events: none;
+  transition: all 0.25s ease-in-out;
+}
+.taActive {
+  transform: translateY(-100%);
+  top: 2px;
+  left: 10px;
+  font-size: 0.85rem;
+  color: var(--primary);
+}
+.textarea {
+  position: relative;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 5px;
+  width: 80%;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  width: 100%;
+  padding-bottom: 7px;
+}
+
+@keyframes outsideLeft {
+  0% {
+    top: 0px;
+    left: 0px;
+  }
+  50% {
+    top: 0px;
+    left: 0px;
+    width: 50px;
+  }
+  100% {
+    top: calc(100% - 25px);
+    width: 25px;
+  }
+}
+@keyframes outsideRight {
+  0% {
+    top: calc(100% - 2px);
+    right: -25px;
+  }
+  50% {
+    top: calc(100% - 2px);
+    right: -25px;
+    width: 50px;
+  }
+  100% {
+    top: 25px;
+    width: 25px;
+  }
+}
+
+@keyframes inside {
+  0% {
+    width: 25px;
+  }
+  50% {
+    width: 0px;
+  }
+  100% {
+    width: 0px;
+  }
+}
+
+@keyframes newSpan {
+  0% {
+    width: 0px;
+  }
+  85% {
+    width: 0px;
+  }
+  100% {
+    width: 25px;
+  }
+}

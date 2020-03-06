@@ -1,0 +1,18 @@
+.eliWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3px 0px;
+}
+
+.eliText {
+  display: inline;
+}
+.eliText:hover {
+  color: var(--danger);
+  padding: 0px;
+  margin: 0px;
+  cursor: pointer;
+  text-decoration: line-through;
+}

@@ -1,54 +1,177 @@
-import React, { useState, useEffect } from "react";
-import { titlecase, dateFormat } from "../../pipes";
-import { useHov } from "../../hooks/useHov";
+import React, { useState } from "react";
+import { titlecase, dateFormat, bold } from "../../pipes";
+import Alert from "./../alert/Alert";
+import { ModalSet } from "./../modal/Modal";
+import Textarea from "./../form/textarea/Textarea";
+
+import "./pollCard.css";
+import Card from "../card/Card";
+import { CircleXSVG, EditSVG } from "../svg";
+import DatePicker from "../form/datePicker/DatePicker";
+import RadioGroup from "../form/radioGroup/RadioGroup";
+import Dropdown from "../form/dropdown/Dropdown";
 
 const PollCard = props => {
-  const [hovRef, hov] = useHov();
-  const [state, setState] = useState({
-    removed: false,
-    expanded: props.small
-  });
+  const [removed, setRemoved] = useState(false);
+  const [editing, setEditing] = useState({ ...props.data });
 
-  //force expanded to change when the display changes.
-  useEffect(() => {
-    setState({ ...state, expanded: !props.small });
-  }, [props.small]);
-
-  return (
+  const title = (
     <div
-      //? Card Container
-      className={props.small ? "card-sm" : "card"}
-      ref={hovRef}
-      style={hov ? { borderImage: "var(--blue-grad) 1 1" } : null}
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-between"
+      }}
     >
-      <div className="card-title">
-        {titlecase(props.title)} {state.removed ? "(REMOVED)" : null}
-      </div>
-      <div
-        onClick={
-          !props.size
-            ? () => setState({ ...state, expanded: !state.expanded })
-            : null
-        }
-        className="card-desc"
-        style={
-          state.expanded ? { whiteSpace: "normal" } : { whiteSpace: "nowrap" }
-        }
-      >
-        Description: {props.desc}
-      </div>
-      <div className="open-date">Start: {dateFormat(props.openDate)}</div>
-      <div className="close-date">End: {dateFormat(props.closeDate)}</div>
-      <div
-        className="del-btn"
-        onClick={() => {
-          props.remove(props.dbID);
-          setState({ ...state, removed: true });
-        }}
-      >
-        Delete
+      <span>{titlecase(props.data.title)}</span>
+      <div style={{ display: "flex" }}>
+        {props.editable && !props.edit ? (
+          <div onClick={() => props.onEdit(props.num)}>
+            <EditSVG />
+          </div>
+        ) : props.edit ? (
+          <div
+            onClick={() => {
+              setEditing(props.data);
+              props.onDiscardChanges(props.num);
+            }}
+          >
+            <button className="btn btn-small">Discard Changes</button>
+          </div>
+        ) : null}
+        <ModalSet
+          customTrigger={<CircleXSVG />}
+          height="200px"
+          onConfirm={() => {
+            props.remove("poll", props.data._id);
+            setRemoved(true);
+          }}
+          title="Are you sure?"
+          closeClass="default"
+          confirmClass="danger"
+        >
+          Are you sure you want to delete {props.data.title}?
+        </ModalSet>
       </div>
     </div>
+  );
+  return !removed ? (
+    <Card
+      classes={props.classes}
+      onClick={props.onClick}
+      title={title}
+      footer=""
+    >
+      {props.edit ? (
+        <Textarea
+          label="Description"
+          value={editing.desc}
+          onChange={val => setEditing({ ...editing, desc: val })}
+          width="100%"
+        />
+      ) : (
+        <span>
+          {bold("Description:")} {props.data.desc}
+        </span>
+      )}
+      <br />
+      <br />
+      <div className="lowerConetent">
+        <div className="dates">
+          {bold("Start:")}{" "}
+          {props.edit ? (
+            <DatePicker
+              clicked={true}
+              value={
+                editing.startDate.length > 10
+                  ? editing.startDate.substr(0, 5) +
+                    editing.startDate.substr(5, 3) +
+                    editing.startDate.substr(8, 2)
+                  : editing.startDate
+              }
+              label="Start Date"
+              onChange={val => setEditing({ ...editing, startDate: val })}
+            />
+          ) : (
+            dateFormat(props.data.startDate)
+          )}
+          <br />
+          {bold("End:")}{" "}
+          {props.edit ? (
+            <DatePicker
+              clicked={true}
+              value={
+                editing.endDate.length > 10
+                  ? editing.endDate.substr(0, 5) +
+                    editing.endDate.substr(5, 3) +
+                    editing.endDate.substr(8, 2)
+                  : editing.endDate
+              }
+              label="End Date"
+              onChange={val => setEditing({ ...editing, endDate: val })}
+            />
+          ) : (
+            dateFormat(props.data.endDate)
+          )}
+        </div>
+        <div className="otherInfo">
+          <div
+            style={
+              props.edit ? { marginTop: "5px", position: "relative" } : null
+            }
+          >
+            <span
+              className="bold"
+              style={props.edit ? { position: "absolute", top: "0px" } : null}
+            >
+              Results viewable in progress:
+            </span>
+            {props.edit ? (
+              <RadioGroup
+                options={["Yes", "No"]}
+                value={editing.viewInProgress ? "Yes" : "No"}
+                onChange={val =>
+                  setEditing({ ...editing, viewInProgress: val === "Yes" })
+                }
+              />
+            ) : props.data.viewInProgress ? (
+              " Yes"
+            ) : (
+              " No"
+            )}
+          </div>
+          <div>
+            {bold("Who can view:")}{" "}
+            {props.edit ? (
+              <Dropdown
+                clicked={true}
+                label="Viewable By"
+                values={["Admins", "Sponsors", "Teachers", "Students", "All"]}
+                value={editing.viewableBy}
+                onChange={val => setEditing({ ...editing, viewableBy: val })}
+              />
+            ) : (
+              props.data.viewableBy
+            )}
+          </div>
+        </div>
+        {props.edit ? (
+          <div className="card-footer">
+            <br />
+            <button
+              onClick={() => props.save(editing)}
+              className="btn primary wide"
+            >
+              Save
+            </button>
+          </div>
+        ) : null}
+      </div>
+    </Card>
+  ) : (
+    <Alert variant="warning">
+      {titlecase(props.data.title)} has been removed.
+    </Alert>
   );
 };
 

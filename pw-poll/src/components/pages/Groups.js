@@ -2,9 +2,10 @@ import React from "react";
 import { useFetch } from "../../hooks/useFetch";
 import GroupCard from "../groupCard/GroupCard";
 import LoadingScreen from "./../loadingScreen/LoadingScreen";
+import { url } from "./../../url";
 
 export default function Groups() {
-  const { data, loading } = useFetch("http://localhost:5000/group");
+  const [data, loading] = useFetch(url + "group");
   return loading ? (
     <LoadingScreen />
   ) : (

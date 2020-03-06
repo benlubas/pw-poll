@@ -8,10 +8,11 @@ import TestDB from "./components/pages/testDB";
 import HomePage from "./components/pages/HomePage";
 import Groups from "./components/pages/Groups";
 import AddPoll from "./components/pages/addPoll/AddPoll";
+import StudentViewPoll from "./components/pages/StudentViewPoll";
 
 function App() {
-  const [page, setPage] = useState("add poll");
-  const pages = ["home", "polls", "test", "groups", "add poll"];
+  const [page, setPage] = useState("polls");
+  const pages = ["home", "polls", "studViewPoll", "test", "groups", "add poll"];
 
   return (
     <>
@@ -26,6 +27,8 @@ function App() {
         <Groups />
       ) : page === "add poll" ? (
         <AddPoll />
+      ) : page === "studViewPoll" ? (
+        <StudentViewPoll pollID="5e53de81de875a0587536eeb" />
       ) : (
         <div>no page "{page}" found</div>
       )}

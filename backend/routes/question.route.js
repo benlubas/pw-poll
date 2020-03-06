@@ -5,6 +5,17 @@ const Question = require("./../models/question.model");
 router.get("/", async (req, res) => {
   try {
     const foundQuestions = await Question.find().sort({ pollID: 1, number: 1 });
+    for (let i = 0; i < foundQuestions.length; i++) {
+      foundQuestions[i].votes = "privilaged";
+    }
+    res.json(foundQuestions);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+router.get("/votes", async (req, res) => {
+  try {
+    const foundQuestions = await Question.find().sort({ pollID: 1, number: 1 });
     res.json(foundQuestions);
   } catch (err) {
     res.json({ message: err });
@@ -14,8 +25,12 @@ router.get("/", async (req, res) => {
 router.get("/poll/:pollID", async (req, res) => {
   try {
     const foundQuestions = await Question.find({
-      pollID: req.body.pollID
+      pollID: req.params.pollID
     }).sort({ number: 1 });
+    for (let i = 0; i < foundQuestions.length; i++) {
+      foundQuestions[i].votes = "No access";
+      foundQuestions[i].answer = null;
+    }
     res.json(foundQuestions);
   } catch (err) {
     res.json({ message: err });
@@ -59,6 +74,16 @@ router.post("/multi", async (req, res) => {
   res.json({ message: "Done" });
 });
 
+router.put("/addVotes", async (req, res) => {
+  const ans = req.body;
+  let response = [];
+  ans.forEach(async (a, index) => {
+    let q = await Question.findById(a.key);
+    console.log(q);
+  });
+  res.json({ message: "done", res: response });
+});
+
 router.delete("/:id", async (req, res) => {
   Question.findByIdAndRemove(
     req.params.id,
@@ -70,6 +95,24 @@ router.delete("/:id", async (req, res) => {
       } else res.json(removed);
     }
   );
+});
+
+router.delete("/purge/:pollID/", async (req, res) => {
+  Question.deleteMany({ pollID: req.params.pollID }, (err, removed) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    } else res.json({ message: "questions clensed" });
+  });
+});
+
+router.delete("/all/reallyAll/", async (req, res) => {
+  Question.deleteMany({}, (err, removed) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    } else res.json({ message: "All of the questions are gone" });
+  });
 });
 
 module.exports = router;

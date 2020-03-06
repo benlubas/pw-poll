@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Input from "./input/Input";
 import Alert from "./../alert/Alert";
+import { url } from "./../../url";
 
 export default function CreateGroup() {
   const [state, setState] = useState({
@@ -10,7 +11,7 @@ export default function CreateGroup() {
   });
   const validateAndSubmit = async () => {
     if (state.value.trim() !== "") {
-      let result = await fetch("http://localhost:5000/group", {
+      let result = await fetch(url + "group/", {
         method: "POST",
         headers: {
           Accept: "application/json",

@@ -3,9 +3,11 @@ import Input from "../../form/input/Input";
 import DatePicker from "./../../form/datePicker/DatePicker";
 import Checkbox from "./../../form/checkbox/Checkbox";
 import Dropdown from "./../../form/dropdown/Dropdown";
+import Textarea from "./../../form/textarea/Textarea";
 import { ModalSet } from "./../../modal/Modal";
 import RadioGroup from "./../../form/radioGroup/RadioGroup";
 import { EditSVG, CircleXSVG } from "./../../svg";
+import { url } from "./../../../url";
 
 import "./addPoll.css";
 
@@ -17,7 +19,7 @@ export default function AddPoll(props) {
     endDate: new Date().toISOString().substr(0, 10),
     viewInProgress: false,
     questions: [],
-    viewableBy: "students"
+    viewableBy: ""
   });
   const [q, setQ] = useState({ text: "", options: [], type: null });
   const [newOption, setNewOption] = useState("");
@@ -50,7 +52,7 @@ export default function AddPoll(props) {
       values.questions.length > 0
     ) {
       //then its good, we can submit it
-      const purl = `http://localhost:5000/poll/`;
+      const purl = url + `poll/`;
       let pollRes = await fetch(purl, {
         method: "POST",
         headers: {
@@ -69,7 +71,7 @@ export default function AddPoll(props) {
       pollRes = await pollRes.json();
       const pollID = pollRes._id;
       console.log("pollRes: ", pollRes);
-      const qurl = `http://localhost:5000/question/multi`;
+      const qurl = url + `question/multi/`;
       let questionRes = await fetch(qurl, {
         method: "POST",
         headers: {
@@ -101,12 +103,14 @@ export default function AddPoll(props) {
           value={values.title}
           onChange={name => setValues({ ...values, title: name })}
         />
-        <Input
-          label="Description"
-          value={values.desc}
-          onChange={newDesc => setValues({ ...values, desc: newDesc })}
-          width="100%"
-        />
+        <div>
+          <Textarea
+            label="Description"
+            value={values.desc}
+            onChange={newDesc => setValues({ ...values, desc: newDesc })}
+            width="50%"
+          />
+        </div>
         <DatePicker
           label="Start Date"
           value={values.startDate}
@@ -236,6 +240,8 @@ export default function AddPoll(props) {
           Please select the lowest level who can view results.
         </div>
         <Dropdown
+          style={{ marginTop: "5px" }}
+          label="Viewable By"
           values={["Admins", "Sponsors", "Teachers", "Students", "All"]}
           value={values.viewableBy}
           onChange={val => setValues({ ...values, viewableBy: val })}

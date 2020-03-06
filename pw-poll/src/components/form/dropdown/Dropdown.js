@@ -7,7 +7,7 @@ import "./dropdown.css";
 export default function Dropdown(props) {
   const [state, setState] = useState({
     focus: false,
-    clicked: false
+    clicked: props.clicked || false
   });
 
   return (

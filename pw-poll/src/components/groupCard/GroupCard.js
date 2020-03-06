@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ModalSet } from "../modal/Modal";
+import Card from "./../card/Card";
 import Alert from "./../alert/Alert";
 
 import "./groupCard.css";
@@ -10,31 +11,30 @@ export default function GroupCard(props) {
   const confirm = async () => {
     //props.DBid
     console.log("id: ", props.DBid);
-    let res = await fetch(`http://localhost:5000/group/${props.DBid}`, {
+    let res = await fetch(`http://localhost:5050/group/${props.DBid}`, {
       method: "DELETE"
     });
     res = await res.json();
     setRemoved(res);
   };
+  const footer = (
+    <ModalSet
+      onConfirm={confirm}
+      height="200px"
+      trigger="Remove"
+      title={`Delete ${props.name}?`}
+      closeClass="default"
+      confirmClass="danger"
+    >
+      Believe it or not, that button will actually delete the group. You won't
+      get it back. So are you sure?
+    </ModalSet>
+  );
 
   return !removed ? (
-    <div className="card">
-      <div className="title">{props.name}</div>
-      <div className="content">{props.children}</div>
-      <div className="card-footer">
-        <ModalSet
-          onConfirm={confirm}
-          height="200px"
-          trigger="Remove"
-          title={`Delete ${props.title}?`}
-          closeClass="default"
-          confirmClass="danger"
-        >
-          Believe it or not, that button will actually delete the group. You
-          won't get it back. So are you sure?
-        </ModalSet>
-      </div>
-    </div>
+    <Card title={props.name} footer={footer}>
+      {props.children}
+    </Card>
   ) : (
     <Alert>Alright, {removed.name} is gone. You can't get it back. </Alert>
   );

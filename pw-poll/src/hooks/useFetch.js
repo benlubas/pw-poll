@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 
 export const useFetch = (url, updater) => {
-  const [state, setState] = useState({ data: null, loading: true });
+  const [state, setState] = useState([null, true]);
   useEffect(() => {
-    setState({ data: null, loading: true });
+    const ab = new AbortController();
+    setState([null, true]);
     fetch(url)
       .then(x => x.json())
-      .then(y => setState({ data: y, loading: false }))
+      .then(y => setState([y, false]))
       .catch(err => console.log(err));
+
+    return () => ab.abort();
   }, [url, updater]);
 
   return state;

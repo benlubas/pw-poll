@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./radioGroup.css";
 
 export default function RadioGroup(props) {
-  const [val, setVal] = useState(props.val);
   return (
     <div className="radioGroupWrapper">
       <div className="radioPropmpt">{props.propmpt}</div>
       {props.options.map((v, i) => (
         <Radio
           key={v + i}
-          checked={val === v}
+          checked={props.value === v}
           value={v}
           onChange={newVal => {
-            setVal(newVal);
             props.onChange(newVal);
           }}
           label={v}
@@ -32,9 +30,9 @@ export function Radio(props) {
       }}
       className="radioBtnWrapper"
     >
-      <label>{props.label}</label>
       <div className={`radio ${props.checked ? "radioFilled" : ""}`}></div>
       <input className="accesRadio" name={props.name} type="radio"></input>
+      <label>{props.label}</label>
     </div>
   );
 }

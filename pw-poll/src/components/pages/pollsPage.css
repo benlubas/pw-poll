@@ -1,0 +1,36 @@
+.pollPageWrapper {
+  display: grid;
+  grid-template:
+    "polls questions" calc(100vh - 50px) /
+    1fr 1fr;
+}
+.pollList {
+  grid-area: "polls";
+  overflow-y: scroll;
+}
+.questionList {
+  grid-area: "questions";
+  overflow: scroll;
+}
+
+.questionWrapper {
+  animation: questionEnter 0.35s ease-in-out forwards;
+}
+@keyframes questionEnter {
+  0% {
+    transform: translate(-100%);
+  }
+  100% {
+    transform: translate(0%);
+  }
+}
+
+.pollListCardWrapper {
+  transition: all 0.25s ease-in-out;
+  width: 98%;
+}
+
+.selectedPoll {
+  position: relative;
+  transform: translate(10px);
+}

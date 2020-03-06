@@ -1,3 +1,5 @@
+import React from "react";
+
 export const titlecase = str => {
   return str
     .split(" ")
@@ -6,9 +8,9 @@ export const titlecase = str => {
 };
 
 export const dateFormat = dateStr => {
-  return dateStr
-    .substr(0, 10)
-    .split("-")
-    .reverse()
-    .join("/");
+  return (
+    dateStr.substr(5, 3) + dateStr.substr(8, 2) + "-" + dateStr.substr(0, 4)
+  );
 };
+
+export const bold = str => <span className="bold">{str}</span>;

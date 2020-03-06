@@ -18,7 +18,7 @@ const PollSchema = mongoose.Schema({
   //results are viewable by
   viewableBy: {
     type: String,
-    enum: ["students", "teachers", "admins", "sponsors", "all"], //* students - must login | all - no login required
+    enum: ["Students", "Teachers", "Admins", "Sponsors", "All"], //* students - must login | all - no login required
     required: false
   }
 });

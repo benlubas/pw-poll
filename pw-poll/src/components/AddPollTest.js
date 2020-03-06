@@ -2,16 +2,15 @@ import React, { useState } from "react";
 
 const AddPollTest = props => {
   const [counter, increment] = useState(0);
-  const url = "http://localhost:5000/polls/";
+  const url = "http://localhost:5000/poll/";
   const postBody = {
     title: "Poll " + counter,
     desc:
       "Test poll with same basic filler text with a really really really long description this time. bc we need one of those",
-    openDate: Date.now(),
-    closeDate: "12/12/2019",
+    startDate: Date.now(),
+    endDate: "12/12/2019",
     viewInProgress: false,
-    pollType: "arbitrary",
-    typeData: {}
+    viewableBy: "admin"
   };
   const add = async () => {
     console.log("adding post");
