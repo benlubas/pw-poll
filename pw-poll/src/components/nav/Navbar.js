@@ -1,18 +1,27 @@
 import React from "react";
+import { Router, Link } from "react-router-dom";
 import { titlecase } from "../../pipes";
+import Logo from "./../Logo";
 
-const Navbar = props => {
+import "./navbar.css";
+
+const Navbar = ({ pages, selected }) => {
   return (
     <nav>
-      {props.pages.map((value, index) => (
-        <div
-          style={props.selected === value ? { color: "var(--primary)" } : {}}
-          onClick={() => props.set(value)}
-          key={value + index}
-        >
-          {titlecase(value)}
-        </div>
-      ))}
+      <Link className="logo" to="/">
+        <Logo />
+      </Link>
+      <div className="links">
+        {pages.map((value, index) => (
+          <Link
+            to={value.link}
+            style={selected === value.text ? { color: "var(--primary)" } : {}}
+            key={value + index}
+          >
+            {titlecase(value.text)}
+          </Link>
+        ))}
+      </div>
     </nav>
   );
 };

@@ -33,7 +33,9 @@
 }
 
 .card .title {
-  font: 1.2em var(--title-font);
+  position: relative;
+  margin-top: auto;
+  font: 1.3em var(--title-font);
   border-bottom: 1px solid #00000033;
 }
 

@@ -17,6 +17,7 @@
   --body-font: "Montserrat";
   --title-font: "Montserrat";
   --ta-width: 50%;
+  --nav-height: 65px;
 }
 
 @media (max-width: 680px) {
@@ -54,8 +55,13 @@ body {
 
 .btn-small {
   padding: 5px;
-  margin: 0px;
+  margin: 1px;
   font-size: 0.95rem;
+}
+
+.btn-padded {
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .success {
@@ -86,6 +92,12 @@ body {
   cursor: pointer;
 }
 
+.hov-delete:hover {
+  color: var(--danger);
+  text-decoration: line-through;
+  cursor: pointer;
+}
+
 .formSubmit {
   padding: 10px;
   margin: 5px;
@@ -112,6 +124,18 @@ body {
           align-items: center;
 }
 
+.flex-baseline {
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+}
+
+.flex-spacebetween {
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -119,5 +143,31 @@ body {
 svg {
   display: inline-block;
   margin: 5px;
+}
+
+.titleFlex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+pre {
+  white-space: pre-wrap;
+  /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
 }
 /*# sourceMappingURL=index.css.map */

@@ -3,7 +3,6 @@
   padding: 10px;
   display: flex;
   position: relative;
-  // width: 100%;
   flex-direction: column;
   padding: 15px;
   &:hover:after {
@@ -22,7 +21,9 @@
     filter: drop-shadow(1px 1px 3px var(--primary));
   }
   .title {
-    font: 1.2em var(--title-font);
+    position: relative;
+    margin-top: auto;
+    font: 1.3em var(--title-font);
     border-bottom: 1px solid #00000033;
   }
   .content {

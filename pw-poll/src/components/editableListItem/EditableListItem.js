@@ -11,19 +11,24 @@ export default function EditableListItem(props) {
     current: props.value
   });
   const [show, setShow] = useState(true);
-  return show ? (
+  return show && values.original !== "" ? (
     <div className="eliWrapper">
-      <div>
+      <div style={{ width: "calc(90%)" }}>
         {editing ? (
           <Input
-            label={"Option " + props.num}
+            label={"Option"}
             value={values.current}
+            width={"var(--ta-width)"}
             onChange={val => setValues({ ...values, current: val })}
+            onEnter={() => {
+              props.onSave(values.current);
+              setEditing(false);
+            }}
           />
         ) : (
           <div
             onClick={() => {
-              props.remove("question", props._id);
+              props.onSave("");
               setShow(false);
             }}
             className="eliText"
@@ -37,9 +42,10 @@ export default function EditableListItem(props) {
           <button
             onClick={e => {
               e.preventDefault();
+              props.onSave(values.current);
               setEditing(false);
             }}
-            className="btn btn-small"
+            className="btn btn-small primary"
           >
             Save
           </button>

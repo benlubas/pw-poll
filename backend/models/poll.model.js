@@ -20,6 +20,16 @@ const PollSchema = mongoose.Schema({
     type: String,
     enum: ["Students", "Teachers", "Admins", "Sponsors", "All"], //* students - must login | all - no login required
     required: false
+  },
+  timeStamp: {
+    type: Date,
+    required: true
+  },
+  gradYears: {
+    //who can vote in the poll
+    //(multiple grad years are allowed, this is the only way we are grouping students);
+    type: Array,
+    default: []
   }
 });
 

@@ -2,17 +2,24 @@ nav {
   list-style: none;
   display: flex;
   flex-direction: row;
-  width: 80%;
-  height: 8vh;
+  width: 100%;
+  height: var(--nav-height);
   flex-wrap: nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   margin-left: auto;
   font-size: 2rem;
-  div {
-    cursor: pointer;
-    .current {
-      color: var(--primary);
-    }
+  .links {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: baseline;
+    transform: translateY(15%);
   }
 }

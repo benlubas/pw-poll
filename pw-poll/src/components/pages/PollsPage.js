@@ -1,30 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { useFetch } from "../../hooks/useFetch";
 import LoadingScreen from "../loadingScreen/LoadingScreen";
 import PollCard from "../pollCard/PollCard";
 import Card from "./../card/Card";
+import AddPoll from "./add/AddPoll";
+import AddQuestion from "./add/AddQuestion";
 import { bold } from "./../../pipes";
 import { url } from "./../../url";
-import Input from "./../form/input/Input";
 
 import "./pollsPage.css";
-import { EditSVG, CircleXSVG } from "../svg";
+import { EditSVG, CircleXSVG, CirclePlusSVG } from "../svg";
 import { ModalSet } from "../modal/Modal";
 import EditableListItem from "../editableListItem/EditableListItem";
+import Input from "./../form/input/Input";
 
+const removeBlanks = arr => {
+  let c = [];
+  for (let s of arr) {
+    if (s !== "") c.push(s);
+  }
+  return c;
+};
 const PollsPage = () => {
-  const [updater, setUpdater] = useState(0);
-  const [questions, qLoading] = useFetch(url + "question/", updater);
-  const [data, loading] = useFetch(url + "poll/", updater);
+  const [questionData, qLoading] = useFetch(url + "question/");
+  const [questions, setQuestions] = useState(null);
+  if (!qLoading && questions === null) {
+    setQuestions(questionData);
+  }
+  let shownQuestions = 1;
 
-  const [selected, setSelected] = useState(null);
-  const [editing, setEditing] = useState({ list: null, index: -1 });
-
-  if (!loading && selected === null && data.length > 0) {
-    setSelected(data[0]._id);
+  const [pollData, loading] = useFetch(url + "poll/");
+  const [polls, setPolls] = useState(null);
+  if (!loading && polls === null) {
+    setPolls(pollData);
   }
 
-  const remove = async (list, id) => {
+  const [selected, setSelected] = useState(null);
+
+  const [editing, setEditing] = useState({ list: null, index: -1 });
+  const [eq, setEq] = useState({ text: "", options: [] });
+
+  const [newOption, setNewOption] = useState("");
+
+  useLayoutEffect(() => {
+    if (selected !== "newPoll") {
+      setShowAddQuestion(false);
+      setShowAddPoll(false);
+    }
+  }, [selected]);
+
+  const remove = async (list, id, index) => {
+    if (list === "question") {
+      let temp = [...questions];
+      temp.splice(index, 1);
+      setQuestions(temp);
+    }
     await fetch(url + list + "/" + id, {
       method: "DELETE"
     });
@@ -41,156 +71,342 @@ const PollsPage = () => {
       alert("Already editing");
     }
   };
-  const saveQuestion = async info => {
+  const saveQuestion = async (old, newInfo, index) => {
+    const temp = [...questions];
+    temp[index] = {
+      ...old,
+      options: removeBlanks(newInfo.options),
+      text: newInfo.text
+    };
+    setQuestions(temp);
     try {
-      fetch(url + "question/" + info._id, {
+      fetch(url + "question/" + old.id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(info)
+        body: JSON.stringify(temp[index])
       });
     } catch (err) {
       console.error(err);
     }
   };
-  const savePoll = async vals => {
+  const savePoll = async (newInfo, index) => {
+    let temp = [...polls];
+    temp[index] = newInfo;
+    setPolls(temp);
     try {
-      await fetch(url + "poll/" + vals._id, {
+      await fetch(url + "poll/" + newInfo._id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(vals)
+        body: JSON.stringify(newInfo)
       });
-      window.location.reload();
     } catch (err) {
       console.error(err);
     }
   };
-  const pollContent = loading ? (
-    <LoadingScreen />
-  ) : (
-    data.map((pollData, index) => (
-      <div
-        className={
-          selected === pollData._id
-            ? "selectedPoll pollListCardWrapper"
-            : "pollListCardWrapper"
-        }
-        key={pollData._id}
-      >
-        <PollCard
-          num={index}
-          edit={editing.list === "poll" && editing.index === index}
-          editable={true} // This should maybe be based on passport (who's logged in)
-          classes={`${selected === pollData._id ? "cardActive" : ""}`}
-          data={pollData}
-          key={pollData._id}
-          remove={remove}
-          onClick={() => setSelected(pollData._id)}
-          onEdit={i => edit("poll", i)}
-          save={vals => savePoll(vals)}
-          onDiscardChanges={i => {
-            setEditing({ list: null, index: -1 });
-          }}
-        />
-      </div>
-    ))
-  );
-  const questionContent = qLoading ? (
-    <LoadingScreen />
-  ) : (
-    questions.map((data, index) =>
-      selected === data.pollID ? (
+  const pollContent =
+    polls === null ? (
+      <LoadingScreen />
+    ) : (
+      polls.map((poll, index) => (
         <div
-          key={data._id}
           className={
-            selected === data.pollID
-              ? "show questionWrapper"
-              : "hide questionWrapper"
+            selected === poll._id
+              ? "selectedPoll pollListCardWrapper"
+              : "pollListCardWrapper"
           }
+          key={poll._id}
         >
-          <Card
-            key={data._id}
-            title={
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "space-between",
-                  alignContent: "center"
-                }}
-              >
-                <span>{data.number + 1 + ") " + data.text}</span>
-                <div style={{ display: "flex", alignContent: "center" }}>
-                  {editing.list === "question" &&
-                  editing.index === index ? null : (
-                    <EditSVG
-                      onClick={() =>
-                        setEditing({ list: "question", index: index })
-                      }
-                    />
-                  )}
-                  <ModalSet
-                    title="Are you sure you want to delete this question?"
-                    customTrigger={<CircleXSVG />}
-                    onConfirm={() => {
-                      remove("question", data._id);
-                    }}
-                    height="200px"
-                  >
-                    <h3 style={{ margin: "0px" }}>Question:</h3>{" "}
-                    <div>{data.text}</div>
-                  </ModalSet>
-                </div>
-              </div>
+          <PollCard
+            num={index}
+            edit={editing.list === "poll" && editing.index === index}
+            editable={true} // This should maybe be based on passport (who's logged in)
+            classes={`${selected === poll._id ? "cardActive" : ""}`}
+            data={poll}
+            key={poll._id}
+            remove={remove}
+            onClick={() => setSelected(poll._id)}
+            onEdit={i => edit("poll", i)}
+            save={vals => {
+              savePoll(vals, index);
+              setEditing({ ...editing, index: -1 });
+            }}
+            onDiscardChanges={i => {
+              setEditing({ list: null, index: -1 });
+            }}
+          />
+        </div>
+      ))
+    );
+
+  const questionContent =
+    questions === null ? (
+      <LoadingScreen />
+    ) : (
+      questions.map((question, index) =>
+        selected === question.pollID ? (
+          <div
+            key={question._id}
+            className={
+              selected === question.pollID
+                ? "show questionWrapper"
+                : "hide questionWrapper"
             }
           >
-            {data.options.length > 0 ? (
-              <div>
-                {bold("Type: ")} Multiple Choice
-                <br />
-                <br />
-                <div className="bold">Options: </div>
-                <ol>
-                  {data.options.map((o, i) =>
-                    editing.list === "question" && editing.index === index ? (
-                      <EditableListItem
-                        remove={options => remove("option", data._id, options)}
-                        key={"" + data._id + i}
-                        value={o}
+            <Card //Questions
+              key={question._id}
+              title={
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "space-between",
+                    alignContent: "center"
+                  }}
+                >
+                  <span>
+                    {editing.index === index && editing.list === "question" ? (
+                      <Input
+                        label="Question"
+                        value={eq.text}
+                        onChange={val => setEq({ ...eq, text: val })}
+                        width="100%"
                       />
                     ) : (
-                      <li>{o}</li>
-                    )
-                  )}
-                </ol>
-              </div>
-            ) : (
-              <div>{bold("Type: ")} Open Ended</div>
-            )}
-            {editing.list === "question" && editing.index === index ? (
-              <button
-                onClick={e => {
-                  e.preventDefault();
-                  setEditing({ index: -1, list: "question" });
-                }}
-                className="btn primary wide"
-              >
-                Save
-              </button>
-            ) : null}
-          </Card>
-        </div>
-      ) : null
-    )
-  );
+                      shownQuestions++ + ") " + question.text
+                    )}
+                  </span>
+                  <div style={{ display: "flex", alignContent: "center" }}>
+                    {editing.list === "question" && editing.index === index ? (
+                      <div>
+                        <button
+                          onClick={e => {
+                            e.preventDefault();
+                            setEditing({ ...editing, index: -1 });
+                          }}
+                          className="btn btn-small"
+                        >
+                          Discard Changes
+                        </button>
+                      </div>
+                    ) : (
+                      <EditSVG
+                        onClick={() => {
+                          setEditing({ list: "question", index: index });
+                          //all of the information that would otherwise be stored in
+                          //the ediableListItem component is now in eq.
+                          setEq({
+                            options: question.options,
+                            text: question.text
+                          });
+                        }}
+                      />
+                    )}
+                    <ModalSet
+                      title="Are you sure you want to delete this question?"
+                      customTrigger={<CircleXSVG />}
+                      onConfirm={() => {
+                        remove("question", question._id, index);
+                        return true;
+                      }}
+                      height="200px"
+                    >
+                      <h3 style={{ margin: "0px" }}>Question: </h3>
+                      <div>{question.text}</div>
+                    </ModalSet>
+                  </div>
+                </div>
+              }
+            >
+              {question.options.length > 0 ? (
+                <div>
+                  {bold("Type: ")} Multiple Choice
+                  <br />
+                  <br />
+                  <div className="bold">Options: </div>
+                  <ol>
+                    {editing.list === "question" &&
+                    editing.index === index &&
+                    eq.options !== undefined
+                      ? eq.options.map((o, i) => (
+                          <EditableListItem
+                            key={"" + question._id + i}
+                            value={o}
+                            onSave={val => {
+                              let c = [...eq.options];
+                              c[i] = val;
+                              setEq({ ...eq, options: [...c] });
+                            }}
+                          />
+                        ))
+                      : question.options.map((o, i) => (
+                          <li key={"" + question._id + i}>{o}</li>
+                        ))}
+                    {editing.list === "question" && editing.index === index ? (
+                      <>
+                        <Input
+                          value={newOption}
+                          label="New Option"
+                          onChange={val => setNewOption(val)}
+                          onEnter={() => {
+                            let c = [...eq.options];
+                            c.push(newOption);
+                            setEq({ ...eq, options: c });
+                            setNewOption("");
+                          }}
+                        />
+                        <CirclePlusSVG
+                          onClick={() => {
+                            let c = [...eq.options];
+                            c.push(newOption);
+                            setEq({ ...eq, options: c });
+                            setNewOption("");
+                          }}
+                        />
+                      </>
+                    ) : null}
+                  </ol>
+                </div>
+              ) : (
+                <div>{bold("Type: ")} Open Ended</div>
+              )}
+              {editing.list === "question" && editing.index === index ? (
+                <button
+                  onClick={e => {
+                    e.preventDefault();
+                    saveQuestion(question, eq, index);
+                    setEditing({ index: -1, list: "question" });
+                    setEq({});
+                  }}
+                  className="btn primary wide"
+                >
+                  Save
+                </button> //Save Question
+              ) : null}
+            </Card>
+          </div>
+        ) : null
+      )
+    );
+  const [showAddPoll, setShowAddPoll] = useState(false);
+  const [showAddQuestion, setShowAddQuestion] = useState(false);
   return (
     <>
       <div className="pollPageWrapper">
-        <div className="pollList">{pollContent}</div>
-        <div className="questionList">{questionContent}</div>
+        <div className="pollList">
+          <div
+            className={
+              (selected === "newPoll" ? "selectedPoll " : "") +
+              "pollListCardWrapper"
+            }
+          >
+            <Card
+              classes={selected === "newPoll" ? "cardActive" : ""}
+              title={
+                <div className="titleFlex">
+                  <div>Create a Poll</div>
+                  {showAddPoll ? (
+                    <div>
+                      <button
+                        onClick={() => setShowAddPoll(false)}
+                        className="btn btn-small"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+              }
+            >
+              {showAddPoll ? (
+                <AddPoll
+                  save={(id, saved) => {
+                    let np = { ...saved, _id: id };
+                    delete np.questions;
+                    setPolls([np, ...polls]);
+                    setShowAddPoll(false);
+                  }}
+                />
+              ) : (
+                <button
+                  onClick={() => {
+                    setShowAddPoll(true);
+                    setSelected("newPoll");
+                  }}
+                  className="btn primary wide"
+                >
+                  Add
+                </button>
+              )}
+            </Card>
+          </div>
+          {pollContent}
+        </div>
+        <div className="questionList">
+          {questionContent}
+          {selected === null || (selected === "newPoll" && !showAddPoll) ? (
+            <div className="noQuestions questionWrapper">
+              <div>
+                <div>Choose a poll</div>
+              </div>
+            </div>
+          ) : shownQuestions === 1 && !showAddQuestion ? (
+            <div className="noQuestions questionWrapper">
+              <div>
+                <div>There aren't any questions yet</div>
+                <button
+                  onClick={() => setShowAddQuestion(true)}
+                  className="btn primary"
+                >
+                  Add One!
+                </button>
+              </div>
+            </div>
+          ) : showAddQuestion ? (
+            <div className="questionWrapper">
+              <Card
+                title={
+                  <div className="flex-container flex-spacebetween">
+                    <div>New Question</div>
+                    <div>
+                      <button
+                        onClick={() => setShowAddQuestion(false)}
+                        className="btn btn-small"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                }
+              >
+                <AddQuestion
+                  save={saved => {
+                    setQuestions([...questions, saved]);
+                    setShowAddQuestion(false);
+                  }}
+                  number={shownQuestions + 1}
+                  _id={selected}
+                />
+              </Card>
+            </div>
+          ) : (
+            <Card title="Add a Question">
+              {showAddQuestion ? (
+                <AddQuestion _id={selected} />
+              ) : (
+                <button
+                  onClick={() => setShowAddQuestion(true)}
+                  className="btn primary wide"
+                >
+                  Add
+                </button>
+              )}
+            </Card>
+          )}
+        </div>
       </div>
     </>
   );

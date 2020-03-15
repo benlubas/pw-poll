@@ -6,7 +6,6 @@ const GroupSchema = mongoose.Schema({
     require: true,
     default: "New Group"
   },
-  polls: { type: Array, default: null },
   students: { type: Array, default: null }
 });
 

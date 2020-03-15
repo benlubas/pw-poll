@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-// import "./textarea.css"; // Corner swap
-import "./textareaV2.css"; //Top and bottom
-// import "./textareaV3.css"; //Name on top
+import "./textareaV2.css";
 
 export default function Textarea(props) {
   const [focus, setFocus] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      let str = ref.current.value;
+      let cols = ref.current.cols * 2;
+      let linecount = 0;
+
+      str
+        .split("\n")
+        .forEach(l => (linecount += 1 + Math.floor(l.length / cols)));
+
+      ref.current.rows = linecount;
+    }
+  }, [ref, props.value]);
+
   return (
     <div
       style={{ width: props.width || "150px" }}
@@ -31,6 +45,7 @@ export default function Textarea(props) {
         {props.label === undefined ? "" : props.label}
       </div>
       <textarea
+        ref={ref}
         onKeyUp={e => {
           if (props.onEnter !== undefined && e.keyCode === 13) {
             props.onEnter();

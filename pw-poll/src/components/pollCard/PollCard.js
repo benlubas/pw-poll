@@ -3,32 +3,38 @@ import { titlecase, dateFormat, bold } from "../../pipes";
 import Alert from "./../alert/Alert";
 import { ModalSet } from "./../modal/Modal";
 import Textarea from "./../form/textarea/Textarea";
+import Input from "./../form/input/Input";
 
-import "./pollCard.css";
 import Card from "../card/Card";
 import { CircleXSVG, EditSVG } from "../svg";
 import DatePicker from "../form/datePicker/DatePicker";
-import RadioGroup from "../form/radioGroup/RadioGroup";
 import Dropdown from "../form/dropdown/Dropdown";
+
+import "./pollCard.css";
 
 const PollCard = props => {
   const [removed, setRemoved] = useState(false);
   const [editing, setEditing] = useState({ ...props.data });
 
+  //controlled form value for grad year who can vote input
+  const [gc, setGc] = useState("");
+
   const title = (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "space-between"
-      }}
-    >
-      <span>{titlecase(props.data.title)}</span>
-      <div style={{ display: "flex" }}>
+    <div className="pollCardTitle">
+      <span>
+        {props.edit ? (
+          <Input
+            label="Title"
+            value={editing.title}
+            onChange={val => setEditing({ ...editing, title: val })}
+          />
+        ) : (
+          titlecase(props.data.title)
+        )}
+      </span>
+      <div className="cardButtons">
         {props.editable && !props.edit ? (
-          <div onClick={() => props.onEdit(props.num)}>
-            <EditSVG />
-          </div>
+          <EditSVG onClick={() => props.onEdit(props.num)} />
         ) : props.edit ? (
           <div
             onClick={() => {
@@ -71,7 +77,8 @@ const PollCard = props => {
         />
       ) : (
         <span>
-          {bold("Description:")} {props.data.desc}
+          {bold("Description:")}
+          <pre style={{ margin: "0px" }}>{props.data.desc}</pre>
         </span>
       )}
       <br />
@@ -96,7 +103,7 @@ const PollCard = props => {
             dateFormat(props.data.startDate)
           )}
           <br />
-          {bold("End:")}{" "}
+          {bold("End: ")}
           {props.edit ? (
             <DatePicker
               clicked={true}
@@ -115,33 +122,8 @@ const PollCard = props => {
           )}
         </div>
         <div className="otherInfo">
-          <div
-            style={
-              props.edit ? { marginTop: "5px", position: "relative" } : null
-            }
-          >
-            <span
-              className="bold"
-              style={props.edit ? { position: "absolute", top: "0px" } : null}
-            >
-              Results viewable in progress:
-            </span>
-            {props.edit ? (
-              <RadioGroup
-                options={["Yes", "No"]}
-                value={editing.viewInProgress ? "Yes" : "No"}
-                onChange={val =>
-                  setEditing({ ...editing, viewInProgress: val === "Yes" })
-                }
-              />
-            ) : props.data.viewInProgress ? (
-              " Yes"
-            ) : (
-              " No"
-            )}
-          </div>
           <div>
-            {bold("Who can view:")}{" "}
+            {bold("Who can view results: ")}
             {props.edit ? (
               <Dropdown
                 clicked={true}
@@ -153,6 +135,50 @@ const PollCard = props => {
             ) : (
               props.data.viewableBy
             )}
+          </div>
+          <div>
+            {bold("Who can vote? ")}
+            {props.edit ? (
+              <Input
+                value={gc}
+                onChange={val => setGc(val)}
+                onEnter={() => {
+                  if (isNaN(parseInt(gc)) || gc.length !== 4) {
+                    alert("Enter a four digit year");
+                    return;
+                  }
+                  if (editing.gradYears.includes(gc)) {
+                    setGc("");
+                    return;
+                  }
+                  setEditing({
+                    ...editing,
+                    gradYears: [...editing.gradYears, gc]
+                  });
+                  setGc("");
+                }}
+                label="Add Year"
+              />
+            ) : null}
+            {editing.gradYears.map((eVal, index) => (
+              <div key={eVal + index}>
+                <span
+                  style={{ paddingLeft: "10px" }}
+                  onClick={() => {
+                    setEditing(() => {
+                      let c = [];
+                      editing.gradYears.forEach((val, i) =>
+                        i === index ? null : c.push(val)
+                      );
+                      return { ...editing, gradYears: c };
+                    });
+                  }}
+                  className={props.edit ? "hov-delete" : null}
+                >
+                  - {eVal}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
         {props.edit ? (

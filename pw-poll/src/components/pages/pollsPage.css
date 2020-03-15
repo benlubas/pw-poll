@@ -1,7 +1,7 @@
 .pollPageWrapper {
   display: grid;
   grid-template:
-    "polls questions" calc(100vh - 50px) /
+    "polls questions" calc(100vh - var(--nav-height)) /
     1fr 1fr;
 }
 .pollList {
@@ -33,4 +33,26 @@
 .selectedPoll {
   position: relative;
   transform: translate(10px);
+}
+
+.noQuestions {
+  box-sizing: border-box;
+  padding: 10px;
+  display: flex;
+  margin: 2.5%;
+  width: 95%;
+  height: 95%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  border-radius: 15px;
+}
+.noQuestions div {
+  font-size: 1.5rem;
+}
+.noQuestions button {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 10px;
 }

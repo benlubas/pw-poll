@@ -53,7 +53,6 @@ router.post("/", async (req, res) => {
 });
 router.post("/multi", async (req, res) => {
   const ret = [];
-  console.log(req.body.arr);
   for (let i = 0; i < req.body.arr.length; i++) {
     let s = req.body.arr[i];
     console.log(s);
@@ -74,6 +73,16 @@ router.post("/multi", async (req, res) => {
   res.json({ message: "Done" });
 });
 
+router.put("/:id", async (req, res) => {
+  // console.log(req.body);
+  let q = await Question.findById(req.body._id);
+  q.options = req.body.options;
+  q.text = req.body.text;
+  await q.save();
+  res.json({ message: "Updated" });
+});
+
+//! this doesn't work, i never finished it lol
 router.put("/addVotes", async (req, res) => {
   const ans = req.body;
   let response = [];

@@ -11,6 +11,7 @@ export const ModalSet = props => {
   return (
     <>
       <div
+        style={{ display: "flex", alignItems: "center" }}
         ref={props.triggerRef !== undefined ? props.triggerRef : null}
         className={props.customTrigger ? "" : "btn " + color}
         onClick={() => setShown(true)}
