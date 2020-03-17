@@ -8,9 +8,7 @@ export const titlecase = str => {
 };
 
 export const dateFormat = dateStr => {
-  return (
-    dateStr.substr(5, 3) + dateStr.substr(8, 2) + "-" + dateStr.substr(0, 4)
-  );
+  return new Date(dateStr).toDateString();
 };
 
 export const bold = str => <span className="bold">{str}</span>;

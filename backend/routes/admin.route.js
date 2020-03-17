@@ -27,8 +27,8 @@ router.post("/", async (req, res) => {
     class: req.body.class
   });
   try {
-    const savedAdmin = await admin.save();
-    res.json(savedAdmin);
+    await admin.save();
+    res.json(admin);
   } catch (err) {
     res.json({ message: err });
   }

@@ -77,11 +77,12 @@
           justify-content: space-between;
   width: 100%;
   height: 100%;
+  border: none;
+  outline: none;
 }
 
 .homeCard .bottom .content .descText {
   position: relative;
-  overflow: scroll;
   color: black;
   font-size: 1.1rem;
 }
@@ -90,77 +91,9 @@
   margin-top: auto;
 }
 
-.homeCard.blur .vote {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%) translateY(-50%);
-          transform: translate(-50%) translateY(-50%);
-  -webkit-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
-  padding: 15px 20px;
-  color: white;
-  font-size: 2rem;
-  cursor: pointer;
-  opacity: 0%;
-}
-
-.homeCard.blur .vote:before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
-  background: var(--primary);
-  z-index: -3;
-}
-
-.homeCard.blur .vote:after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#1a1a1a28), to(#00000000));
-  background: linear-gradient(#1a1a1a28, #00000000);
-  opacity: 0%;
-  -webkit-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
-  z-index: -2;
-}
-
-.homeCard.blur .vote:hover:after {
-  opacity: 100%;
-}
-
-.homeCard.blur .content {
-  -webkit-transition: all 0.25s ease;
-  transition: all 0.25s ease;
-}
-
-.homeCard.blur:hover .vote {
-  opacity: 100%;
-}
-
-.homeCard.blur:hover .content {
-  -webkit-filter: blur(4px);
-          filter: blur(4px);
-}
-
 .homeCard.flip {
   -webkit-perspective: 1000px;
           perspective: 1000px;
-}
-
-.homeCard.flip:hover .inner {
-  -webkit-transform: rotateY(180deg);
-          transform: rotateY(180deg);
-}
-
-.homeCard.flip:hover .inner .front {
-  pointer-events: none;
 }
 
 .homeCard.flip .inner {
@@ -188,16 +121,31 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
   -webkit-transform: rotateY(180deg);
           transform: rotateY(180deg);
+}
+
+.homeCard.flip .inner .vote .instructions {
+  list-style: "-";
+  padding-right: 10px;
+}
+
+.homeCard.flip .inner .vote .instructions li {
+  color: white;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
 }
 
 .homeCard.flip .inner .vote .btn {
@@ -240,5 +188,25 @@
 .homeCard.flip .inner .vote .btn:hover:after {
   -webkit-clip-path: circle(100% at 50% 0);
           clip-path: circle(100% at 50% 0);
+}
+
+@media (min-width: 500px) {
+  .flip:hover .inner {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+  }
+  .flip:hover .inner .front {
+    pointer-events: none;
+  }
+}
+
+@media only screen {
+  .flipped {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+  }
+  .flipped .front {
+    pointer-events: none;
+  }
 }
 /*# sourceMappingURL=homeCard.css.map */

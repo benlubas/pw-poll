@@ -1,0 +1,32 @@
+.google-btn {
+  width: 150px;
+  background: #4285f4;
+  display: flex;
+  padding: 0px;
+  align-items: center;
+  justify-content: left;
+  border: 2px solid #4285f4;
+  transition: filter 0.25s ease;
+}
+.login-btn:hover {
+  filter: drop-shadow(0px 0px 2px #4285f4);
+}
+.login-text {
+  color: white;
+  padding: 11px 8px;
+  font-size: 14px;
+  font-family: "Roboto";
+  margin-left: 8px;
+}
+.google-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  width: 40px;
+  height: 40px;
+}
+.google-icon svg {
+  width: 18px;
+  height: 18px;
+}

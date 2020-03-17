@@ -3,9 +3,20 @@ const router = express.Router();
 const passport = require("passport");
 
 router.get(
-  "/",
+  "/login",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
+router.get("/logout", (req, res) => {
+  console.log("/logout");
+  req.session.destroy(err => {
+    if (err) {
+      res.json({ message: "error", error: err });
+    } else {
+      req.logout();
+      res.json({ message: "logged out" });
+    }
+  });
+});
 router.get(
   "/callback",
   passport.authenticate("google", {
@@ -21,11 +32,18 @@ router.get("/failed", (req, res) => {
   });
 });
 
-router.get("/login", (req, res) => {
-  console.log("/login");
-  console.log("user: ", req.user);
+router.get("/user", (req, res) => {
+  // console.log("/user");
+  // console.log("the user: ", req.user);
   if (req.user) {
-    if (
+    if (req.user.email === "benmlubas@gmail.com") {
+      res.json({
+        success: true,
+        message: "user authenticated",
+        user: req.user,
+        cookies: req.cookies
+      });
+    } else if (
       req.user.email.search(
         /@student\.colonialsd\.org|@staff\.colonialsd\.org/
       ) === -1
@@ -45,7 +63,7 @@ router.get("/login", (req, res) => {
   } else {
     res.json({
       success: false,
-      message: "failed user authentication"
+      message: "no one is signed in"
     });
   }
 });

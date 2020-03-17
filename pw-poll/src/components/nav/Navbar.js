@@ -1,11 +1,14 @@
-import React from "react";
-import { Router, Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { titlecase } from "../../pipes";
 import Logo from "./../Logo";
+import { Login, Logout } from "../googleButtons/GoogleButtons";
+import UserProvider from "../../providers/UserProvider";
 
 import "./navbar.css";
 
 const Navbar = ({ pages, selected }) => {
+  const session = useContext(UserProvider.context);
   return (
     <nav>
       <Link className="logo" to="/">
@@ -22,6 +25,7 @@ const Navbar = ({ pages, selected }) => {
           </Link>
         ))}
       </div>
+      {session.success ? <Logout /> : <Login />}
     </nav>
   );
 };

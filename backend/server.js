@@ -14,6 +14,7 @@ const groupRouter = require("./routes/group.route");
 const adminRouter = require("./routes/admin.route");
 const questionRouter = require("./routes/question.route");
 const authRouter = require("./routes/auth");
+const Admin = require("./models/admin.model");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -40,17 +41,27 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   // console.log("deserialize");
   if (noUser) {
-    done(null, noUser);
+    let n = { ...noUser };
+    noUser = null;
+    done(null, n);
   } else {
     try {
       conn.query(
         `SELECT * FROM students WHERE id='${id}' LIMIT 1`,
-        (err, rows) => {
+        async (err, rows) => {
           if (err) {
             console.log(err);
             done(err);
-          } else {
+          } else if (rows[0]) {
             done(null, rows[0]);
+          } else {
+            //check the admin db.
+            const found = await Admin.findOne({ _id: id });
+            if (!found.errors) {
+              done(null, { ...found._doc, admin: true });
+            } else {
+              console.log("no User Found for deserialization");
+            }
           }
         }
       );
@@ -68,18 +79,33 @@ passport.use(
       callbackURL: "/auth/callback"
     },
     (accessTkn, refreshTkn, profile, done) => {
-      console.log(profile._json);
+      console.log("prof._json", profile._json);
       conn.query(
         "SELECT * FROM students s WHERE s.email='" + profile._json.email + "'",
-        (err, rows) => {
+        async (err, rows) => {
           if (err) {
             console.log(err);
           } else {
             if (rows.length > 0) {
               done(null, { ...rows[0] });
             } else {
-              noUser = { id: 1234567890, email: profile._json.email };
-              done(null, noUser);
+              //check admin table;
+              try {
+                const found = await Admin.findOne({
+                  email: profile._json.email
+                });
+                if (found) {
+                  console.log(found);
+                  done(null, { id: found._id, ...found, admin: true });
+                } else {
+                  //there is no user in our system.
+                  //they either need to register or they're not a student or admin
+                  noUser = { id: 1234567890, email: profile._json.email };
+                  done(null, noUser);
+                }
+              } catch (err) {
+                console.log("error", err);
+              }
             }
           }
         }

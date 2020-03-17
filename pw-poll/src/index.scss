@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Oxygen&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto:500&display=swap");
 $successBg: #82e26a;
 $warningBg: #ffdc15;
 
@@ -57,7 +58,7 @@ body {
 }
 .btn-small {
   padding: 5px;
-  margin: 1px;
+  margin: 5px;
   font-size: 0.95rem;
 }
 .btn-padded {
@@ -91,6 +92,9 @@ body {
   text-decoration: line-through;
   cursor: pointer;
 }
+.big-text {
+  font-size: 2rem;
+}
 
 .formSubmit {
   padding: 10px;
@@ -112,10 +116,21 @@ body {
   align-items: center;
 }
 .flex-baseline {
+  display: flex;
   align-items: baseline;
 }
-.flex-spacebetween {
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-space-between {
+  display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+.flex-grow-fill {
+  flex-grow: 1;
 }
 .bold {
   font-weight: bold;

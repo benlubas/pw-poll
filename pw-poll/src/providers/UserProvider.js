@@ -6,7 +6,7 @@ const context = createContext(null);
 export function UserProvider(props) {
   const [user, setUser] = useState(null);
   useEffect(() => {
-    fetch(url + "auth/login", {
+    fetch(url + "auth/user", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -17,11 +17,27 @@ export function UserProvider(props) {
       }
     })
       .then(res => res.json())
-      .then(res => setUser(res))
+      .then(res => {
+        console.log(res);
+        if (
+          res.user &&
+          (res.user.email.search("@staff.colonialsd.org") !== -1 ||
+            res.user.email === "benmlubas@gmail.com")
+        ) {
+          res.admin = true;
+        } else {
+          res.admin = false;
+        }
+        setUser(res);
+      })
       .catch(err => console.log(err));
   }, []);
   console.log("user: ", user);
-  return <context.Provider value={user}>{props.children}</context.Provider>;
+  return (
+    <context.Provider value={user}>
+      {user !== null ? props.children : null}
+    </context.Provider>
+  );
 }
 
 UserProvider.context = context;

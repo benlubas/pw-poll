@@ -21,29 +21,31 @@ const PollCard = props => {
 
   const title = (
     <div className="pollCardTitle">
-      <span>
+      <div className="flex-grow-fill">
         {props.edit ? (
           <Input
             label="Title"
             value={editing.title}
             onChange={val => setEditing({ ...editing, title: val })}
+            width="100%"
           />
         ) : (
           titlecase(props.data.title)
         )}
-      </span>
-      <div className="cardButtons">
+      </div>
+      <div className="flex-space-between">
         {props.editable && !props.edit ? (
           <EditSVG onClick={() => props.onEdit(props.num)} />
         ) : props.edit ? (
-          <div
+          <button
             onClick={() => {
               setEditing(props.data);
               props.onDiscardChanges(props.num);
             }}
+            className="btn btn-small"
           >
-            <button className="btn btn-small">Discard Changes</button>
-          </div>
+            Discard Changes
+          </button>
         ) : null}
         <ModalSet
           customTrigger={<CircleXSVG />}

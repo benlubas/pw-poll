@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/nav/Navbar";
 import "./App.css";
 // import HomePage from "./components/pages/HomePage";
@@ -24,15 +25,14 @@ function App() {
         <UserProvider>
           <Navbar pages={pages}></Navbar>
           <Switch>
-            <Route exact path={"/"}>
-              <HomePage />
-            </Route>
-            <Route exact path={"/polls"}>
+            <Route exact path={"/"} component={HomePage} />
+            <ProtectedRoute user="admin" exact path={"/polls"}>
               <PollsPage />
-            </Route>
-            <Route exact path={"/vote/"}>
+            </ProtectedRoute>
+            <ProtectedRoute user="student" exact path={"/vote/:id"}>
               <StudentViewPoll />
-            </Route>
+            </ProtectedRoute>
+
             <Route path={"/"}>
               <h1>404: Page Not Found</h1>
             </Route>

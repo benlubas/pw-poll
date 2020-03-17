@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { useFetch } from "./../../hooks/useFetch";
+import React, { useState, useContext, useEffect } from "react";
+import { useSecureFetch } from "./../../hooks/useSecureFetch";
+import { securePut } from "./../../hooks/securePut";
+import { useParams, useLocation } from "react-router";
 import Card from "./../card/Card";
 import LoadingScreen from "../loadingScreen/LoadingScreen";
 import Alert from "./../alert/Alert";
@@ -7,29 +9,40 @@ import Alert from "./../alert/Alert";
 import { url } from "./../../url";
 import RadioGroup from "../form/radioGroup/RadioGroup";
 import Textarea from "../form/textarea/Textarea";
+import UserProvider from "../../providers/UserProvider";
 
 export default function StudentViewPoll(props) {
-  const [questions, questionsLoading] = useFetch(
-    url + "question/poll/" + props.pollID
+  const session = useContext(UserProvider.context);
+  const loc = useLocation();
+  // console.log("loc: ", loc);
+  // console.log(loc.pathname.match(/(?<=\/vote\/)\S*/g)[0]);
+  const [questions, questionsLoading] = useSecureFetch(
+    url + "question/poll/" + loc.pathname.match(/(?<=\/vote\/)\S*/g)[0]
   );
-  const [answers, setAnswers] = useState([]);
+  console.log("Questions", questions);
+  const [answers, setAnswers] = useState(null);
+  useEffect(() => {
+    if (questions)
+      setAnswers(
+        questions.map(v => ({
+          _id: v._id,
+          value: v.vote
+        }))
+      );
+  }, [questions]);
+
   const [state, setState] = useState("default");
 
-  const changeAns = (val, i) => {
-    let cln = [...answers];
-    cln[i] = { ...val, email: "benmlubas@gmail.com" };
-    setAnswers(cln);
-  };
-  const validate = () => {
-    for (let i = 0; i < answers.length; i++) {
-      if (answers === undefined) {
-        return false;
+  const submit = () => {
+    let a = [];
+    answers.forEach(ans => {
+      if (ans.value !== null) {
+        a.push(ans);
       }
-      if (answers[i].value === "") {
-        return false;
-      }
-    }
-    return answers.length === questions.length;
+    });
+    a.forEach(ans => {
+      securePut(url + "question/addVote/" + ans._id, { vote: ans.value });
+    });
   };
 
   const questionContent = questionsLoading ? (
@@ -40,8 +53,12 @@ export default function StudentViewPoll(props) {
         {q.options.length > 0 ? (
           //MC
           <RadioGroup
-            value={answers[i] ? answers[i].value : null}
-            onChange={val => changeAns({ value: val, key: q._id }, i)}
+            value={answers ? answers[i].value : null}
+            onChange={val => {
+              let c = [...answers];
+              c[i].value = val;
+              setAnswers(c);
+            }}
             options={q.options}
           />
         ) : (
@@ -50,7 +67,11 @@ export default function StudentViewPoll(props) {
             label="Type your answer here"
             width="var(--ta-width)"
             value={answers[i] ? answers[i].value : ""}
-            onChange={val => changeAns({ value: val, key: q._id }, i)}
+            onChange={val => {
+              let c = [...answers];
+              c[i].value = val;
+              setAnswers(c);
+            }}
           />
         )}
       </Card>
@@ -63,25 +84,7 @@ export default function StudentViewPoll(props) {
       <button
         onClick={async e => {
           e.preventDefault();
-          if (validate()) {
-            console.log("VALID");
-            try {
-              const res = await fetch(url + "question/addVotes", {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify(answers)
-              });
-              console.log(await res.json());
-              setAnswers([]);
-              setState("success");
-            } catch (err) {
-              console.error(err);
-            }
-          } else {
-            console.log("Form failed to validate");
-          }
+          submit();
         }}
         className="btn success"
       >

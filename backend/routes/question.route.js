@@ -23,15 +23,27 @@ router.get("/votes", async (req, res) => {
 });
 // Get all the questions from one poll;
 router.get("/poll/:pollID", async (req, res) => {
+  console.log("/quesion/poll/:pollID");
   try {
-    const foundQuestions = await Question.find({
+    let foundQuestions = await Question.find({
       pollID: req.params.pollID
     }).sort({ number: 1 });
-    for (let i = 0; i < foundQuestions.length; i++) {
-      foundQuestions[i].votes = "No access";
-      foundQuestions[i].answer = null;
+    let qs = [];
+    foundQuestions.forEach(val => {
+      qs.push({ ...val._doc });
+    });
+    for (let i = 0; i < qs.length; i++) {
+      for (let j = 0; j < qs[i].votes.length; j++) {
+        if (qs[i].votes[j].email === req.user.email) {
+          qs[i].vote = qs[i].votes[j].vote;
+        }
+      }
+      if (!qs[i].vote) {
+        qs[i].vote = null;
+      }
+      delete qs[i].votes;
     }
-    res.json(foundQuestions);
+    res.json(qs);
   } catch (err) {
     res.json({ message: err });
   }
@@ -83,14 +95,29 @@ router.put("/:id", async (req, res) => {
 });
 
 //! this doesn't work, i never finished it lol
-router.put("/addVotes", async (req, res) => {
-  const ans = req.body;
-  let response = [];
-  ans.forEach(async (a, index) => {
-    let q = await Question.findById(a.key);
-    console.log(q);
-  });
-  res.json({ message: "done", res: response });
+router.put("/addVote/:id", async (req, res) => {
+  if (req.user) {
+    let q = await Question.findById(req.params.id);
+    let changing = false;
+    for (let i = 0; i < q.votes.length; i++) {
+      if (q.votes[i].email === req.user.email) {
+        changing = true;
+        console.log(q.votes[i].vote);
+        console.log(req.body.vote);
+        q.votes[i].vote = req.body.vote;
+        console.log(q.votes[i].vote);
+        break;
+      }
+    }
+    if (!changing) {
+      q.votes.push({ email: req.user.email, vote: req.body.vote });
+    }
+    q.markModified("votes");
+    let response = await q.save();
+    res.json({ message: "done", res: response });
+  } else {
+    res.json({ message: "no user" });
+  }
 });
 
 router.delete("/:id", async (req, res) => {

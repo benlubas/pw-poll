@@ -33,13 +33,14 @@ const PollSchema = mongoose.Schema({
   }
 });
 
-PollSchema.pre("save", () => {
+PollSchema.pre("save", next => {
   if (this.viewableBy === undefined) {
     this.viewableBy = "sponsors";
   }
   if (this.viewInProgress === undefined) {
     this.viewInProgress = true;
   }
+  next();
 });
 
 module.exports = mongoose.model("polls", PollSchema);

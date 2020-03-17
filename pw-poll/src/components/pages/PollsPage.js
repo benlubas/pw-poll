@@ -124,7 +124,12 @@ const PollsPage = () => {
             num={index}
             edit={editing.list === "poll" && editing.index === index}
             editable={true} // This should maybe be based on passport (who's logged in)
-            classes={`${selected === poll._id ? "cardActive" : ""}`}
+            classes={`${selected === poll._id ? "cardActive" : ""} ${
+              !(editing.list === "poll" && editing.index === index) &&
+              selected === poll._id
+                ? "decorated"
+                : ""
+            }`}
             data={poll}
             key={poll._id}
             remove={remove}
@@ -159,14 +164,7 @@ const PollsPage = () => {
             <Card //Questions
               key={question._id}
               title={
-                <div
-                  style={{
-                    display: "flex",
-                    width: "100%",
-                    justifyContent: "space-between",
-                    alignContent: "center"
-                  }}
-                >
+                <div className="flex-space-between">
                   <span>
                     {editing.index === index && editing.list === "question" ? (
                       <Input
@@ -369,7 +367,7 @@ const PollsPage = () => {
             <div className="questionWrapper">
               <Card
                 title={
-                  <div className="flex-container flex-spacebetween">
+                  <div className="flex-space-between">
                     <div>New Question</div>
                     <div>
                       <button

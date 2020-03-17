@@ -8,7 +8,7 @@ const AdminSchema = mongoose.Schema({
     lowercase: true,
     maxlength: 100
   },
-  level: { type: String, required: true, enum: ["dev", "teacher", "sponsor"] },
+  level: { type: String, required: true, enum: ["dev", "admin", "sponsor"] },
   class: { type: Number, required: true }
 });
 
