@@ -7,7 +7,7 @@ router.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 router.get("/logout", (req, res) => {
-  console.log("/logout");
+  // console.log("/logout");
   req.session.destroy(err => {
     if (err) {
       res.json({ message: "error", error: err });
@@ -20,21 +20,13 @@ router.get("/logout", (req, res) => {
 router.get(
   "/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:3000",
-    failureRedirect: "/failed"
+    successRedirect: process.env.FRONT_END_URL,
+    failureRedirect: process.env.FRONT_END_URL
   })
 );
-router.get("/failed", (req, res) => {
-  console.log("/failed");
-  res.json({
-    success: false,
-    message: "failed to authenticate"
-  });
-});
 
 router.get("/user", (req, res) => {
   // console.log("/user");
-  // console.log("the user: ", req.user);
   if (req.user) {
     if (req.user.email === "benmlubas@gmail.com") {
       res.json({

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { titlecase } from "./../../../pipes";
-import { useFetch } from "./../../../hooks/useFetch";
+import { useSecureFetch } from "./../../../hooks/useSecureFetch";
 import HomeCard from "./../../homeCard/HomeCard.js";
 import UserProvider from "./../../../providers/UserProvider";
 
@@ -13,10 +13,19 @@ const checkDate = (start, end) => {
     Date.now() < new Date(end).valueOf()
   );
 };
-export default function StudentHome() {
-  const gradYear = 2020;
-  const [pollData, pollLoading] = useFetch(url + "poll/stud/" + gradYear);
-  const user = useContext(UserProvider);
+export default function StudentHome({ year }) {
+  const session = useContext(UserProvider.context);
+  let fYear;
+  if (year && session.user.class === year) {
+    //we good
+    fYear = year;
+  } else if (year && session.user.class === 9999) {
+    //this is an admin
+    fYear = year;
+  } else if (!year) {
+    fYear = session.user.class;
+  }
+  const [pollData, pollLoading] = useSecureFetch(url + "poll/stud/" + fYear);
   let empty = true;
   return (
     <div className="studentPageWrapper">

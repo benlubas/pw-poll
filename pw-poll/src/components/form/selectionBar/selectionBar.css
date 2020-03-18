@@ -1,0 +1,48 @@
+.selectionBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 35px;
+  overflow: hidden;
+}
+/* These after elements are for animations in the future */
+/* .selectionBar:after {
+  position: absolute;
+  content: "";
+  width: 25%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+  background: var(--primary);
+  transition: left 0.25s ease-in-out;
+} */
+.sb-option {
+  position: relative;
+  display: inline-block;
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.1rem;
+  padding: 5px 0px;
+  cursor: pointer;
+  background: transparent;
+  /* border-left: 0.5px solid grey; border-right: 0.5px solid grey; */
+}
+.sb-option:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #f3f3f3;
+  top: 0px;
+  left: 0px;
+  z-index: -2;
+}
+.sb-selected {
+  background: var(--primary);
+  color: white;
+}
+/* .sb-selected .selectionBar:after {
+} */

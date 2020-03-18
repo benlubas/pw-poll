@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSecureFetch } from "./../../hooks/useSecureFetch";
 import { securePut } from "./../../hooks/securePut";
-import { useParams, useLocation } from "react-router";
+import { useParams } from "react-router";
 import Card from "./../card/Card";
 import LoadingScreen from "../loadingScreen/LoadingScreen";
 import Alert from "./../alert/Alert";
@@ -9,17 +9,13 @@ import Alert from "./../alert/Alert";
 import { url } from "./../../url";
 import RadioGroup from "../form/radioGroup/RadioGroup";
 import Textarea from "../form/textarea/Textarea";
-import UserProvider from "../../providers/UserProvider";
 
 export default function StudentViewPoll(props) {
-  const session = useContext(UserProvider.context);
-  const loc = useLocation();
-  // console.log("loc: ", loc);
-  // console.log(loc.pathname.match(/(?<=\/vote\/)\S*/g)[0]);
+  const { id } = useParams();
   const [questions, questionsLoading] = useSecureFetch(
-    url + "question/poll/" + loc.pathname.match(/(?<=\/vote\/)\S*/g)[0]
+    url + "question/poll/" + id
   );
-  console.log("Questions", questions);
+  // console.log("Questions", questions);
   const [answers, setAnswers] = useState(null);
   useEffect(() => {
     if (questions)
@@ -49,7 +45,11 @@ export default function StudentViewPoll(props) {
     <LoadingScreen />
   ) : (
     questions.map((q, i) => (
-      <Card title={q.text} key={q._id}>
+      <Card
+        title={q.text}
+        key={q._id}
+        classes={answers && answers[i].value !== null ? "decorated" : ""}
+      >
         {q.options.length > 0 ? (
           //MC
           <RadioGroup
@@ -79,18 +79,20 @@ export default function StudentViewPoll(props) {
   );
 
   return state === "default" ? (
-    <>
+    <div className="studPollWrapper">
       {questionContent}
-      <button
-        onClick={async e => {
-          e.preventDefault();
-          submit();
-        }}
-        className="btn success"
-      >
-        Submit
-      </button>
-    </>
+      {!questionsLoading ? (
+        <button
+          onClick={async e => {
+            e.preventDefault();
+            submit();
+          }}
+          className="btn primary wide"
+        >
+          Submit
+        </button>
+      ) : null}
+    </div>
   ) : (
     <Alert variant="success">Thank you for completing the poll!</Alert>
   );

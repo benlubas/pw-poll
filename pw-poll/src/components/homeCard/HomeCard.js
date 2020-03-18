@@ -27,12 +27,8 @@ export default function HomeCard(props) {
         <div className="vote" onTouchEnd={() => setFlipped(false)}>
           <ul className="instructions">
             <li>You don't have to answer all the questions </li>
-            <li>
-              You can edit answers at any time as long as polling remains open
-              (see front for closing date)
-            </li>
-            <li> Polls close at 11:59 pm the day prior to the closing date</li>
             <li>Be sure you hit the Save button before you leave the page</li>
+            <li>Previously answered questions will be pre-filled</li>
           </ul>
           <button onClick={() => voteClick()} className="btn primary">
             Vote

@@ -1,18 +1,18 @@
 import React, { useState, useLayoutEffect } from "react";
-import { useFetch } from "../../hooks/useFetch";
-import LoadingScreen from "../loadingScreen/LoadingScreen";
-import PollCard from "../pollCard/PollCard";
-import Card from "./../card/Card";
-import AddPoll from "./add/AddPoll";
-import AddQuestion from "./add/AddQuestion";
-import { bold } from "./../../pipes";
-import { url } from "./../../url";
+import { useFetch } from "../../../hooks/useFetch";
+import LoadingScreen from "../../loadingScreen/LoadingScreen";
+import PollCard from "../../pollCard/PollCard";
+import Card from "../../card/Card";
+import AddPoll from "./AddPoll";
+import AddQuestion from "./AddQuestion";
+import { bold } from "../../../pipes";
+import { url } from "./../../../url";
 
 import "./pollsPage.css";
-import { EditSVG, CircleXSVG, CirclePlusSVG } from "../svg";
-import { ModalSet } from "../modal/Modal";
-import EditableListItem from "../editableListItem/EditableListItem";
-import Input from "./../form/input/Input";
+import { EditSVG, CircleXSVG, CirclePlusSVG } from "../../svg";
+import { ModalSet } from "../../modal/Modal";
+import EditableListItem from "../../editableListItem/EditableListItem";
+import Input from "../../form/input/Input";
 
 const removeBlanks = arr => {
   let c = [];
@@ -211,6 +211,8 @@ const PollsPage = () => {
                         return true;
                       }}
                       height="200px"
+                      confirmClass="danger"
+                      closeClass="default"
                     >
                       <h3 style={{ margin: "0px" }}>Question: </h3>
                       <div>{question.text}</div>

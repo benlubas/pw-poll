@@ -69,13 +69,18 @@ body {
   background: var(--success);
   color: black;
 }
+.default {
+  background: var(--default);
+  color: white;
+}
 .warning {
   background: var(--warning);
   color: black;
 }
 .danger {
   background: var(--danger);
-  color: black;
+  // color: black;
+  color: white;
 }
 .primary {
   background: var(--primary);

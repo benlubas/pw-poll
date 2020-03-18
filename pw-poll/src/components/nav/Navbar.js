@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { titlecase } from "../../pipes";
+import { Link, NavLink } from "react-router-dom";
+// import NavLinkParams from "./../NavLinkParams";
+// import { titlecase } from "../../pipes";
 import Logo from "./../Logo";
 import { Login, Logout } from "../googleButtons/GoogleButtons";
 import UserProvider from "../../providers/UserProvider";
@@ -14,17 +15,28 @@ const Navbar = ({ pages, selected }) => {
       <Link className="logo" to="/">
         <Logo />
       </Link>
-      <div className="links">
-        {pages.map((value, index) => (
-          <Link
-            to={value.link}
-            style={selected === value.text ? { color: "var(--primary)" } : {}}
-            key={value + index}
+      {session.admin ? (
+        <>
+          <NavLink
+            activeClassName="nav-selected"
+            className="navLink"
+            to="/polls"
           >
-            {titlecase(value.text)}
-          </Link>
-        ))}
-      </div>
+            Create/Edit Poll
+          </NavLink>
+          <NavLink
+            activeClassName="nav-selected"
+            className="navLink"
+            to={"/studentView/:year" + new Date().getFullYear()}
+            isActive={(match, location) => {
+              if (match) return true;
+              if (location.pathname.match(/studentView/g)) return true;
+            }}
+          >
+            Student View
+          </NavLink>
+        </>
+      ) : null}
       {session.success ? <Logout /> : <Login />}
     </nav>
   );

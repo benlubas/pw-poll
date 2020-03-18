@@ -23,7 +23,7 @@ router.get("/votes", async (req, res) => {
 });
 // Get all the questions from one poll;
 router.get("/poll/:pollID", async (req, res) => {
-  console.log("/quesion/poll/:pollID");
+  // console.log("/quesion/poll/:pollID");
   try {
     let foundQuestions = await Question.find({
       pollID: req.params.pollID
@@ -67,7 +67,7 @@ router.post("/multi", async (req, res) => {
   const ret = [];
   for (let i = 0; i < req.body.arr.length; i++) {
     let s = req.body.arr[i];
-    console.log(s);
+    // console.log(s);
     const question = new Question({
       number: s.number,
       text: s.text,

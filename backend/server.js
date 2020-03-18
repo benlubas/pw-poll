@@ -20,7 +20,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //Middlewares
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -98,10 +98,9 @@ passport.use(
                   console.log(found);
                   done(null, { id: found._id, ...found, admin: true });
                 } else {
-                  //there is no user in our system.
-                  //they either need to register or they're not a student or admin
-                  noUser = { id: 1234567890, email: profile._json.email };
-                  done(null, noUser);
+                  //this triggers the failureRoute
+                  //which just sends you back to Localhost:3000;
+                  done(null, false);
                 }
               } catch (err) {
                 console.log("error", err);
@@ -116,7 +115,7 @@ passport.use(
 app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
-  res.send("localhost:5000/");
+  res.send(process.env.SERVER_URL);
 });
 
 try {

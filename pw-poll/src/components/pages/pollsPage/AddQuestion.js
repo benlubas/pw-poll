@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { url } from "./../../../url";
-import Input from "./../../form/input/Input";
-import RadioGroup from "./../../form/radioGroup/RadioGroup";
+import { url } from "../../../url";
+import Input from "../../form/input/Input";
+import RadioGroup from "../../form/radioGroup/RadioGroup";
 import EditableListItem from "../../editableListItem/EditableListItem";
 
 const submit = async (pollID, values) => {

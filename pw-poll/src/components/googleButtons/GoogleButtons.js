@@ -27,8 +27,8 @@ export const Logout = () => {
     <div>
       <button
         className="btn google-btn"
-        onClick={() => {
-          fetch(url + "auth/logout", {
+        onClick={async () => {
+          await fetch(url + "auth/logout", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -38,6 +38,7 @@ export const Logout = () => {
               "Access-Control-Allow-Credentials": true
             }
           });
+          hist.push("/");
           window.location.reload();
         }}
       >
