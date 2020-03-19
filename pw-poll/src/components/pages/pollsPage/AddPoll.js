@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import Input from "../../form/input/Input";
-import DatePicker from "../../form/datePicker/DatePicker";
+import { DatePicker } from "../../form/dateTimePicker/dateTimePicker";
 import Checkbox from "../../form/checkbox/Checkbox";
 import Dropdown from "../../form/dropdown/Dropdown";
 import Textarea from "../../form/textarea/Textarea";
 import { url } from "../../../url";
-
-import "./addPoll.css";
 
 export default function AddPoll(props) {
   const [values, setValues] = useState({
@@ -47,7 +45,7 @@ export default function AddPoll(props) {
   };
 
   return (
-    <div className="pollFormWrapper">
+    <>
       <div className="group">
         <Input
           label="Poll Name"
@@ -147,6 +145,6 @@ export default function AddPoll(props) {
       >
         Save
       </button>
-    </div>
+    </>
   );
 }

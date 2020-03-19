@@ -30,7 +30,7 @@
   font-size: 1.1rem;
   font-family: var(--body-font);
   position: absolute;
-  z-index: 2;
+  z-index: -19;
   color: var(--default);
   top: 10px;
   left: 20px;

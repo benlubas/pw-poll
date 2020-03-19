@@ -1,7 +1,7 @@
-export const securePut = async (url, body) => {
+export const securePost = async (url, body) => {
   try {
     let res = await fetch(url, {
-      method: "PUT",
+      method: "POST",
       credentials: "include",
       headers: {
         Accept: "application/json",
@@ -11,9 +11,9 @@ export const securePut = async (url, body) => {
       },
       body: JSON.stringify(body)
     });
-    await res.json();
-    return true;
+    return await res.json();
   } catch (err) {
     console.log(err);
+    return err;
   }
 };

@@ -17,12 +17,12 @@
   height: 3px;
   position: absolute;
   top: 95%;
-  left: calc(-5px - 5%);
+  left: -5px;
   background: var(--primary);
   transform: translateX(-100%);
   transition: all 0.25s ease-in-out;
 }
-.underline::after {
+.inputWrapper.underline::after {
   transform: translate(0%);
 }
 .inputWrapper {
@@ -35,6 +35,7 @@
   font-size: 1.1rem;
   font-family: var(--body-font);
   position: absolute;
+  z-index: -19;
   color: var(--default);
   top: 5px;
   left: 20px;

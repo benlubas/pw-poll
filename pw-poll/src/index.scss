@@ -10,6 +10,7 @@ $warningBg: #ffdc15;
   --page-bg: white;
   --blue: #0003a1;
   --primary: #1157c0;
+  --primary-darker: #0e4ca8;
   --blue-grad: linear-gradient(45deg, var(--blue), var(--primary));
   --cyan: #00ccff;
   --red: #cc2813;
@@ -79,7 +80,6 @@ body {
 }
 .danger {
   background: var(--danger);
-  // color: black;
   color: white;
 }
 .primary {
@@ -99,6 +99,21 @@ body {
 }
 .big-text {
   font-size: 2rem;
+}
+.subtitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.md-padding {
+  padding: 10px;
+}
+.md-padding-v {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.md-padding-h {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .formSubmit {

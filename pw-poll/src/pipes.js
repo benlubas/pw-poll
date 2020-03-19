@@ -8,7 +8,7 @@ export const titlecase = str => {
 };
 
 export const dateFormat = dateStr => {
-  return new Date(dateStr).toDateString();
+  return new Date(dateStr).toLocaleString();
 };
 
 export const bold = str => <span className="bold">{str}</span>;

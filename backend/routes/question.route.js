@@ -53,6 +53,7 @@ router.post("/", async (req, res) => {
   const question = new Question({
     number: req.body.number,
     text: req.body.text,
+    type: req.body.type,
     pollID: req.body.pollID,
     options: req.body.options || []
   });
@@ -63,32 +64,13 @@ router.post("/", async (req, res) => {
     res.json({ message: err });
   }
 });
-router.post("/multi", async (req, res) => {
-  const ret = [];
-  for (let i = 0; i < req.body.arr.length; i++) {
-    let s = req.body.arr[i];
-    // console.log(s);
-    const question = new Question({
-      number: s.number,
-      text: s.text,
-      pollID: s.pollID,
-      options: s.options || []
-    });
-    try {
-      const savedQuestion = await question.save();
-      ret.push(savedQuestion);
-    } catch (err) {
-      res.json({ message: err });
-      break;
-    }
-  }
-  res.json({ message: "Done" });
-});
 
 router.put("/:id", async (req, res) => {
+  console.log("question/:id");
   // console.log(req.body);
   let q = await Question.findById(req.body._id);
   q.options = req.body.options;
+  q.type = req.body.type;
   q.text = req.body.text;
   await q.save();
   res.json({ message: "Updated" });

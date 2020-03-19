@@ -23,23 +23,21 @@
 }
 .dateWrapper::after {
   content: "";
-  width: 97%;
+  width: 0%;
   height: 3px;
   position: absolute;
   top: 95%;
-  left: 0%;
+  left: 5px;
   background: var(--primary);
-  transform: translateX(-100%);
   transition: all 0.25s ease-in-out;
 }
-.underline::after {
-  transform: translate(2%);
+.dateWrapper.underline::after {
+  width: 100%;
 }
 .dateWrapper {
   position: relative;
   padding-top: 5px;
   display: inline-block;
-  overflow: hidden;
 }
 .dateLabel {
   font-size: 1.1rem;
