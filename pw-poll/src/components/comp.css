@@ -83,4 +83,8 @@ nav .logo {
   -webkit-transform: translateY(15%);
           transform: translateY(15%);
 }
+
+.nav-selected {
+  color: var(--primary);
+}
 /*# sourceMappingURL=comp.css.map */

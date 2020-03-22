@@ -9,6 +9,7 @@ import Alert from "./../alert/Alert";
 import { url } from "./../../url";
 import RadioGroup from "../form/radioGroup/RadioGroup";
 import Textarea from "../form/textarea/Textarea";
+import SearchableDropdown from "../form/searchableDropdown/SearchableDropdown";
 
 export default function StudentViewPoll(props) {
   const { id } = useParams();
@@ -26,6 +27,8 @@ export default function StudentViewPoll(props) {
         }))
       );
   }, [questions]);
+
+  console.log("questions: ", questions);
 
   const [state, setState] = useState("default");
 
@@ -50,7 +53,7 @@ export default function StudentViewPoll(props) {
         key={q._id}
         classes={answers && answers[i].value !== null ? "decorated" : ""}
       >
-        {q.options.length > 0 ? (
+        {q.type.substr(0, 2) === "MC" ? (
           //MC
           <RadioGroup
             value={answers ? answers[i].value : null}
@@ -59,20 +62,34 @@ export default function StudentViewPoll(props) {
               c[i].value = val;
               setAnswers(c);
             }}
+            choose={parseInt(q.type.charAt(q.type.length - 1))}
             options={q.options}
           />
-        ) : (
+        ) : q.type === "OE" ? (
           //OE
           <Textarea
             label="Type your answer here"
             width="var(--ta-width)"
-            value={answers[i] ? answers[i].value : ""}
+            value={answers ? answers[i].value : ""}
             onChange={val => {
               let c = [...answers];
               c[i].value = val;
               setAnswers(c);
             }}
           />
+        ) : q.type === "CS" ? (
+          <SearchableDropdown
+            label="Choose a Student"
+            value={answers ? answers[i].value : ""}
+            gradYear={q.options[0]}
+            onFullName={id => {
+              let c = [...answers];
+              c[i].value = id;
+              setAnswers(c);
+            }}
+          />
+        ) : (
+          console.log("invalid question type: ", q.type)
         )}
       </Card>
     ))

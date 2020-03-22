@@ -5,7 +5,6 @@ import LoadingScreen from "./../../loadingScreen/LoadingScreen";
 import QuestionCard from "./QuestionCard";
 import Card from "./../../card/Card";
 import AddQuestion from "./AddQuestion";
-import { securePut } from "../../../hooks/securePut";
 
 export default function QuestionList({ selectedPoll, remove, ...props }) {
   const [questionData] = useSecureFetch(url + "question/");
@@ -33,8 +32,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
   return (
     <div className="questionList">
       {questionContent}
-      {selectedPoll === null ||
-      (selectedPoll === "newPoll" && !props.showAddPoll) ? (
+      {selectedPoll === null || selectedPoll === "newPoll" ? (
         <div className="noQuestions questionWrapper">
           <div>Choose a poll</div>
         </div>

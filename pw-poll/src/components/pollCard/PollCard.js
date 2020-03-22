@@ -95,37 +95,46 @@ const PollCard = ({ data, ...props }) => {
       <div className="lowerConetent">
         <div className="dates">
           <div>{bold("Start: ")}</div>
-          <div className="flex-space-between">
-            {editing ? (
-              <>
-                <DatePicker
-                  label="Start Date"
-                  touched={true}
-                  value={new Date(edit.startDate)}
-                  onChange={val => setEdit({ ...edit, startDate: val })}
-                />
-                <TimePicker
-                  datetime={edit.startDate}
-                  onChange={val => setEdit({ ...edit, startDate: val })}
-                />
-              </>
-            ) : (
-              <div>{dateFormat(data.startDate)}</div>
-            )}
-          </div>
-          <br />
-          {bold("End: ")}
           {editing ? (
-            <DatePicker
-              label="Start Date"
-              touched={true}
-              value={new Date(edit.endDate)}
-              onChange={val => setEdit({ ...edit, startDate: val })}
-            />
+            <div className="flex-space-between">
+              <DatePicker
+                label="Start Date"
+                value={new Date(edit.startDate)}
+                onChange={val => setEdit({ ...edit, startDate: val })}
+                touched
+              />
+              <TimePicker
+                label="Start Time"
+                value={new Date(edit.startDate)}
+                onChange={val => setEdit({ ...edit, startDate: val })}
+                touched
+              />
+            </div>
+          ) : (
+            <div>{dateFormat(data.startDate)}</div>
+          )}
+          <br />
+          <div>{bold("End: ")}</div>
+          {editing ? (
+            <div className="flex-space-between flex-baseline">
+              <DatePicker
+                label="End Date"
+                touched
+                value={new Date(edit.endDate)}
+                onChange={val => setEdit({ ...edit, endDate: val })}
+              />
+              <TimePicker
+                label="End Time"
+                touched
+                value={new Date(edit.endDate)}
+                onChange={val => setEdit({ ...edit, endDate: val })}
+              />
+            </div>
           ) : (
             dateFormat(data.endDate)
           )}
         </div>
+        <br />
         <div className="otherInfo">
           <div>
             {bold("Who can view results: ")}

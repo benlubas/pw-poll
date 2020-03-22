@@ -9,6 +9,8 @@ import StudentViewPoll from "./components/pages/StudentViewPoll";
 import UserProvider from "./providers/UserProvider";
 import AdminStudentView from "./components/pages/AdminStudentView";
 
+import TestPage from "./components/TestPage";
+
 function App() {
   return (
     <>
@@ -16,6 +18,7 @@ function App() {
         <UserProvider>
           <Navbar />
           <Switch>
+            <Route path="/test" component={TestPage} />
             <Route exact path={"/"} component={HomePage} />
             <ProtectedRoute
               component={PollsPage}

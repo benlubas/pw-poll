@@ -1,74 +1,46 @@
-::-webkit-datetime-edit-text {
-  color: #00000000;
-}
-::-webkit-datetime-edit-month-field {
-  color: #00000000;
-}
-::-webkit-datetime-edit-day-field {
-  color: #00000000;
-}
-::-webkit-datetime-edit-year-field {
-  color: #00000000;
-}
-.dateInput {
-  font-size: 1.1rem;
-  color: black;
+.react-datepicker {
   border: none;
-  border-bottom: 1px solid var(--default);
-  background: transparent;
+  -webkit-filter: drop-shadow(0px 0px 2px lightgrey);
+  filter: drop-shadow(0px 0px 2px lightgrey);
+}
+.react-datepicker-popper {
+  z-index: 3;
+}
+
+.react-datepicker .react-datepicker__triangle {
+  background: maroon;
+  display: none;
+}
+
+.react-datepicker .react-datepicker__month-container {
+  background: white;
+  font-size: 1rem;
+}
+
+.react-datepicker .react-datepicker__month-container .react-datepicker__header {
+  background: white;
+  border: none;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.react-datepicker__day {
+  border-radius: 0px;
+}
+
+.react-datepicker__day:hover {
+  border-radius: 0px;
+}
+
+.react-datepicker__day:focus {
   outline: none;
-  padding: 5px;
-  padding-bottom: 5px;
-  margin: 10px 5px 0px 5px;
+  background: lightgrey;
 }
-.dateWrapper::after {
-  content: "";
-  width: 0%;
-  height: 3px;
-  position: absolute;
-  top: 95%;
-  left: 5px;
+
+.react-datepicker__day--selected {
   background: var(--primary);
-  transition: all 0.25s ease-in-out;
+  border-radius: 0px;
 }
-.dateWrapper.underline::after {
-  width: 100%;
-}
-.dateWrapper {
-  position: relative;
-  padding-top: 5px;
-  display: inline-block;
-}
-.dateLabel {
-  font-size: 1.1rem;
-  font-family: var(--body-font);
-  position: absolute;
-  color: var(--default);
-  top: 7px;
-  left: 20px;
-  transform: translateY(75%);
-  transition: all 0.25s ease-in-out;
-  pointer-events: none;
-}
-.dateActive {
-  transform: translateY(-10%);
-  top: 5px;
-  left: 10px;
-  font-size: 0.85rem;
-  color: var(--primary);
-}
-.inputActive {
-  color: var(--text-color);
-}
-.inputActive::-webkit-datetime-edit-text {
-  color: black;
-}
-.inputActive::-webkit-datetime-edit-month-field {
-  color: black;
-}
-.inputActive::-webkit-datetime-edit-day-field {
-  color: black;
-}
-.inputActive::-webkit-datetime-edit-year-field {
-  color: black;
+
+.react-datepicker__day--today {
+  border: 1px solid var(--primary-darker);
 }

@@ -1,0 +1,92 @@
+.input-wrapper {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  border-bottom: 1px solid var(--default);
+}
+
+.input-wrapper .input,
+.input-wrapper .tinput > input {
+  position: relative;
+  font-size: 1.2rem;
+  padding-top: 5px;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+}
+
+.input-wrapper .input.hide-until-clicked,
+.input-wrapper .tinput > input.hide-until-clicked {
+  color: transparent;
+}
+
+.input-wrapper .tinput.thide-until-clicked > input {
+  color: transparent;
+}
+
+.input-wrapper .label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 5px;
+  left: 10px;
+  background: transparent;
+  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  font-size: 1.1rem;
+  color: var(--default);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.input-wrapper .label.active {
+  top: -10px;
+  left: 0px;
+  font-size: 0.85rem;
+  color: var(--primary);
+}
+
+.input-wrapper .input-times {
+  position: absolute;
+  display: inline-block;
+  top: 50%;
+  right: 5px;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.input-wrapper .input-error {
+  color: var(--danger);
+  font-size: 0.8rem;
+  margin: 0px;
+  padding: 0px;
+  display: inline-block;
+  position: absolute;
+  bottom: -5px;
+  left: 0px;
+  -webkit-transform: translateY(100%);
+          transform: translateY(100%);
+}
+
+.input-wrapper:after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 3px;
+  left: 0px;
+  top: 100%;
+  background: var(--primary);
+  -webkit-transition: width 0.25s ease-in-out;
+  transition: width 0.25s ease-in-out;
+}
+
+.input-wrapper.underline:after {
+  width: 100%;
+}
+/*# sourceMappingURL=InputStyle.css.map */

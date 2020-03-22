@@ -57,10 +57,10 @@
   color: var(--primary);
 }
 
-.underline::after {
+/* .underline::after {
   height: 3px;
   background: var(--primary);
   -webkit-transform: translateX(-5px);
   transform: translateX(-5px);
-}
+} */
 /*# sourceMappingURL=dropdown.css.map */

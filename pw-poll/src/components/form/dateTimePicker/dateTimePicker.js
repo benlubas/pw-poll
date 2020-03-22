@@ -7,23 +7,26 @@ import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import "rc-time-picker/assets/index.css";
 import "./datePicker.css";
+import "./timePicker.css";
+import "./../InputStyle.css";
 
-export function DatePicker({ value, onChange, ...props }) {
+export function DatePicker({ value, onChange, label, ...props }) {
   const [focus, setFocus] = useState(false);
   const [touched, setTouched] = useState(props.touched || false);
   return (
     <>
-      <div className={`dateWrapper ${focus || touched ? "underline" : ""}`}>
-        <div className={`dateLabel ${focus || touched ? "dateActive" : ""}`}>
-          {props.label}
+      <div className={`input-wrapper ${focus || touched ? "underline" : ""}`}>
+        <div className={`label ${focus || touched ? "active" : ""}`}>
+          {label}
         </div>
         <DP
+          {...props}
           onFocus={() => {
             setFocus(true);
             setTouched(true);
           }}
           onBlur={() => setFocus(false)}
-          className={`dateInput ${focus || touched ? "inputActive" : ""}`}
+          className={`input ${!focus && !touched ? "hide-until-clicked" : ""}`}
           selected={new Date(value)}
           onChange={val => onChange(val)}
         />
@@ -32,20 +35,36 @@ export function DatePicker({ value, onChange, ...props }) {
   );
 }
 
-export const TimePicker = props => {
+export const TimePicker = ({ value, onChange, label, ...props }) => {
+  let pass;
+  if (value instanceof Date) {
+    pass = moment(value.getTime());
+  } else pass = value;
+
+  const [focus, setFocus] = useState(false);
+  const [touched, setTouched] = useState(props.touched || false);
+
   return (
-    <div className="dateWrapper">
-      <div className="label">{props.label}</div>
+    <div className={`input-wrapper ${focus || touched ? "underline" : ""}`}>
+      <div className={`label ${focus || touched ? "active" : ""}`}>{label}</div>
       <TP
-        className="dateInput"
+        {...props}
+        className={`tinput ${!focus && !touched ? "thide-until-clicked" : ""}`}
         showSecond={false}
+        value={pass}
         defaultValue={moment()
           .hour(0)
           .minute(0)}
-        onChange={val => props.onChange(val)}
+        onChange={val => onChange(val)}
         format={"h:mm a"}
         use12Hours
+        minuteStep={15}
         inputReadOnly
+        onFocus={() => {
+          setFocus(true);
+          setTouched(true);
+        }}
+        onBlur={() => setFocus(false)}
       />
     </div>
   );

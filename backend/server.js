@@ -154,3 +154,19 @@ conn.connect(err => {
 app.listen(port, () => {
   console.log("listening at port " + port);
 });
+
+app.get("/students/:class", (req, res) => {
+  console.log("/students/:class");
+  const sql = `SELECT firstName, middleName, lastName, id FROM students WHERE class = '${req.params.class}'`;
+  try {
+    conn.query(sql, (err, names) => {
+      if (err) {
+        res.status(400).json({ error: err });
+      } else {
+        res.json(names);
+      }
+    });
+  } catch (err) {
+    res.json({ error: err });
+  }
+});

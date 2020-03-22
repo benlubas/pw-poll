@@ -1,14 +1,14 @@
-.input {
+/* .input {
   position: relative;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--text-color);
   width: 100%;
   border: none;
   border-bottom: 1px solid var(--default);
   background: transparent;
   outline: none;
-  padding-top: 5px;
-  padding-bottom: 7px;
+  box-sizing: border-box;
+  padding: 5px;
   margin: 10px 5px 0px 5px;
 }
 .inputWrapper::after {
@@ -29,6 +29,7 @@
   position: relative;
   padding-top: 5px;
   display: inline-block;
+  box-sizing: border-box;
   overflow: hidden;
 }
 .label {
@@ -49,4 +50,4 @@
   left: 10px;
   font-size: 0.85rem;
   color: var(--primary);
-}
+} */

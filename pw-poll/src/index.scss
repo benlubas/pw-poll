@@ -137,7 +137,8 @@ body {
 }
 .flex-baseline {
   display: flex;
-  align-items: baseline;
+  flex-direction: row;
+  justify-content: baseline;
 }
 .flex-center {
   display: flex;

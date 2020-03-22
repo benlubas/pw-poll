@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./input.css";
+import "./../InputStyle.css";
 
 export default function Input(props) {
   const [focus, setFocus] = useState(false);
@@ -8,7 +8,7 @@ export default function Input(props) {
   return (
     <div
       style={{ width: props.width || "150px" }}
-      className={`inputWrapper${
+      className={`input-wrapper${
         props.value !== "" || focus ? " underline" : ""
       }`}
     >
