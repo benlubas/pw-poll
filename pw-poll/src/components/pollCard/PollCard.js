@@ -94,7 +94,7 @@ const PollCard = ({ data, ...props }) => {
       <br />
       <div className="lowerConetent">
         <div className="dates">
-          <div>{bold("Start: ")}</div>
+          {bold("Start: ")}
           {editing ? (
             <div className="flex-space-between">
               <DatePicker

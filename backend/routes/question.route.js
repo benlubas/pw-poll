@@ -13,9 +13,14 @@ router.get("/", async (req, res) => {
     res.json({ message: err });
   }
 });
-router.get("/votes", async (req, res) => {
+router.get("/votes/:pollID", async (req, res) => {
+  console.log("question/votes/");
   try {
-    const foundQuestions = await Question.find().sort({ pollID: 1, number: 1 });
+    const foundQuestions = await Question.find({
+      pollID: req.params.pollID
+    }).sort({
+      number: 1
+    });
     res.json(foundQuestions);
   } catch (err) {
     res.json({ message: err });
@@ -67,7 +72,6 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   console.log("question/:id");
-  // console.log(req.body);
   let q = await Question.findById(req.body._id);
   q.options = req.body.options;
   q.type = req.body.type;
@@ -84,10 +88,7 @@ router.put("/addVote/:id", async (req, res) => {
     for (let i = 0; i < q.votes.length; i++) {
       if (q.votes[i].email === req.user.email) {
         changing = true;
-        console.log(q.votes[i].vote);
-        console.log(req.body.vote);
         q.votes[i].vote = req.body.vote;
-        console.log(q.votes[i].vote);
         break;
       }
     }

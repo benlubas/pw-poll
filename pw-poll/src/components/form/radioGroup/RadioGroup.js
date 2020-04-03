@@ -16,12 +16,15 @@ export default function RadioGroup(props) {
             (props.value && props.value.includes(optionValues[i]))
           }
           value={optionValues[i]}
-          square={props.options.length === choose}
+          square={props.choose > 1}
           onChange={newVal => {
             if (choose === 1) {
-              props.onChange(newVal);
+              props.onChange([newVal]);
             } else {
-              let v = [...props.value];
+              let v;
+              if (props.value) {
+                v = [...props.value];
+              } else v = [];
               if (v.includes(newVal)) {
                 v.splice(v.indexOf(newVal), 1);
               } else {

@@ -9,8 +9,6 @@ export default function SelectionBar({
   ...props
 }) {
   const values = optionValues || options;
-  // console.log(values);
-  // console.log(value);
   return (
     <div className="selectionBar">
       {options.map((v, index) => (
@@ -22,10 +20,6 @@ export default function SelectionBar({
           key={index}
         >
           {v}
-          {
-            (console.log("value", value),
-            console.log("values[index]: ", values[index]))
-          }
         </div>
       ))}
     </div>

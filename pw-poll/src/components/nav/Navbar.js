@@ -19,21 +19,32 @@ const Navbar = ({ pages, selected }) => {
         <>
           <NavLink
             activeClassName="nav-selected"
-            className="navLink"
+            className="nav-link"
             to="/polls"
           >
             Create/Edit Poll
           </NavLink>
           <NavLink
             activeClassName="nav-selected"
-            className="navLink"
-            to={"/studentView/:year" + new Date().getFullYear()}
+            className="nav-link"
+            to={"/studentView/" + new Date().getFullYear()}
             isActive={(match, location) => {
               if (match) return true;
               if (location.pathname.match(/studentView/g)) return true;
             }}
           >
             Student View
+          </NavLink>
+          <NavLink
+            activeClassName="nav-selected"
+            className="nav-link"
+            to={"/results/select"}
+            isActive={(match, location) => {
+              if (match) return true;
+              if (location.pathname.match(/results/g)) return true;
+            }}
+          >
+            Results
           </NavLink>
         </>
       ) : null}

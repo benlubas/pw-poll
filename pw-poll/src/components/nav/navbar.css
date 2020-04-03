@@ -19,6 +19,8 @@ nav {
           align-items: center;
   margin-left: auto;
   font-size: 2rem;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 nav .links {
@@ -48,8 +50,32 @@ nav .logo {
   -webkit-box-pack: baseline;
       -ms-flex-pack: baseline;
           justify-content: baseline;
-  -webkit-transform: translateY(15%);
-          transform: translateY(15%);
+  -webkit-transform: translate(10%, 0%);
+          transform: translate(10%, 0%);
+}
+
+.nav-link {
+  text-decoration: none;
+  position: relative;
+}
+
+.nav-link:hover:after {
+  background: var(--primary);
+  width: 100%;
+}
+
+.nav-link:after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0px;
+  background: #afafaf;
+  -webkit-transform: translateY(0%);
+          transform: translateY(0%);
+  width: 0%;
+  height: 2px;
+  -webkit-transition: all 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .nav-selected {

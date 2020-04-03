@@ -9,6 +9,11 @@ nav {
   align-items: center;
   margin-left: auto;
   font-size: 2rem;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  // border-bottom: 2px solid var(--primary);
+
   .links {
     display: flex;
     width: 100%;
@@ -20,7 +25,29 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: baseline;
-    transform: translateY(15%);
+    transform: translate(10%, 0%);
+  }
+}
+.nav-link {
+  text-decoration: none;
+  position: relative;
+  &:hover {
+    &:after {
+      background: var(--primary);
+      width: 100%;
+    }
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0px;
+    background: #afafaf;
+    // filter: blur(3px);
+    transform: translateY(0%);
+    width: 0%;
+    height: 2px;
+    transition: all 0.25s ease;
   }
 }
 .nav-selected {

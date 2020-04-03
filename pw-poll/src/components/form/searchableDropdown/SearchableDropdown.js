@@ -69,7 +69,6 @@ export default function SearchableDropdown({
         }}
         onFocus={() => setFocus(true)}
         onBlur={() => {
-          // console.log("names: ", names);
           let c = countIgnoreCase(
             names.map(
               (val, index) =>
@@ -86,7 +85,7 @@ export default function SearchableDropdown({
             : setError("");
           if (c === 1) {
             const [n, id] = findName(disp);
-            onFullName(id);
+            onFullName({ id: id, name: n });
             setDisp(n);
           }
           if (disp === "") setError("");
@@ -101,7 +100,7 @@ export default function SearchableDropdown({
           className="input-times"
           onClick={() => {
             setDisp("");
-            onFullName("");
+            onFullName({ id: null, name: "" });
           }}
         >
           &times;
@@ -112,13 +111,13 @@ export default function SearchableDropdown({
         {names
           ? names.map((v, i) => {
               let name = makeName(v);
-              console.log("name: ", name);
+              // console.log("name: ", name);
               return name.toLowerCase().includes(disp.toLowerCase()) ? (
                 <div
                   role="button"
                   onMouseDown={() => {
                     setDisp(name);
-                    onFullName(v.id);
+                    onFullName({ id: v.id, name: name });
                   }}
                   value={v.id}
                   key={i}

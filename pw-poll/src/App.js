@@ -8,6 +8,7 @@ import HomePage from "./components/pages/home/HomePage";
 import StudentViewPoll from "./components/pages/StudentViewPoll";
 import UserProvider from "./providers/UserProvider";
 import AdminStudentView from "./components/pages/AdminStudentView";
+import Results from "./components/pages/results/Results.js";
 
 import TestPage from "./components/TestPage";
 
@@ -37,6 +38,12 @@ function App() {
               user="admin"
               exact
               path="/studentView/:year"
+            />
+            <ProtectedRoute
+              component={Results}
+              user="admin"
+              exact
+              path="/results/:pollID"
             />
 
             <Route path={"/"}>

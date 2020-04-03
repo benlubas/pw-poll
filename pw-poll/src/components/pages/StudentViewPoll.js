@@ -55,22 +55,30 @@ export default function StudentViewPoll(props) {
       >
         {q.type.substr(0, 2) === "MC" ? (
           //MC
-          <RadioGroup
-            value={answers ? answers[i].value : null}
-            onChange={val => {
-              let c = [...answers];
-              c[i].value = val;
-              setAnswers(c);
-            }}
-            choose={parseInt(q.type.charAt(q.type.length - 1))}
-            options={q.options}
-          />
+          <>
+            <div className="small-text">
+              Please Select {q.type.charAt(q.type.length - 1)} Option
+              {q.type.charAt(q.type.length - 1) !== "1" ? "s" : ""}
+            </div>
+            <RadioGroup
+              value={answers ? answers[i].value : null}
+              onChange={val => {
+                let c = [...answers];
+                c[i].value = val;
+                setAnswers(c);
+              }}
+              choose={parseInt(q.type.charAt(q.type.length - 1))}
+              options={q.options}
+            />
+          </>
         ) : q.type === "OE" ? (
           //OE
           <Textarea
             label="Type your answer here"
             width="var(--ta-width)"
-            value={answers ? answers[i].value : ""}
+            value={
+              answers && answers[i] && answers[i].value ? answers[i].value : ""
+            }
             onChange={val => {
               let c = [...answers];
               c[i].value = val;
@@ -78,16 +86,22 @@ export default function StudentViewPoll(props) {
             }}
           />
         ) : q.type === "CS" ? (
-          <SearchableDropdown
-            label="Choose a Student"
-            value={answers ? answers[i].value : ""}
-            gradYear={q.options[0]}
-            onFullName={id => {
-              let c = [...answers];
-              c[i].value = id;
-              setAnswers(c);
-            }}
-          />
+          <div style={{ width: "75%" }}>
+            <SearchableDropdown
+              label="Choose a Student"
+              value={
+                answers && answers[i] && answers[i].value
+                  ? answers[i].value.id
+                  : ""
+              }
+              gradYear={q.options[0]}
+              onFullName={val => {
+                let c = [...answers];
+                c[i].value = val;
+                setAnswers(c);
+              }}
+            />
+          </div>
         ) : (
           console.log("invalid question type: ", q.type)
         )}

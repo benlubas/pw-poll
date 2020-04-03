@@ -1,0 +1,54 @@
+.styledTable {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  border-collapse: collapse;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.styledTable thead tr {
+  margin: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+.styledTable thead tr th {
+  padding: 10px;
+  padding-left: 0px;
+  border-bottom: 1px solid grey;
+  background: var(--primary);
+  color: white;
+}
+
+.styledTable thead tr th:first-child {
+  padding-left: 10px;
+}
+
+.styledTable thead tr th:last-child {
+  padding-right: 10px;
+}
+
+.styledTable tbody tr {
+  margin: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.styledTable tbody tr:nth-child(even) {
+  background: #ebebeb;
+}
+
+.styledTable tbody tr:hover {
+  background: #c2c2c2;
+}
+
+.styledTable tbody tr td {
+  margin: 0px;
+  border-bottom: 1px solid grey;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+/*# sourceMappingURL=table.css.map */

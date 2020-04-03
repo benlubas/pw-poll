@@ -76,12 +76,13 @@ export default function QuestionCard({ remove, info, index, ...props }) {
         {!editing ? (
           <>
             <div className="md-padding-v">
-              {bold("Type: ")}
+              {bold("Type:")}
               {data.type && data.type.substr(0, 2) === "MC"
-                ? "Multiple Choice"
+                ? " Multiple Choice - Choose " +
+                  data.type.charAt(data.type.length - 1)
                 : data.type === "OE"
-                ? "Open Ended"
-                : "Choose a Student"}
+                ? " Open Ended"
+                : " Choose a Student"}
             </div>
             <div className="md-padding-v">
               {data.type && data.type.substr(0, 2) === "MC"
@@ -152,7 +153,6 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                   <div>Which class(es) will voters select from?</div>
                   <RadioGroup
                     options={getGradYears()}
-                    choose={4}
                     value={edit.options}
                     onChange={val => setEdit({ ...edit, options: val })}
                     inline

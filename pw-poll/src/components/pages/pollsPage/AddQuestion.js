@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { url } from "../../../url";
 import Input from "../../form/input/Input";
 import RadioGroup from "../../form/radioGroup/RadioGroup";
+import OptionBar from "../../form/selectionBar/SelectionBar";
 import EditableListItem from "../../editableListItem/EditableListItem";
 import { getGradYears } from "../../../pipes";
 import { securePost } from "../../../hooks/securePost";
@@ -11,7 +12,7 @@ export default function AddQuestion(props) {
     number: props.number,
     text: "",
     options: [],
-    type: null
+    type: "MC"
   });
   const [newOption, setNewOption] = useState("");
   const [choose, setChoose] = useState(1);
@@ -45,22 +46,32 @@ export default function AddQuestion(props) {
         label="Question"
         width="100%"
       />
-      <RadioGroup
-        value={values.type}
-        options={["Multiple Choice", "Open Ended", "Choose Student From Class"]}
-        optionValues={["MC", "OE", "CS"]}
-        prompt="Type"
-        onChange={val => setValues({ ...values, options: [], type: val })}
-      />
+      <div className="md-padding">
+        <OptionBar
+          value={values.type}
+          options={[
+            "Multiple Choice",
+            "Open Ended",
+            "Choose Student From Class"
+          ]}
+          optionValues={["MC", "OE", "CS"]}
+          prompt="Type"
+          onChange={val => setValues({ ...values, options: [], type: val })}
+        />
+      </div>
       {values.type === "MC" ? (
         <>
           <div>How many options may a student select? </div>
+          <br />
           <Input
             label="Choose"
             value={choose}
             onChange={num => {
               if (!isNaN(parseInt(num))) {
                 setChoose(parseInt(num));
+                if (parseInt(num) === 0) {
+                  setChoose("");
+                }
               }
               if (num === "") {
                 setChoose("");
@@ -98,6 +109,16 @@ export default function AddQuestion(props) {
               label={"New Option"}
             />
             <button
+              onClick={e => {
+                e.preventDefault();
+                if (newOption !== "") {
+                  setValues({
+                    ...values,
+                    options: [...values.options, newOption]
+                  });
+                  setNewOption("");
+                }
+              }}
               style={{ marginLeft: "1.5rem" }}
               className={(newOption !== "" ? "primary" : "") + " btn btn-small"}
             >
@@ -108,8 +129,7 @@ export default function AddQuestion(props) {
       ) : values.type === "CS" ? (
         <RadioGroup
           options={getGradYears()}
-          value={values.options}
-          choose="4"
+          value={[values.options]}
           onChange={val => setValues({ ...values, options: val })}
         />
       ) : null}
