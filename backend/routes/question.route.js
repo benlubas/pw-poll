@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 router.get("/votes/:pollID", async (req, res) => {
-  console.log("question/votes/");
+  // console.log("question/votes/");
   try {
     const foundQuestions = await Question.find({
       pollID: req.params.pollID,
@@ -71,7 +71,7 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  console.log("question/:id");
+  // console.log("question/:id");
   let q = await Question.findById(req.body._id);
   q.options = req.body.options;
   q.type = req.body.type;
@@ -80,7 +80,7 @@ router.put("/:id", async (req, res) => {
   res.json({ message: "Updated" });
 });
 router.put("/order/:id/", async (req, res) => {
-  console.log("/question/order/:id");
+  // console.log("/question/order/:id");
   try {
     let q = await Question.findById(req.params.id);
     q.number = req.body.number;
@@ -91,7 +91,6 @@ router.put("/order/:id/", async (req, res) => {
   }
 });
 
-//! this doesn't work, i never finished it lol
 router.put("/addVote/:id", async (req, res) => {
   if (req.user) {
     let q = await Question.findById(req.params.id);
