@@ -30,7 +30,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
             width="100%"
           />
         ) : (
-          index + 1 + ") " + data.text
+          index + ") " + data.text
         )}
       </span>
       <div className="flex-space-between">

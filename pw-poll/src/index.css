@@ -19,7 +19,7 @@
   --body-font: "Montserrat";
   --title-font: "Montserrat";
   --ta-width: 50%;
-  --nav-height: 65px;
+  --nav-height: 85px;
 }
 
 @media (max-width: 680px) {

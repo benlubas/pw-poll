@@ -111,7 +111,6 @@ export default function SearchableDropdown({
         {names
           ? names.map((v, i) => {
               let name = makeName(v);
-              // console.log("name: ", name);
               return name.toLowerCase().includes(disp.toLowerCase()) ? (
                 <div
                   role="button"

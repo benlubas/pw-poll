@@ -9,6 +9,7 @@ import StudentViewPoll from "./components/pages/StudentViewPoll";
 import UserProvider from "./providers/UserProvider";
 import AdminStudentView from "./components/pages/AdminStudentView";
 import Results from "./components/pages/results/Results.js";
+import { DragDropContext } from "react-beautiful-dnd";
 
 import TestPage from "./components/TestPage";
 

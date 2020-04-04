@@ -8,7 +8,7 @@ nav {
       -ms-flex-direction: row;
           flex-direction: row;
   width: 100%;
-  height: var(--nav-height);
+  height: 65px;
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
   -webkit-box-pack: justify;

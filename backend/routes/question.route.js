@@ -17,9 +17,9 @@ router.get("/votes/:pollID", async (req, res) => {
   console.log("question/votes/");
   try {
     const foundQuestions = await Question.find({
-      pollID: req.params.pollID
+      pollID: req.params.pollID,
     }).sort({
-      number: 1
+      number: 1,
     });
     res.json(foundQuestions);
   } catch (err) {
@@ -31,10 +31,10 @@ router.get("/poll/:pollID", async (req, res) => {
   // console.log("/quesion/poll/:pollID");
   try {
     let foundQuestions = await Question.find({
-      pollID: req.params.pollID
+      pollID: req.params.pollID,
     }).sort({ number: 1 });
     let qs = [];
-    foundQuestions.forEach(val => {
+    foundQuestions.forEach((val) => {
       qs.push({ ...val._doc });
     });
     for (let i = 0; i < qs.length; i++) {
@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
     text: req.body.text,
     type: req.body.type,
     pollID: req.body.pollID,
-    options: req.body.options || []
+    options: req.body.options || [],
   });
   try {
     const savedQuestion = await question.save();
@@ -78,6 +78,17 @@ router.put("/:id", async (req, res) => {
   q.text = req.body.text;
   await q.save();
   res.json({ message: "Updated" });
+});
+router.put("/order/:id/", async (req, res) => {
+  console.log("/question/order/:id");
+  try {
+    let q = await Question.findById(req.params.id);
+    q.number = req.body.number;
+    await q.save();
+    res.json({ message: "Reordered" });
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 //! this doesn't work, i never finished it lol
