@@ -10,7 +10,21 @@
       -ms-flex-direction: column;
           flex-direction: column;
   padding: 15px;
-  max-width: 750px;
+  max-width: 900px;
+}
+
+.card .card-drag {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 15px;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .card.decorated:before {

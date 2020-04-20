@@ -27,6 +27,7 @@
 
 .modal-close {
   color: black;
+  background: white;
   font-family: "Montserrat";
   position: absolute;
   right: 6px;

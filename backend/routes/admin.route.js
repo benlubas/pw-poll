@@ -20,11 +20,9 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  console.log("req");
   const admin = new Admin({
     email: req.body.email,
-    level: req.body.level,
-    class: req.body.class
+    class: req.body.class,
   });
   try {
     await admin.save();
@@ -33,8 +31,26 @@ router.post("/", async (req, res) => {
     res.json({ message: err });
   }
 });
+router.put("/", async (req, res) => {
+  console.log("HI");
+  Admin.findByIdAndUpdate(
+    req.body._id,
+    {
+      email: req.body.email,
+      class: req.body.class,
+    },
+    { useFindAndModify: false },
+    (err, resp) => {
+      if (err) console.log(err);
+      else {
+        res.json(resp);
+      }
+    }
+  );
+});
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", (req, res) => {
+  console.log("delete /admin");
   Admin.findByIdAndRemove(
     req.params.id,
     { useFindAndModify: false },

@@ -1,11 +1,10 @@
 import React from "react";
 import { useSecureFetch } from "../../../hooks/useSecureFetch";
 import LoadingScreen from "../../loadingScreen/LoadingScreen";
-import Card from "../../card/Card";
 import Table from "./../../table/Table";
 import { url } from "../../../url";
 import { useParams, useHistory } from "react-router";
-import { titlecase, bold } from "../../../pipes";
+import { titlecase } from "../../../pipes";
 import CSResults from "./CSResults";
 import OEResults from "./OEResults";
 import MCResults from "./MCResults";
@@ -52,7 +51,7 @@ export default function Results() {
   );
 
   return (
-    <div className="resultsWrapper">
+    <div className="page-container">
       {pollID === "select" ? (
         pollList
       ) : loading ? (

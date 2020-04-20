@@ -1,7 +1,7 @@
 .pollPageWrapper {
   display: grid;
   grid-template:
-    "polls questions" calc(100vh - var(--nav-height)) /
+    "polls questions" 100vh /
     1fr 1fr;
 }
 .pollList {

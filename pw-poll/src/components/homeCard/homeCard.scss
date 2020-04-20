@@ -1,11 +1,13 @@
 .cards {
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: calc(100vh - var(--nav-height));
+  height: 100vh;
+  padding: 5px;
 }
 .homeCard {
   position: relative;

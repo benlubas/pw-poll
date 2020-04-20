@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSecureFetch } from "./../../hooks/useSecureFetch";
 import { securePut } from "./../../hooks/securePut";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import Card from "./../card/Card";
 import LoadingScreen from "../loadingScreen/LoadingScreen";
 import Alert from "./../alert/Alert";
@@ -10,13 +10,17 @@ import { url } from "./../../url";
 import RadioGroup from "../form/radioGroup/RadioGroup";
 import Textarea from "../form/textarea/Textarea";
 import SearchableDropdown from "../form/searchableDropdown/SearchableDropdown";
+import { PollsIcon } from "../svg";
 
 export default function StudentViewPoll(props) {
+  const history = useHistory();
   const { id } = useParams();
+  const [poll, loading] = useSecureFetch(url + "poll/" + id);
+  console.log("poll: ", poll);
   const [questions, questionsLoading] = useSecureFetch(
     url + "question/poll/" + id
   );
-  // console.log("Questions", questions);
+
   const [answers, setAnswers] = useState(null);
   useEffect(() => {
     if (questions)
@@ -28,7 +32,7 @@ export default function StudentViewPoll(props) {
       );
   }, [questions]);
 
-  console.log("questions: ", questions);
+  // console.log("questions: ", questions);
 
   const [state, setState] = useState("default");
 
@@ -109,8 +113,13 @@ export default function StudentViewPoll(props) {
     ))
   );
 
-  return state === "default" ? (
-    <div className="studPollWrapper">
+  return (
+    <div className="page-container">
+      <div className="big-text">{!loading ? poll.title : "Loading"}</div>
+      <div className="small-text link" onClick={() => history.goBack()}>
+        &lt;&lt; Back
+      </div>
+
       {questionContent}
       {!questionsLoading ? (
         <button
@@ -124,7 +133,5 @@ export default function StudentViewPoll(props) {
         </button>
       ) : null}
     </div>
-  ) : (
-    <Alert variant="success">Thank you for completing the poll!</Alert>
   );
 }

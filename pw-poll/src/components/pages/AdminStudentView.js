@@ -12,7 +12,7 @@ export default function AdminStudentView() {
     year = new Date().getFullYear();
   }
   return (
-    <>
+    <div className="page-wrapper">
       <div style={{ padding: "20px" }}>
         <SelectionBar
           value={parseInt(year)}
@@ -21,6 +21,6 @@ export default function AdminStudentView() {
         />
       </div>
       <StudentHome year={year} />
-    </>
+    </div>
   );
 }

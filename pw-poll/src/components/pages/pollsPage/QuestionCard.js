@@ -72,7 +72,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
   ); //end title
   return (
     <div className="questionWrapper">
-      <Card title={title}>
+      <Card dragProps={props.dragHandleProps} title={title}>
         {!editing ? (
           <>
             <div className="md-padding-v">

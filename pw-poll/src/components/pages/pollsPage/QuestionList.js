@@ -53,7 +53,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
               ref={provided.innerRef}
               className="questionList"
             >
-              {questions === null ? (
+              {questions === [] ? (
                 <LoadingScreen />
               ) : (
                 filtered.map((question, index) => (
@@ -66,16 +66,21 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
                       return (
                         <div
                           {...provided.draggableProps}
-                          {...provided.dragHandleProps}
                           ref={provided.innerRef}
                         >
                           <QuestionCard
+                            dragHandleProps={provided.dragHandleProps}
                             key={question._id}
                             info={question}
                             index={
                               !outterSnapshot.isDraggingOver ? index + 1 : "x"
                             }
-                            remove={remove}
+                            remove={(list, id, index) => {
+                              let c = [...questions];
+                              c.splice(index - 1, 1);
+                              setQuestions(c);
+                              remove(list, id, index);
+                            }}
                           />
                           {provided.placeholder}
                         </div>

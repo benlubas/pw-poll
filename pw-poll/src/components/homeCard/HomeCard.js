@@ -30,7 +30,11 @@ export default function HomeCard(props) {
             <li>Be sure you hit the Save button before you leave the page</li>
             <li>Previously answered questions will be pre-filled</li>
           </ul>
-          <button onClick={() => voteClick()} className="btn primary">
+          <button
+            onTouchStart={() => voteClick()}
+            onClick={() => voteClick()}
+            className="btn primary"
+          >
             Vote
           </button>
         </div>

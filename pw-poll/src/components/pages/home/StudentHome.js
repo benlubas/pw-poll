@@ -28,7 +28,7 @@ export default function StudentHome({ year }) {
   const [pollData, pollLoading] = useSecureFetch(url + "poll/stud/" + fYear);
   let empty = true;
   return (
-    <div className="studentPageWrapper">
+    <div className="page-wrapper">
       <div className="cards">
         {!pollLoading ? (
           pollData.map((poll, index) =>

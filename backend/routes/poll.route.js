@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 });
 router.get("/:id", async (req, res) => {
   try {
-    const foundPolls = await Poll.find({ _id: req.params.id });
+    const foundPolls = await Poll.findById(req.params.id);
     res.json(foundPolls);
   } catch (err) {
     res.json({ message: err });
@@ -32,7 +32,7 @@ router.get("/stud/:gradYear", async (req, res) => {
 router.post("/", async (req, res) => {
   const poll = new Poll({
     ...req.body,
-    timeStamp: Date.now()
+    timeStamp: Date.now(),
   });
   try {
     const savedPoll = await poll.save();

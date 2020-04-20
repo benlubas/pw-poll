@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Oxygen&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Roboto:500&display=swap");
 $successBg: #82e26a;
 $warningBg: #ffdc15;
@@ -88,6 +88,7 @@ body {
 }
 .wide {
   width: 100%;
+  max-width: 900px;
 }
 .pointer {
   cursor: pointer;
@@ -139,6 +140,17 @@ body {
   display: inline-block;
   cursor: pointer;
 }
+.nav-push-over {
+  margin-left: 75px;
+}
+.page-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 10px;
+  margin-top: 25px;
+}
 .paper {
   background: white;
   filter: drop-shadow(10px);
@@ -183,6 +195,10 @@ svg {
   align-items: center;
   justify-content: space-between;
 }
+.page-title {
+  font-size: 1.4rem;
+  text-align: right;
+}
 
 pre {
   white-space: pre-wrap; /* Since CSS 2.1 */
@@ -190,4 +206,52 @@ pre {
   white-space: -pre-wrap; /* Opera 4-6 */
   white-space: -o-pre-wrap; /* Opera 7 */
   word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+.login-card {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  width: 100%;
+  max-width: 750px;
+  flex-direction: column;
+  padding: 100px 15px 100px 15px;
+  margin: 10px;
+  position: relative;
+  &:hover:after {
+    filter: drop-shadow(1px 1px 5px grey);
+  }
+  &:after {
+    content: "";
+    transition: all 0.2s ease-out;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background: white;
+    z-index: -20;
+    filter: drop-shadow(1px 1px 3px grey);
+  }
+}
+.login-page-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: calc(100% + 75px);
+  flex-direction: column;
+  transform: translate(-50px);
+  background: #eeeeee;
+}
+
+@media only screen and (max-width: 600px) {
+  .nav-push-over {
+    margin-left: 0px;
+    margin-top: 85px;
+  }
+  .login-page-wrapper {
+    transform: translate(0px);
+    width: 100%;
+  }
 }

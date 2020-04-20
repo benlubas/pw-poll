@@ -6,10 +6,10 @@ const AdminSchema = mongoose.Schema({
     required: true,
     trim: true,
     lowercase: true,
-    maxlength: 100
+    maxlength: 100,
+    unique: true,
   },
-  level: { type: String, required: true, enum: ["dev", "admin", "sponsor"] },
-  class: { type: Number, required: true }
+  class: { type: Number, required: true },
 });
 
 module.exports = mongoose.model("admin", AdminSchema);

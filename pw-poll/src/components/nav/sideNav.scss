@@ -1,0 +1,185 @@
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap");
+
+nav {
+  --background: #242424;
+  // --background: #e60000;
+  --logo-bg: #424242;
+  // --logo-bg: #b80000;
+  --text: white;
+  --nav-font: "Nunito", sans-serif;
+  --nav-font-size: 1.5rem;
+  --icon-color: #a5a5a5;
+  // --icon-color: #ffffff;
+  --icon-alt: var(--primary);
+  // --icon-alt: white;
+  --icon-bg: #7a7a7a;
+  position: fixed;
+  z-index: 10;
+  // top: 0px;
+  left: 0px;
+
+  background: var(--background);
+  padding-top: 15px;
+  width: 85px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transition: width 0.15s ease-out;
+  overflow: hidden;
+
+  .logo {
+    transform: translate(0px);
+  }
+  &.hov {
+    width: 300px;
+    .nav-item {
+      .nav-link {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+      }
+      .text {
+        display: inline-block;
+      }
+    }
+  }
+}
+.nav-items {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.nav-item {
+  padding: 5px;
+  position: relative;
+  cursor: pointer;
+  .icon {
+    display: inline-block;
+    svg {
+      transition: all 0.25s ease;
+      width: 50px;
+      height: 50px;
+      fill: var(--icon-color);
+      opacity: 80%;
+    }
+  }
+  &:hover {
+    .icon svg {
+      fill: var(--icon-alt);
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ffffff15;
+    }
+  }
+  &:first-child {
+    background: var(--logo-bg);
+  }
+  &:last-child {
+    margin-bottom: 30px;
+    margin-top: auto;
+  }
+}
+.text {
+  color: var(--text);
+  font-size: var(--nav-font-size);
+  display: none;
+  white-space: nowrap;
+  margin-left: 1rem;
+  font-family: var(--nav-font);
+}
+
+.nav-selected .icon svg {
+  fill: var(--icon-alt);
+  opacity: 100%;
+}
+.mobile-nav-click {
+  display: none;
+}
+.arrows {
+  display: none;
+}
+//small screen
+@media only screen and (max-width: 600px) {
+  nav {
+    transform: translateY(-85px);
+    transition: width 0.15s ease-out;
+    background: none;
+    pointer-events: none;
+    width: 100px;
+    &.hov {
+      background: var(--background);
+      pointer-events: visible;
+      .nav-item {
+        display: initial;
+      }
+      .logo-item {
+        background: var(--logo-bg);
+      }
+      .arrows {
+        transform: translateY(-50%) rotate(-180deg);
+        left: calc(100% - 20px);
+      }
+    }
+  }
+  .nav-item {
+    display: none;
+  }
+  .logo-item {
+    position: relative;
+    display: initial;
+    // display: flex;
+    // flex-direction: row;
+    // align-items: center;
+    background: var(--background);
+    pointer-events: visible;
+    > .nav-link {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .mobile-nav-click {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+  .arrows {
+    box-sizing: content-box;
+    display: inline-block;
+    position: absolute;
+    transition: all 0.25s ease;
+    transform-origin: left;
+    transform: translateY(-50%) rotate(0deg);
+    top: 50%;
+    left: calc(100% - 30px);
+    margin: 0px;
+    margin-left: 5px;
+    width: 15px;
+    fill: #ffffffad;
+  }
+}
+
+//big screen
+@media only screen and (min-width: 600px) {
+  nav {
+    top: 0px;
+    width: 75px;
+    height: 100vh;
+  }
+}
