@@ -19,7 +19,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
 
     return result;
   };
-  const onDragEnd = result => {
+  const onDragEnd = (result) => {
     if (!result.destination) {
       return;
     }
@@ -30,7 +30,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
     );
     for (let i = 0; i < newOrder.length; i++) {
       securePut(url + "question/order/" + newOrder[i]._id, {
-        number: i + 1
+        number: i + 1,
       });
     }
     setQuestions(newOrder);
@@ -46,7 +46,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
         {(provided, outterSnapshot) => {
           let filtered = [];
           if (questions)
-            filtered = questions.filter(val => selectedPoll === val.pollID);
+            filtered = questions.filter((val) => selectedPoll === val.pollID);
           return (
             <div
               {...provided.droppableProps}
@@ -123,7 +123,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
                     }
                   >
                     <AddQuestion
-                      save={saved => {
+                      save={(saved) => {
                         setQuestions([...questions, saved]);
                         props.setShowAddQuestion(false);
                       }}
@@ -135,7 +135,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
               ) : !outterSnapshot.isDraggingOver ? (
                 <Card title="Add a Question">
                   {props.showAddQuestion ? (
-                    <AddQuestion _id={selectedPoll} />
+                    <AddQuestion number={filtered} _id={selectedPoll} />
                   ) : (
                     <button
                       onClick={() => props.setShowAddQuestion(true)}

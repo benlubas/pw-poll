@@ -4,40 +4,53 @@ import "./dropdown.css";
 //?  @param values Array
 //?  @param value String
 //?  @param onChange () => {}
-export default function Dropdown(props) {
+export default function Dropdown({
+  clicked,
+  value,
+  values,
+  options,
+  label,
+  onChange,
+  classes,
+  disableFirst,
+  ...props
+}) {
   const [state, setState] = useState({
     focus: false,
-    clicked: props.clicked || false
+    clicked: props.clicked || false,
   });
-
   return (
     <div
-      className={`dropWrapper${
-        props.value !== "" || state.focus ? " underline" : ""
-      }`}
+      {...props}
+      className={`dropWrapper ${
+        value !== "" || state.clicked ? "underline" : ""
+      } ${classes || ""}`}
     >
       <div
         className={`dropLabel ${
-          state.focus || props.value !== "" ? "labelActive" : ""
+          state.clicked || value !== "" ? "labelActive" : ""
         }`}
       >
-        {props.label === undefined ? "" : props.label}
+        {label === undefined ? "" : label}
       </div>
       <select
         className={`select ${
-          state.focus || props.value !== "" ? "selectActive" : ""
+          state.focus || value !== "" ? "selectActive" : ""
         }`}
         onFocus={() => setState({ focus: true, clicked: true })}
         onBlur={() => setState({ ...state, focus: false })}
-        onChange={e => {
-          props.onChange(e.target.value);
+        onChange={(e) => {
+          onChange(
+            e.target.value,
+            options ? options[values.indexOf(e.target.value)] : false
+          );
         }}
         type="text"
       >
         {!state.clicked ? <option value="-1"></option> : null}
-        {props.values.map((val, i) => (
-          <option key={val + i} value={val}>
-            {val}
+        {values.map((val, i) => (
+          <option key={val + i} value={val} disabled={disableFirst && i === 0}>
+            {options ? options[i] : val}
           </option>
         ))}
       </select>

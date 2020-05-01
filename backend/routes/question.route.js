@@ -113,6 +113,28 @@ router.put("/addVote/:id", async (req, res) => {
   }
 });
 
+router.put("/pushForward/:pollID/:year", (req, res) => {
+  Question.find({ pollID: req.params.pollID }, (err, questions) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(questions);
+      try {
+        questions.map((q, index) => {
+          if (q.type === "CS") {
+            q.options = [req.params.year];
+          }
+          return q;
+        });
+        questions.forEach((q) => q.save());
+      } catch (err) {
+        console.log(err);
+        res.json({ message: "It worked" });
+      }
+    }
+  });
+});
+
 router.delete("/:id", async (req, res) => {
   Question.findByIdAndRemove(
     req.params.id,

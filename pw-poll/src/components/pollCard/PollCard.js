@@ -6,7 +6,7 @@ import Textarea from "./../form/textarea/Textarea";
 import Input from "./../form/input/Input";
 import {
   DatePicker,
-  TimePicker
+  TimePicker,
 } from "./../form/dateTimePicker/dateTimePicker";
 
 import Card from "../card/Card";
@@ -33,11 +33,11 @@ const PollCard = ({ data, ...props }) => {
           <Input
             label="Title"
             value={edit.title}
-            onChange={val => setEdit({ ...edit, title: val })}
+            onChange={(val) => setEdit({ ...edit, title: val })}
             width="100%"
           />
         ) : (
-          titlecase(data.title)
+          data.title
         )}
       </div>
       <div className="flex-space-between">
@@ -81,7 +81,7 @@ const PollCard = ({ data, ...props }) => {
         <Textarea
           label="Description"
           value={edit.desc}
-          onChange={val => setEdit({ ...edit, desc: val })}
+          onChange={(val) => setEdit({ ...edit, desc: val })}
           width="100%"
         />
       ) : (
@@ -100,13 +100,13 @@ const PollCard = ({ data, ...props }) => {
               <DatePicker
                 label="Start Date"
                 value={new Date(edit.startDate)}
-                onChange={val => setEdit({ ...edit, startDate: val })}
+                onChange={(val) => setEdit({ ...edit, startDate: val })}
                 touched
               />
               <TimePicker
                 label="Start Time"
                 value={new Date(edit.startDate)}
-                onChange={val => setEdit({ ...edit, startDate: val })}
+                onChange={(val) => setEdit({ ...edit, startDate: val })}
                 touched
               />
             </div>
@@ -121,13 +121,13 @@ const PollCard = ({ data, ...props }) => {
                 label="End Date"
                 touched
                 value={new Date(edit.endDate)}
-                onChange={val => setEdit({ ...edit, endDate: val })}
+                onChange={(val) => setEdit({ ...edit, endDate: val })}
               />
               <TimePicker
                 label="End Time"
                 touched
                 value={new Date(edit.endDate)}
-                onChange={val => setEdit({ ...edit, endDate: val })}
+                onChange={(val) => setEdit({ ...edit, endDate: val })}
               />
             </div>
           ) : (
@@ -136,7 +136,7 @@ const PollCard = ({ data, ...props }) => {
         </div>
         <br />
         <div className="otherInfo">
-          <div>
+          {/* <div>
             {bold("Who can view results: ")}
             {editing ? (
               <Dropdown
@@ -144,48 +144,30 @@ const PollCard = ({ data, ...props }) => {
                 label="Viewable By"
                 values={["Admins", "Sponsors", "Teachers", "Students", "All"]}
                 value={edit.viewableBy}
-                onChange={val => setEdit({ ...edit, viewableBy: val })}
+                onChange={(val) => setEdit({ ...edit, viewableBy: val })}
               />
             ) : (
               data.viewableBy
             )}
-          </div>
+          </div> */}
           <div>
             {bold("Who can vote? ")}
-            {editing ? (
-              <Input
-                value={gc}
-                onChange={val => setGc(val)}
-                onEnter={() => {
-                  if (isNaN(parseInt(gc)) || gc.length !== 4) {
-                    alert("Enter a four digit year");
-                    return;
-                  }
-                  if (edit.gradYears.includes(gc)) {
-                    setGc("");
-                    return;
-                  }
-                  setEdit({
-                    ...edit,
-                    gradYears: [...edit.gradYears, gc]
-                  });
-                  setGc("");
-                }}
-                label="Add Year"
-              />
-            ) : null}
             {edit.gradYears.map((eVal, index) => (
               <div key={eVal + index}>
                 <span
                   style={{ paddingLeft: "10px" }}
                   onClick={() => {
-                    setEdit(() => {
-                      let c = [];
-                      edit.gradYears.forEach((val, i) =>
-                        i === index ? null : c.push(val)
-                      );
-                      return { ...edit, gradYears: c };
-                    });
+                    setEdit(
+                      editing
+                        ? () => {
+                            let c = [];
+                            edit.gradYears.forEach((val, i) =>
+                              i === index ? null : c.push(val)
+                            );
+                            return { ...edit, gradYears: c };
+                          }
+                        : edit
+                    );
                   }}
                   className={editing ? "hov-delete" : null}
                 >
@@ -193,6 +175,31 @@ const PollCard = ({ data, ...props }) => {
                 </span>
               </div>
             ))}
+            {editing ? (
+              <>
+                <br />
+                <Input
+                  value={gc}
+                  onChange={(val) => setGc(val)}
+                  onEnter={() => {
+                    if (isNaN(parseInt(gc)) || gc.length !== 4) {
+                      alert("Enter a four digit year");
+                      return;
+                    }
+                    if (edit.gradYears.includes(gc)) {
+                      setGc("");
+                      return;
+                    }
+                    setEdit({
+                      ...edit,
+                      gradYears: [...edit.gradYears, gc],
+                    });
+                    setGc("");
+                  }}
+                  label="Add Year"
+                />
+              </>
+            ) : null}
           </div>
         </div>
         {editing ? (

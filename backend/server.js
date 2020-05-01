@@ -76,7 +76,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/callback"
+      callbackURL: "/auth/callback",
     },
     (accessTkn, refreshTkn, profile, done) => {
       console.log("prof._json", profile._json);
@@ -92,7 +92,7 @@ passport.use(
               //check admin table;
               try {
                 const found = await Admin.findOne({
-                  email: profile._json.email
+                  email: profile._json.email,
                 });
                 if (found) {
                   console.log(found);
@@ -121,8 +121,8 @@ app.get("/", (req, res) => {
 try {
   mongoose.connect(
     process.env.DB_CONN,
-    { useUnifiedTopology: true, useNewUrlParser: true },
-    err => {
+    { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true },
+    (err) => {
       if (!err) {
         console.log("Connected to MongoDB");
       } else {
@@ -135,16 +135,16 @@ try {
   console.log("error");
   console.log(err);
 }
-mongoose.connection.on("error", err => {
+mongoose.connection.on("error", (err) => {
   console.log(err);
 });
 const conn = sql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "allTheStudents"
+  database: "allTheStudents",
 });
-conn.connect(err => {
+conn.connect((err) => {
   if (err) console.log(err);
   else {
     console.log("Connected to SQL DB");

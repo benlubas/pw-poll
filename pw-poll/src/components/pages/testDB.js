@@ -1,21 +1,12 @@
 import React from "react";
 
-import UploadCSV from "../form/UploadCSV";
-import CreateGroup from "./../form/CreateGroup";
-import Checkbox from "../form/checkbox/Checkbox";
+import { useFetch } from "./../../hooks/useFetch";
 
 const TestDB = () => {
-  return (
-    <>
-      <UploadCSV />
-      <CreateGroup />
-      <Checkbox
-        checkVal="Test"
-        onChange={val => console.log(val)}
-        label="Test:"
-      />
-    </>
+  const [data, loading] = useFetch(
+    "https://www.googleapis.com/calendar/v3/users/me/calendarList"
   );
+  return <pre>{JSON.stringify(data)}</pre>;
 };
 
 export default TestDB;

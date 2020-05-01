@@ -9,7 +9,7 @@ import AdminList from "./AdminList";
 import { securePut } from "../../../hooks/securePut";
 import PushPollForward from "./PushPollForward";
 
-const validate = form => {
+const validate = (form) => {
   if (form.email.indexOf("staff.colonialsd.org") !== -1) {
     if (!isNaN(parseInt(form.class))) {
       return true;
@@ -24,7 +24,7 @@ export default function ControlPanel() {
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({
     email: "",
-    class: ""
+    class: "",
   });
   const history = useHistory();
   const [adminsData] = useSecureFetch(url + "admin");
@@ -41,10 +41,10 @@ export default function ControlPanel() {
       } else {
         await securePut(url + "admin", {
           ...form,
-          _id: editing
+          _id: editing,
         });
         let c = [...admins];
-        let i = c.findIndex(v => v._id === editing);
+        let i = c.findIndex((v) => v._id === editing);
         c[i] = { ...c[i], ...form };
         setAdmins(c);
       }
@@ -61,6 +61,23 @@ export default function ControlPanel() {
       <div className="small-text link" onClick={() => history.goBack()}>
         &lt;&lt; Back
       </div>
+      {admins !== null ? (
+        <Card title="Admins">
+          <AdminList
+            admins={admins}
+            remove={(index) => {
+              let c = [...admins];
+              c.splice(index, 1);
+              setAdmins(c);
+            }}
+            edit={(val, index) => {
+              setShowAdminForm(true);
+              setForm({ ...val });
+              setEditing(val._id);
+            }}
+          />
+        </Card>
+      ) : null}
       <Card title="Add an Admin">
         <div className="md-padding">
           There are two levels of admin: "normal" and "super". Normal admins
@@ -83,7 +100,7 @@ export default function ControlPanel() {
             <Input
               value={form.email}
               label="Email"
-              onChange={val => setForm({ ...form, email: val })}
+              onChange={(val) => setForm({ ...form, email: val })}
               width={"var(--ta-width)"}
             />
             <div className="small-text md-padding">
@@ -92,7 +109,7 @@ export default function ControlPanel() {
             <Input
               value={form.class}
               label="Class"
-              onChange={val => setForm({ ...form, class: val })}
+              onChange={(val) => setForm({ ...form, class: val })}
             />
             <div className="small-text md-padding">
               Use 9999 for a "super admin"
@@ -104,7 +121,7 @@ export default function ControlPanel() {
                 className={`btn ${
                   validate(form) === true ? "primary" : "default"
                 }`}
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   submit();
                 }}
@@ -126,23 +143,6 @@ export default function ControlPanel() {
           </div>
         )}
       </Card>
-      {admins !== null ? (
-        <Card title="Admins">
-          <AdminList
-            admins={admins}
-            remove={index => {
-              let c = [...admins];
-              c.splice(index, 1);
-              setAdmins(c);
-            }}
-            edit={(val, index) => {
-              setShowAdminForm(true);
-              setForm({ ...val });
-              setEditing(val._id);
-            }}
-          />
-        </Card>
-      ) : null}
       <PushPollForward />
     </div>
   );

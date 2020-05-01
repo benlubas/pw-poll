@@ -7,11 +7,12 @@
 .dropWrapper .select {
   position: relative;
   z-index: 0;
+  box-sizing: border-box;
   border: none;
   outline: none;
-  padding: 10px;
   margin: 10px;
-  width: 150px;
+  margin-left: 0px;
+  width: 100%;
   background: transparent;
   font-size: 1.1rem;
   font-family: var(--body-font);
@@ -20,7 +21,6 @@
 
 .dropWrapper .selectActive {
   color: black;
-  left: 5px;
 }
 
 .dropWrapper .dropLabel {
@@ -33,34 +33,40 @@
   z-index: -19;
   color: var(--default);
   top: 10px;
-  left: 20px;
+  left: 10px;
   -webkit-transition: all 0.25s ease-in-out;
   transition: all 0.25s ease-in-out;
   pointer-events: none;
 }
 
-.dropWrapper:after {
+.dropWrapper:before {
   content: "";
   width: 100%;
   height: 1px;
   position: absolute;
-  top: 88%;
-  left: 15px;
+  top: calc(88% + 1px);
   background: var(--default);
+}
+.dropWrapper:after {
+  content: "";
+  width: 0%;
+  height: 3px;
+  position: absolute;
+  top: 88%;
+  background: var(--primary);
   -webkit-transition: all 0.25s ease-in-out;
   transition: all 0.25s ease-in-out;
+}
+.underline::after {
+  height: 3px;
+  width: 100%;
 }
 
 .dropWrapper .labelActive {
   top: -5px;
+  left: 5px;
   font-size: 0.85rem;
   color: var(--primary);
 }
 
-/* .underline::after {
-  height: 3px;
-  background: var(--primary);
-  -webkit-transform: translateX(-5px);
-  transform: translateX(-5px);
-} */
 /*# sourceMappingURL=dropdown.css.map */

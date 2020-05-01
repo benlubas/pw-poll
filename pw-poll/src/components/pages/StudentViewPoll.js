@@ -4,13 +4,11 @@ import { securePut } from "./../../hooks/securePut";
 import { useParams, useHistory } from "react-router";
 import Card from "./../card/Card";
 import LoadingScreen from "../loadingScreen/LoadingScreen";
-import Alert from "./../alert/Alert";
 
 import { url } from "./../../url";
 import RadioGroup from "../form/radioGroup/RadioGroup";
 import Textarea from "../form/textarea/Textarea";
 import SearchableDropdown from "../form/searchableDropdown/SearchableDropdown";
-import { PollsIcon } from "../svg";
 
 export default function StudentViewPoll(props) {
   const history = useHistory();
@@ -25,9 +23,9 @@ export default function StudentViewPoll(props) {
   useEffect(() => {
     if (questions)
       setAnswers(
-        questions.map(v => ({
+        questions.map((v) => ({
           _id: v._id,
-          value: v.vote
+          value: v.vote,
         }))
       );
   }, [questions]);
@@ -38,12 +36,12 @@ export default function StudentViewPoll(props) {
 
   const submit = () => {
     let a = [];
-    answers.forEach(ans => {
+    answers.forEach((ans) => {
       if (ans.value !== null) {
         a.push(ans);
       }
     });
-    a.forEach(ans => {
+    a.forEach((ans) => {
       securePut(url + "question/addVote/" + ans._id, { vote: ans.value });
     });
   };
@@ -66,7 +64,7 @@ export default function StudentViewPoll(props) {
             </div>
             <RadioGroup
               value={answers ? answers[i].value : null}
-              onChange={val => {
+              onChange={(val) => {
                 let c = [...answers];
                 c[i].value = val;
                 setAnswers(c);
@@ -83,7 +81,7 @@ export default function StudentViewPoll(props) {
             value={
               answers && answers[i] && answers[i].value ? answers[i].value : ""
             }
-            onChange={val => {
+            onChange={(val) => {
               let c = [...answers];
               c[i].value = val;
               setAnswers(c);
@@ -99,7 +97,7 @@ export default function StudentViewPoll(props) {
                   : ""
               }
               gradYear={q.options[0]}
-              onFullName={val => {
+              onFullName={(val) => {
                 let c = [...answers];
                 c[i].value = val;
                 setAnswers(c);
@@ -123,9 +121,10 @@ export default function StudentViewPoll(props) {
       {questionContent}
       {!questionsLoading ? (
         <button
-          onClick={async e => {
+          onClick={async (e) => {
             e.preventDefault();
             submit();
+            history.goBack();
           }}
           className="btn primary wide"
         >

@@ -12,8 +12,9 @@ export default function AddQuestion(props) {
     number: props.number,
     text: "",
     options: [],
-    type: "MC"
+    type: "MC",
   });
+  console.log("number", props.number);
   const [newOption, setNewOption] = useState("");
   const [choose, setChoose] = useState(1);
 
@@ -42,7 +43,7 @@ export default function AddQuestion(props) {
     <div>
       <Input
         value={values.text || ""}
-        onChange={val => setValues({ ...values, text: val })}
+        onChange={(val) => setValues({ ...values, text: val })}
         label="Question"
         width="100%"
       />
@@ -52,11 +53,11 @@ export default function AddQuestion(props) {
           options={[
             "Multiple Choice",
             "Open Ended",
-            "Choose Student From Class"
+            "Choose Student From Class",
           ]}
           optionValues={["MC", "OE", "CS"]}
           prompt="Type"
-          onChange={val => setValues({ ...values, options: [], type: val })}
+          onChange={(val) => setValues({ ...values, options: [], type: val })}
         />
       </div>
       {values.type === "MC" ? (
@@ -66,7 +67,7 @@ export default function AddQuestion(props) {
           <Input
             label="Choose"
             value={choose}
-            onChange={num => {
+            onChange={(num) => {
               if (!isNaN(parseInt(num))) {
                 setChoose(parseInt(num));
                 if (parseInt(num) === 0) {
@@ -78,12 +79,12 @@ export default function AddQuestion(props) {
               }
             }}
           />
-          <ol className="mcOptions">
+          <div className="mcOptions">
             {values.options.map((v, i) => (
               <EditableListItem
                 key={v + i}
                 value={v}
-                onSave={val => {
+                onSave={(val) => {
                   setValues(() => {
                     let c = [...values.options];
                     c[i] = val;
@@ -92,29 +93,30 @@ export default function AddQuestion(props) {
                 }}
               />
             ))}
-          </ol>
+          </div>
+          <br />
           <div className="flex-container flex-baseline">
             <Input
               onEnter={() => {
                 if (newOption !== "") {
                   setValues({
                     ...values,
-                    options: [...values.options, newOption]
+                    options: [...values.options, newOption],
                   });
                   setNewOption("");
                 }
               }}
               value={newOption}
-              onChange={val => setNewOption(val)}
+              onChange={(val) => setNewOption(val)}
               label={"New Option"}
             />
             <button
-              onClick={e => {
+              onClick={(e) => {
                 e.preventDefault();
                 if (newOption !== "") {
                   setValues({
                     ...values,
-                    options: [...values.options, newOption]
+                    options: [...values.options, newOption],
                   });
                   setNewOption("");
                 }
@@ -130,7 +132,7 @@ export default function AddQuestion(props) {
         <RadioGroup
           options={getGradYears()}
           value={[values.options]}
-          onChange={val => setValues({ ...values, options: val })}
+          onChange={(val) => setValues({ ...values, options: val })}
         />
       ) : null}
       <button

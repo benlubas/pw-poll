@@ -35,7 +35,7 @@ export default function StudentHome({ year }) {
             checkDate(poll.startDate, poll.endDate) ? (
               <HomeCard
                 key={poll._id + (empty = false)}
-                title={titlecase(poll.title)}
+                title={poll.title}
                 desc={poll.desc}
                 endDate={poll.endDate}
                 _id={poll._id}

@@ -10,7 +10,7 @@ export default function DevInfo() {
         &lt;&lt; Back
       </div>
       <br /> <br />
-      <div style={{ fontSize: "1.1rem" }}>
+      <section>
         My name is Ben Lubas, I'm currently a senior in the class of 2020. This
         site was developed as a part of an independent study called Advanced Web
         Development. I developed the site using a MERN stack. That's{" "}
@@ -88,8 +88,8 @@ export default function DevInfo() {
             GitHub is just more common.
           </li>
           <li>
-            Configure your editor with ES Lint and or Prettier for auto
-            formatting and Linting. If you don't know what that means, look it
+            Configure your editor with ES Lint and/or Prettier for auto
+            formatting and linting. If you don't know what that means, look it
             up, find a guide on Medium.com or something and follow it.
           </li>
           <li>
@@ -101,12 +101,35 @@ export default function DevInfo() {
           <li>
             If you're choosing between React, Angular and Vue, I'll save you
             some time, pick the one with the coolest name, they all do the same
-            thing, just in different ways. Also, Angular uses TypeScript, which
-            is slightly different to JavaScript, but it's really not that
-            different.
+            thing, just in different ways. They're all very capable.
           </li>
         </ol>
-      </div>
+        Deploying something like this is not as straight forward as a PHP
+        project, but it's not dificult by any means. It's very easy to find
+        guides on the internet. Firstly, the Node server, I followed{" "}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://docs.cpanel.net/knowledge-base/web-services/how-to-install-a-node.js-application/"
+        >
+          this
+        </a>
+        . Maybe slightly daunting, but it's not bad. Secondly, the React app. I
+        followed{" "}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://dev.to/crishanks/deploy-host-your-react-app-with-cpanel-in-under-5-minutes-4mf6"
+        >
+          this
+        </a>
+        . Using a different web framework would mean you need to google
+        "deploying Vue app on cPanel" or something.
+        <br />
+        <br />
+        Thanks for reading, if you're doing something like this and have
+        questions feel free to bother me in college, benmlubas@gmail.com.
+      </section>
     </div>
   );
 }

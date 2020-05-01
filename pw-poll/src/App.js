@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 // import Navbar from "./components/nav/Navbar";
@@ -13,8 +13,8 @@ import Results from "./components/pages/results/Results.js";
 import About from "./components/pages/About.js";
 import DevInfo from "./components/pages/DevInfo.js";
 import ControlPanel from "./components/pages/controlPanel/ControlPanel";
-
-import TestPage from "./components/TestPage";
+import InfoPage from "./components/pages/home/InfoPage";
+import NotFound from "./components/pages/notFound/NotFound";
 
 function App() {
   return (
@@ -24,13 +24,19 @@ function App() {
           <SideNav />
           <div className="nav-push-over">
             <Switch>
-              <Route path="/test" component={TestPage} />
+              {/* <Route path="/test" component={TestPage} /> */}
               <Route exact path={"/"} component={HomePage} />
               <ProtectedRoute
                 component={PollsPage}
                 user="admin"
                 exact
                 path={"/polls"}
+              />
+              <ProtectedRoute
+                component={InfoPage}
+                user="admin"
+                exact
+                path={"/info/:label"}
               />
               <ProtectedRoute
                 user="student"
@@ -59,9 +65,7 @@ function App() {
               <Route path="/about" exact component={About} />
               <Route path="/devInfo" exact component={DevInfo} />
 
-              <Route path={"/"}>
-                <h1>404: Page Not Found</h1>
-              </Route>
+              <Route path={"/"} component={NotFound} />
             </Switch>
           </div>
         </UserProvider>

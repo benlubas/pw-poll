@@ -5,7 +5,7 @@ import "./modal.css";
 
 const modalRoot = document.getElementById("modal-root");
 
-export const ModalSet = props => {
+export const ModalSet = (props) => {
   const [shown, setShown] = useState(false);
   const color = props.triggerColor || "danger";
   return (
@@ -27,7 +27,7 @@ export const ModalSet = props => {
   );
 };
 
-export const Modal = props => {
+export const Modal = (props) => {
   const [shown, setShown] = useState(props.standAlone || false);
   return shown || props.standAlone === undefined
     ? ReactDOM.createPortal(
@@ -37,7 +37,7 @@ export const Modal = props => {
             style={{
               width: props.width ? props.width : "60%",
               height: props.height ? props.height : "75%",
-              borderRadius: props.borderRadius ? props.borderRadius : "0px"
+              borderRadius: props.borderRadius ? props.borderRadius : "0px",
             }}
             className="paper modal-container"
           >
@@ -49,37 +49,39 @@ export const Modal = props => {
                   (props.onClose && props.onClose()) || setShown(false)
                 }
                 className="modal-close"
+                title="close"
               >
                 <CircleXSVG />
               </button>
               <hr />
             </div>
             <div className="modal-body">{props.children}</div>
-            <div className="modal-footer">
-              {props.noConfirm ? null : (
+            {props.noFooter ? null : (
+              <div className="modal-footer">
+                {props.noConfirm ? null : (
+                  <div
+                    className={`btn ${props.confirmClass || "success"}`}
+                    onClick={() => {
+                      if (props.onConfirm !== undefined) {
+                        if (props.onConfirm()) props.onClose();
+                      }
+                    }}
+                  >
+                    Confirm
+                  </div>
+                )}
                 <div
-                  className={`btn ${props.confirmClass || "success"}`}
-                  onClick={() => {
-                    if (props.onConfirm !== undefined) {
-                      props.onConfirm();
-                      if (props.onConfirm()) props.onClose();
-                    }
-                  }}
+                  className={`btn ${
+                    props.closeClass === undefined ? "danger" : props.closeClass
+                  }`}
+                  onClick={() =>
+                    (props.onClose && props.onClose()) || setShown(false)
+                  }
                 >
-                  Confirm
+                  Close
                 </div>
-              )}
-              <div
-                className={`btn ${
-                  props.closeClass === undefined ? "danger" : props.closeClass
-                }`}
-                onClick={() =>
-                  (props.onClose && props.onClose()) || setShown(false)
-                }
-              >
-                Close
               </div>
-            </div>
+            )}
           </div>
         </div>,
         modalRoot

@@ -13,7 +13,7 @@ export default function About() {
         &lt;&lt; Back
       </div>
       <br /> <br />
-      <div style={{ fontSize: "1.1rem" }}>
+      <section>
         This is the Plymouth Whitemarsh High School polling site, Poll W
         <TMIcon width="1rem" />. In order to use the site, you must log in with
         a student.colonialsd.org email account. The site is mainly used for
@@ -24,7 +24,7 @@ export default function About() {
         <Link className="link" to="/devInfo">
           here.
         </Link>
-      </div>
+      </section>
     </div>
   );
 }

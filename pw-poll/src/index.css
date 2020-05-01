@@ -239,6 +239,11 @@ svg {
   margin: 5px;
 }
 
+section {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
 .titleFlex {
   display: -webkit-box;
   display: -ms-flexbox;

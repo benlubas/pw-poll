@@ -1,76 +1,48 @@
 import React from "react";
 import Card from "./../../card/Card";
 
+import "./adminHome.css";
+import { Link } from "react-router-dom";
+
 export default function AdminHome() {
   return (
     <div className="page-container">
-      <Card title="Welcome">
+      <div className="big-text">Home</div>
+      <section style={{ marginTop: "10px", marginBottom: "10px" }}>
         Welcome to Poll W! This site allows you to create polls for PW students.
-        You can control which class(es) can vote in the poll, when the poll
-        starts and ends, and, of course, the questions that are asked.
-        <br /> <br />
-        As an admin, you can see all of the polls, and edit them on the Polls
-        page. Keep reading for information on how to create and edit polls.
-      </Card>
-      <Card title="Instructions">
-        <div className="subtitle">General</div>
-        The Polls page is the place to go to create and edit polls and
-        questions. You can select a poll on the left by clicking on it. This
-        will cause any questions in that poll to show on the right. Questions
-        and polls can be edited by clicking on the edit icon or deleted by
-        clicking on the X icon. While in editing mode, any changes you make are
-        not saved untill you hit the save button, you're also given the option
-        to discard your changes in the top right.
-        <div className="subtitle">Questions</div>
-        There are there separate types of question: Multiple choice, Open Ended,
-        and Choose Student. For multiple choice, you're given on option to set
-        the number of selections that a student can make. For choose student,
-        you need to select the class that students will be choosing from (there
-        is no support from choosing one student from two or more different
-        classes)
+        As an admin, you have control over a bunch of different things. Click on
+        the cards below to learn how to use the site!
         <br />
         <br />
-        Questions may also be re-ordered via drag and drop, just grab onto the
-        left side of the card.
-      </Card>
-      <Card title="Student View">
-        The student view is a page that shows you the student home page for each
-        class. You can change the class that you're viewing with the bar up top.
-        Currently you aren't able to see the polls how student see them, but I'm
-        planning on changing that. As an admin you aren't able to vote.
-      </Card>
-      <Card title="Results">
-        The results page gives you a list of the polls and their status. "Open"
-        means the poll is still open to students and they are still able to
-        cast/change their votes. "Closed" means the poll has never been open to
-        students. "Final" means the poll was open, and is now closed, students
-        are no longer able to cast new votes or change old ones.
-        <br />
-        <br />
-        Clicking on the results button will take you to a page with each
-        question in order with answers in order of most votes. Open ended
-        responses are just all listed out in a scrolling container.
-      </Card>
-      <Card title="Tips">
-        <ul>
-          <li>
-            While adding options for MC questions, you can just hit enter to add
-            the option.
-          </li>
-          <li>
-            DO NOT delete the Superlatives Poll, just change the year that can
-            vote in it and change all the question years.
-          </li>
-          <li>
-            Deleting a poll also deletes all of it's questions. There is no way
-            to get them back.
-          </li>
-          <li>
-            Try and keep the poll titles shorter. If they're too long, they look
-            bad on the cards. You can check how they look in the student view.
-          </li>
-        </ul>
-      </Card>
+        <div className="small-text">
+          These cards don't take you to the pages, use the nav for that. These
+          cards are for learning how to use the site.
+        </div>
+      </section>
+      <div className="instruction-container">
+        <Link className="instruction-card" to={"/info/polls"}>
+          <div>Polls</div>
+          <div className="small">The bread and butter of the page</div>
+        </Link>
+        <Link className="instruction-card" to={"/info/student%20view"}>
+          <div>Student View</div>
+          <div className="small">You can see what a student sees</div>
+        </Link>
+        <Link className="instruction-card" to={"/info/results"}>
+          <div>Results</div>
+          <div className="small">
+            What's the point if you can't see the results
+          </div>
+        </Link>
+        <Link className="instruction-card" to={"/info/control%20panel"}>
+          <div>Control Panel</div>
+          <div className="small">Fancy buttons and stuff</div>
+        </Link>
+        <Link className="instruction-card" to={"/info/tips"}>
+          <div>Tips</div>
+          <div className="small">tricks and other things you should know</div>
+        </Link>
+      </div>
     </div>
   );
 }

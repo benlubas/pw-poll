@@ -1,0 +1,54 @@
+.instruction-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.instruction-card {
+  display: inline-block;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  max-width: 350px;
+  background: var(--primary);
+  height: 100px;
+  padding: 20px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px;
+  -webkit-transition: -webkit-transform 0.2s ease;
+  transition: -webkit-transform 0.2s ease;
+  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, -webkit-transform 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.instruction-card div {
+  color: white;
+}
+
+.instruction-card .small {
+  font-size: 1.1rem;
+  margin-top: 15px;
+}
+
+.instruction-card:hover {
+  background: var(--primary-darker);
+  -webkit-transform: translateY(-5px);
+          transform: translateY(-5px);
+  -webkit-filter: drop-shadow(0px 5px 5px grey);
+          filter: drop-shadow(0px 5px 5px grey);
+}
+/*# sourceMappingURL=adminHome.css.map */

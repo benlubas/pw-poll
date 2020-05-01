@@ -54,6 +54,28 @@ router.put("/:id", async (req, res) => {
     }
   });
 });
+router.put("/pushForward/:id/:year", async (req, res) => {
+  Poll.findById(req.params.id, (err, poll) => {
+    if (err) {
+      console.log(err);
+    } else {
+      poll.gradYears = [req.params.year];
+      Poll.findByIdAndUpdate(
+        req.params.id,
+        poll,
+        { useFindAndModify: false },
+        (err, updated) => {
+          if (err) {
+            console.log(err);
+            res.status(500).send(err);
+          } else {
+            res.json({ message: "Poll Updated" });
+          }
+        }
+      );
+    }
+  });
+});
 
 router.delete("/:id", async (req, res) => {
   Poll.findByIdAndRemove(

@@ -1,0 +1,24 @@
+.nf-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.nf-text {
+  display: inline-block;
+  font-size: 4rem;
+  font-weight: bold;
+  background: -webkit-gradient(linear, left top, left bottom, from(var(--primary)), to(#13bae4));
+  background: linear-gradient(var(--primary), #13bae4);
+  background-clip: text;
+  color: transparent;
+}
+/*# sourceMappingURL=notFound.css.map */

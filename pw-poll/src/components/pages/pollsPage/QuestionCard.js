@@ -10,14 +10,24 @@ import EditableListItem from "../../editableListItem/EditableListItem";
 import { securePut } from "./../../../hooks/securePut";
 import { url } from "./../../../url";
 
+const removeBlanks = (arr) => {
+  let c = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] !== "") {
+      c.push(arr[i]);
+    }
+  }
+  return c;
+};
+
 export default function QuestionCard({ remove, info, index, ...props }) {
   const [data, setData] = useState({ ...info });
   const [edit, setEdit] = useState({ ...data });
   const [editing, setEditing] = useState(false);
-  const [choose, setChoose] = useState(1);
+  const [choose, setChoose] = useState(
+    info.type.charAt(0) === "M" ? info.type.charAt(info.type.length - 1) : 1
+  );
   const [newOption, setNewOption] = useState("");
-
-  // console.log("type: ", data.type);
 
   const title = (
     <div className="flex-space-between">
@@ -26,7 +36,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
           <Input
             label="Question"
             value={edit.text}
-            onChange={val => setEdit({ ...edit, text: val })}
+            onChange={(val) => setEdit({ ...edit, text: val })}
             width="100%"
           />
         ) : (
@@ -37,7 +47,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
         {editing ? (
           <div>
             <button
-              onClick={e => {
+              onClick={(e) => {
                 e.preventDefault();
                 setEditing(false);
               }}
@@ -102,27 +112,29 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                 options={["Multiple Choice", "Open Ended", "Choose Student"]}
                 optionValues={["MC", "OE", "CS"]}
                 value={edit.type.substr(0, 2)}
-                onChange={val => setEdit({ ...edit, options: [], type: val })}
+                onChange={(val) => setEdit({ ...edit, options: [], type: val })}
               />
             </div>
             <div>
               {edit.type && edit.type.substr(0, 2) === "MC" ? (
                 <>
-                  <div>How many options can students choose? </div>
+                  <br />
                   <Input
                     label="Choose"
                     value={choose}
-                    onChange={val => {
+                    onChange={(val) => {
                       if (!isNaN(parseInt(val))) setChoose(parseInt(val));
                       if (val === "") setChoose(val);
                     }}
                   />
-                  <div className="subtitle">Options:</div>
+                  <div className="subtitle" style={{ marginTop: "5px" }}>
+                    Options:
+                  </div>
                   {edit.options.map((val, ind) => (
                     <EditableListItem
                       key={val + ind}
                       value={val}
-                      onSave={val => {
+                      onSave={(val) => {
                         let c = [...edit.options];
                         if (val === "") {
                           c.splice(ind, 1);
@@ -133,15 +145,16 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                       }}
                     />
                   ))}
+                  <br />
                   <div>
                     <Input
                       value={newOption}
                       label="New Option"
-                      onChange={val => setNewOption(val)}
+                      onChange={(val) => setNewOption(val)}
                       onEnter={() => {
                         setEdit({
                           ...edit,
-                          options: edit.options.concat([newOption])
+                          options: edit.options.concat([newOption]),
                         });
                         setNewOption("");
                       }}
@@ -154,7 +167,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                   <RadioGroup
                     options={getGradYears()}
                     value={edit.options}
-                    onChange={val => setEdit({ ...edit, options: val })}
+                    onChange={(val) => setEdit({ ...edit, options: val })}
                     inline
                   />
                 </>
@@ -163,12 +176,25 @@ export default function QuestionCard({ remove, info, index, ...props }) {
             <button
               className="btn primary wide"
               onClick={() => {
-                let body = { ...edit, pollID: props.pollID };
-                if (edit.type === "MC") {
+                let body = {
+                  ...edit,
+                  options: removeBlanks(edit.options),
+                  pollID: props.pollID,
+                };
+                if (edit.type.substr(0, 2) === "MC") {
                   body = { ...body, type: body.type + choose };
                 }
                 securePut(url + "question/" + edit._id, body);
-                setData({ ...edit });
+                if (edit.type.substr(0, 2) === "MC") {
+                  setData({
+                    ...edit,
+                    options: removeBlanks(edit.options),
+                    type: edit.type + choose,
+                  });
+                  setEdit({ ...edit, options: removeBlanks(edit.options) });
+                } else {
+                  setData({ ...edit });
+                }
                 setEditing(false);
               }}
             >

@@ -28,7 +28,7 @@ export function DatePicker({ value, onChange, label, ...props }) {
           onBlur={() => setFocus(false)}
           className={`input ${!focus && !touched ? "hide-until-clicked" : ""}`}
           selected={new Date(value)}
-          onChange={val => onChange(val)}
+          onChange={(val) => onChange(val)}
         />
       </div>
     </>
@@ -52,10 +52,8 @@ export const TimePicker = ({ value, onChange, label, ...props }) => {
         className={`tinput ${!focus && !touched ? "thide-until-clicked" : ""}`}
         showSecond={false}
         value={pass}
-        defaultValue={moment()
-          .hour(0)
-          .minute(0)}
-        onChange={val => onChange(val)}
+        defaultValue={moment().hour(0).minute(0)}
+        onChange={(val) => onChange(val)}
         format={"h:mm a"}
         use12Hours
         minuteStep={15}

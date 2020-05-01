@@ -1,0 +1,34 @@
+.instruction-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.instruction-card {
+  display: inline-block;
+  flex-grow: 1;
+  max-width: 350px;
+  background: var(--primary);
+  height: 100px;
+  padding: 20px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  div {
+    color: white;
+  }
+  .small {
+    font-size: 1.1rem;
+    margin-top: 15px;
+  }
+  &:hover {
+    background: var(--primary-darker);
+    transform: translateY(-5px);
+    filter: drop-shadow(0px 5px 5px grey);
+  }
+}
