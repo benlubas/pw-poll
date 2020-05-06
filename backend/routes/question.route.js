@@ -121,7 +121,7 @@ router.put("/pushForward/:pollID/:year", (req, res) => {
       console.log(questions);
       try {
         questions.map((q, index) => {
-          if (q.type === "CS") {
+          if (q.type.substr(0, 2) === "CS") {
             q.options = [req.params.year];
           }
           return q;

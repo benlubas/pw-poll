@@ -8,13 +8,12 @@ import LoadingScreen from "../loadingScreen/LoadingScreen";
 import { url } from "./../../url";
 import RadioGroup from "../form/radioGroup/RadioGroup";
 import Textarea from "../form/textarea/Textarea";
-import SearchableDropdown from "../form/searchableDropdown/SearchableDropdown";
+import StudentSelector from "../form/studentSelector/StudentSelector";
 
 export default function StudentViewPoll(props) {
   const history = useHistory();
   const { id } = useParams();
   const [poll, loading] = useSecureFetch(url + "poll/" + id);
-  console.log("poll: ", poll);
   const [questions, questionsLoading] = useSecureFetch(
     url + "question/poll/" + id
   );
@@ -29,10 +28,6 @@ export default function StudentViewPoll(props) {
         }))
       );
   }, [questions]);
-
-  // console.log("questions: ", questions);
-
-  const [state, setState] = useState("default");
 
   const submit = () => {
     let a = [];
@@ -50,11 +45,7 @@ export default function StudentViewPoll(props) {
     <LoadingScreen />
   ) : (
     questions.map((q, i) => (
-      <Card
-        title={q.text}
-        key={q._id}
-        classes={answers && answers[i].value !== null ? "decorated" : ""}
-      >
+      <Card title={q.text} key={q._id}>
         {q.type.substr(0, 2) === "MC" ? (
           //MC
           <>
@@ -87,22 +78,68 @@ export default function StudentViewPoll(props) {
               setAnswers(c);
             }}
           />
-        ) : q.type === "CS" ? (
-          <div style={{ width: "75%" }}>
-            <SearchableDropdown
+        ) : q.type.substr(0, 2) === "CS" ? (
+          <div style={{ width: "var(--ta-width)" }}>
+            <div>Choose {q.type.substr(2)} students:</div>
+            <section className="selected-students">
+              {answers &&
+                answers[i] &&
+                answers[i].value &&
+                Array.isArray(answers[i].value) &&
+                answers[i].value.map((n, ni) => (
+                  <div className="flex-space-between" key={ni}>
+                    <span style={{ marginBottom: "5px" }}>{n.name}</span>
+                    <i
+                      onClick={() => {
+                        let c = [...answers];
+                        let t = c[i].value.filter(
+                          (filterVal) => filterVal.id !== n.id
+                        );
+                        c[i].value = t;
+                        setAnswers(c);
+                      }}
+                      className="pointer fas fa-trash"
+                    ></i>
+                  </div>
+                ))}
+            </section>
+            <br />
+            <StudentSelector
               label="Choose a Student"
               value={
-                answers && answers[i] && answers[i].value
-                  ? answers[i].value.id
-                  : ""
+                answers &&
+                answers[i] &&
+                answers[i].value &&
+                Array.isArray(answers[i].value)
+                  ? answers[i].value
+                  : []
               }
               gradYear={q.options[0]}
               onFullName={(val) => {
                 let c = [...answers];
-                c[i].value = val;
+                if (Array.isArray(c[i].value)) {
+                  if (
+                    c[i].value.find(
+                      (selected) => selected.id === val.id + ""
+                    ) === undefined &&
+                    val.id !== null
+                  ) {
+                    c[i].value.push(val);
+                  }
+                } else {
+                  c[i].value = [val];
+                }
+                //check for number of answers;
+                console.log(parseInt(q.type.substr(2)));
+                console.log(c[i].value.length);
+                console.log(c[i].value);
+                if (c[i].value.length > parseInt(q.type.substr(2))) {
+                  c[i].value.shift();
+                }
                 setAnswers(c);
               }}
             />
+            <br />
           </div>
         ) : (
           console.log("invalid question type: ", q.type)

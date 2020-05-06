@@ -1,17 +1,17 @@
 import React from "react";
 
-export const titlecase = str => {
+export const titlecase = (str) => {
   return str
     .split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.substr(1))
+    .map((word) => word.charAt(0).toUpperCase() + word.substr(1))
     .join(" ");
 };
 
-export const dateFormat = dateStr => {
+export const dateFormat = (dateStr) => {
   return new Date(dateStr).toLocaleString();
 };
 
-export const bold = str => <span className="bold">{str}</span>;
+export const bold = (str) => <span className="bold">{str}</span>;
 
 export const getGradYears = () => {
   let add = new Date().getMonth() > 7;

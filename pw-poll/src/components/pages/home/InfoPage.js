@@ -2,16 +2,28 @@ import React from "react";
 
 import { useParams, useHistory, Link } from "react-router-dom";
 import { titlecase } from "./../../../pipes";
+import NotFound from "./../notFound/NotFound";
 
 export default function InfoPage() {
   const { label } = useParams();
   const hist = useHistory();
+  const existing = [
+    "polls",
+    "student view",
+    "tips",
+    "control panel",
+    "results",
+  ];
   return (
-    <div className="page-container">
-      <div className="big-text">{titlecase(label)}</div>
-      <div className="small-text link" onClick={() => hist.goBack()}>
-        &lt;&lt; Back
-      </div>
+    <div className={existing.includes(label) ? "page-container" : ""}>
+      {existing.includes(label) ? (
+        <>
+          <div className="big-text">{titlecase(label)}</div>
+          <div className="small-text link" onClick={() => hist.goBack()}>
+            &lt;&lt; Back
+          </div>
+        </>
+      ) : null}
       <section>
         {label === "polls" ? (
           <p>
@@ -58,7 +70,7 @@ export default function InfoPage() {
             scrolling container.
           </p>
         ) : label === "tips" ? (
-          <p>
+          <div>
             <ul>
               <li>
                 While adding options for MC questions, you can just hit enter to
@@ -86,7 +98,7 @@ export default function InfoPage() {
                 .
               </li>
             </ul>
-          </p>
+          </div>
         ) : label === "control panel" ? (
           <p>
             The control panel is where you do administrative things. You can
@@ -96,7 +108,7 @@ export default function InfoPage() {
             it changes questions of type: choose student.
           </p>
         ) : (
-          hist.push("/")
+          <NotFound />
         )}
       </section>
     </div>

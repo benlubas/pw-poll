@@ -17,7 +17,7 @@ export default function RadioGroup(props) {
           }
           value={optionValues[i]}
           square={props.choose > 1}
-          onChange={newVal => {
+          onChange={(newVal) => {
             if (choose === 1) {
               props.onChange([newVal]);
             } else {

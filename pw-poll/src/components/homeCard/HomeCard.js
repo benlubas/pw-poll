@@ -31,7 +31,7 @@ export default function HomeCard(props) {
             <li>Previously answered questions will be pre-filled</li>
           </ul>
           <button
-            onTouchStart={() => voteClick()}
+            onTouchStart={() => setTimeout(voteClick(), 200)}
             onClick={() => voteClick()}
             className="btn primary"
           >

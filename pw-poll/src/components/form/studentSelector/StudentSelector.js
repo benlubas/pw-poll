@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useFetch } from "./../../../hooks/useFetch";
+import { useFetch } from "../../../hooks/useFetch";
 
-import { url } from "./../../../url";
+import { url } from "../../../url";
 
-import "./searchableDropdown.css";
+import "./studentSelector.css";
 import "./../InputStyle.css";
 
-export default function SearchableDropdown({
+export default function StudentSelector({
   value,
   label,
   gradYear,
@@ -39,13 +39,12 @@ export default function SearchableDropdown({
     }
     return count;
   };
-  const makeName = obj =>
+  const makeName = (obj) =>
     obj.firstName +
     " " +
     (obj.middleName !== "" ? obj.middleName + " " : "") +
     obj.lastName;
-  const findName = str => {
-    // console.log("searching for... ", str);
+  const findName = (str) => {
     for (let i = 0; i < names.length; i++) {
       let n = makeName(names[i]);
       if (n.toLowerCase().includes(str.toLowerCase())) return [n, names[i].id];
@@ -62,7 +61,7 @@ export default function SearchableDropdown({
         ref={ref}
         className="input"
         type="text"
-        onKeyPress={e => {
+        onKeyPress={(e) => {
           if (e.key === "Enter") {
             e.target.blur();
           }
@@ -86,13 +85,13 @@ export default function SearchableDropdown({
           if (c === 1) {
             const [n, id] = findName(disp);
             onFullName({ id: id, name: n });
-            setDisp(n);
+            setDisp("");
           }
           if (disp === "") setError("");
           setFocus(false);
         }}
         {...props}
-        onChange={e => setDisp(e.target.value)}
+        onChange={(e) => setDisp(e.target.value)}
         value={disp}
       />
       {disp !== "" ? (

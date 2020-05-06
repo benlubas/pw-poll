@@ -25,7 +25,10 @@ export default function QuestionCard({ remove, info, index, ...props }) {
   const [edit, setEdit] = useState({ ...data });
   const [editing, setEditing] = useState(false);
   const [choose, setChoose] = useState(
-    info.type.charAt(0) === "M" ? info.type.charAt(info.type.length - 1) : 1
+    //MC or CS (Choose Student) will have a number after them.
+    info.type.charAt(0) === "M" || info.type.charAt(0) === "C"
+      ? info.type.substring(2)
+      : 1
   );
   const [newOption, setNewOption] = useState("");
 
@@ -92,13 +95,13 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                   data.type.charAt(data.type.length - 1)
                 : data.type === "OE"
                 ? " Open Ended"
-                : " Choose a Student"}
+                : " Choose " + data.type.substr(2) + " Student(s)"}
             </div>
             <div className="md-padding-v">
               {data.type && data.type.substr(0, 2) === "MC"
                 ? bold("Options: ")
-                : data.type === "CS"
-                ? bold("Voters choose from students in the class(es) of: ")
+                : data.type && data.type.substr(0, 2) === "CS"
+                ? bold("Voters choose from students in the class of: ")
                 : null}
               {data.options.map((v, i) => (
                 <div key={v + i}>- {v}</div>
@@ -161,14 +164,25 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                     />
                   </div>
                 </>
-              ) : edit.type === "CS" ? (
+              ) : edit.type && edit.type.substr(0, 2) === "CS" ? (
                 <>
-                  <div>Which class(es) will voters select from?</div>
+                  <div>Which class will voters select from?</div>
                   <RadioGroup
                     options={getGradYears()}
                     value={edit.options}
                     onChange={(val) => setEdit({ ...edit, options: val })}
                     inline
+                  />
+                  <br />
+                  <div>How many students will be selected? </div>
+                  <br />
+                  <Input
+                    label="Choose"
+                    value={choose}
+                    onChange={(val) => {
+                      if (!isNaN(parseInt(val))) setChoose(parseInt(val));
+                      if (val === "") setChoose(val);
+                    }}
                   />
                 </>
               ) : null}
@@ -181,15 +195,21 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                   options: removeBlanks(edit.options),
                   pollID: props.pollID,
                 };
-                if (edit.type.substr(0, 2) === "MC") {
-                  body = { ...body, type: body.type + choose };
+                if (
+                  edit.type.substr(0, 2) === "MC" ||
+                  edit.type.substr(0, 2) === "CS"
+                ) {
+                  body = { ...body, type: body.type.substr(0, 2) + choose };
                 }
                 securePut(url + "question/" + edit._id, body);
-                if (edit.type.substr(0, 2) === "MC") {
+                if (
+                  edit.type.substr(0, 2) === "MC" ||
+                  edit.type.substr(0, 2) === "CS"
+                ) {
                   setData({
                     ...edit,
                     options: removeBlanks(edit.options),
-                    type: edit.type + choose,
+                    type: edit.type.substr(0, 2) + choose,
                   });
                   setEdit({ ...edit, options: removeBlanks(edit.options) });
                 } else {

@@ -20,7 +20,7 @@ export default function AddQuestion(props) {
 
   const validate = () => {
     if (values.text === "") return false;
-    if (values.type === "Multiple Choice") {
+    if (values.type === "MC" || values.type === "CS") {
       if (values.options.length === 0) return false;
     }
     return true;
@@ -29,7 +29,7 @@ export default function AddQuestion(props) {
     const qurl = url + `question/`;
     try {
       let body = { ...values, pollID: pollID };
-      if (values.type === "MC") {
+      if (values.type === "MC" || values.type === "CS") {
         body = { ...body, type: body.type + choose };
       }
       let result = securePost(qurl, body);
@@ -129,18 +129,37 @@ export default function AddQuestion(props) {
           </div>
         </>
       ) : values.type === "CS" ? (
-        <RadioGroup
-          options={getGradYears()}
-          value={[values.options]}
-          onChange={(val) => setValues({ ...values, options: val })}
-        />
+        <>
+          <RadioGroup
+            options={getGradYears()}
+            value={[values.options]}
+            onChange={(val) => setValues({ ...values, options: val })}
+          />
+          <div>How many students are being selected? </div>
+          <br />
+          <Input
+            label="Choose"
+            value={choose}
+            onChange={(num) => {
+              if (!isNaN(parseInt(num))) {
+                setChoose(parseInt(num));
+                if (parseInt(num) === 0) {
+                  setChoose("");
+                }
+              }
+              if (num === "") {
+                setChoose("");
+              }
+            }}
+          />
+        </>
       ) : null}
       <button
         onClick={async () => {
           if (validate()) {
             const res = await submit(props._id, values);
             if (res.error) {
-              alert("Error Adding Question");
+              alert("Error Adding Question" + res.error);
             } else {
               props.save(res);
             }
