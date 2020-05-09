@@ -1,5 +1,4 @@
 import React from "react";
-import Card from "./../../card/Card";
 
 import "./adminHome.css";
 import { Link } from "react-router-dom";

@@ -132,7 +132,7 @@ export default function AddQuestion(props) {
         <>
           <RadioGroup
             options={getGradYears()}
-            value={[values.options]}
+            value={values.options}
             onChange={(val) => setValues({ ...values, options: val })}
           />
           <div>How many students are being selected? </div>

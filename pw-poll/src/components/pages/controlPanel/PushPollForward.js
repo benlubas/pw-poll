@@ -14,7 +14,7 @@ export default function PushPollForward() {
   });
   const [polls, loading] = useSecureFetch(url + "poll");
   return (
-    <Card title="Push Polls Forward">
+    <Card title="Push Forward">
       Below you'll see a list of all of the polls. Here you have the option to
       "Push Polls Forward". Say you have a superlatives poll that's used for the
       class of 2020. Currently the students who can vote in the poll are in the
@@ -31,27 +31,20 @@ export default function PushPollForward() {
           onChange={(val, disp) => {
             setForm({ ...form, pollID: val, pollName: disp });
           }}
-          options={
-            loading
-              ? ["Loading..."]
-              : ["Select a Poll", ...polls.map((p) => p.title)]
-          }
-          values={loading ? ["loading"] : [-1, ...polls.map((p) => p._id)]}
+          options={loading ? ["Loading..."] : [...polls.map((p) => p.title)]}
+          values={loading ? ["loading"] : [...polls.map((p) => p._id)]}
         />
         <Dropdown
           label="Year"
           style={{ flexGrow: "1" }}
           value={form.year}
           onChange={(val) => setForm({ ...form, year: val })}
-          values={[
-            "Select a Year",
-            ...[0, 0, 0, 0].map((v, i) => new Date().getFullYear() + i),
-          ]}
+          values={[...[0, 0, 0, 0].map((v, i) => new Date().getFullYear() + i)]}
         />
       </div>
       <ModalSet
         customTrigger={
-          form.year !== "" && form.poll !== "" ? (
+          form.year !== "" && form.pollID !== "" ? (
             <button className="btn primary wide">Update</button>
           ) : (
             <div></div>

@@ -6,7 +6,7 @@ const tally = (votes, options) => {
   let count = new Array(options.length).fill(0);
   for (let i = 0; i < votes.length; i++) {
     if (Array.isArray(votes[i].vote)) {
-      votes[i].vote.forEach(vote => {
+      votes[i].vote.forEach((vote) => {
         if (options.indexOf(vote) !== -1) {
           count[options.indexOf(vote)]++;
         }
@@ -26,7 +26,7 @@ export default function MCResults({ question, ...props }) {
     order = order
       .map((val, index) => ({
         totalVotes: val,
-        option: question.options[index]
+        option: question.options[index],
       }))
       .sort((a, b) => b.totalVotes - a.totalVotes);
     return order;
@@ -41,13 +41,13 @@ export default function MCResults({ question, ...props }) {
         </div>
       }
     >
-      <div>
+      <section style={{ fontSize: "1rem" }}>
         {orderedResults.map((o, i) => (
           <div key={question._id + i}>
-            {bold(o.option)} - {o.totalVotes}
+            {o.totalVotes} - {o.option}
           </div>
         ))}
-      </div>
+      </section>
     </Card>
   );
 }

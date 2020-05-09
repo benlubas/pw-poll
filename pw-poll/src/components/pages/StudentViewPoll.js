@@ -80,7 +80,10 @@ export default function StudentViewPoll(props) {
           />
         ) : q.type.substr(0, 2) === "CS" ? (
           <div style={{ width: "var(--ta-width)" }}>
-            <div>Choose {q.type.substr(2)} students:</div>
+            <div>
+              Choose {q.type.substr(2)} student{" "}
+              {parseInt(q.type.substr(2)) === 1 ? "" : "s"}:
+            </div>
             <section className="selected-students">
               {answers &&
                 answers[i] &&

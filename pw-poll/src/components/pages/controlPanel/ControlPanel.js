@@ -8,6 +8,9 @@ import { url } from "../../../url";
 import AdminList from "./AdminList";
 import { securePut } from "../../../hooks/securePut";
 import PushPollForward from "./PushPollForward";
+import ClonePoll from "./ClonePoll";
+import ClearVotes from "./ClearVotes";
+import ExportToCSV from "./ExportToCSV";
 
 const validate = (form) => {
   if (form.email.indexOf("staff.colonialsd.org") !== -1) {
@@ -78,7 +81,7 @@ export default function ControlPanel() {
           />
         </Card>
       ) : null}
-      <Card title="Add an Admin">
+      <Card title={`${editing === null ? "Add an" : "Edit"} Admin`}>
         <div className="md-padding">
           There are two levels of admin: "normal" and "super". Normal admins
           have a grad year, and they can only interact with polls for that
@@ -144,6 +147,9 @@ export default function ControlPanel() {
         )}
       </Card>
       <PushPollForward />
+      <ClonePoll />
+      <ExportToCSV />
+      <ClearVotes />
     </div>
   );
 }

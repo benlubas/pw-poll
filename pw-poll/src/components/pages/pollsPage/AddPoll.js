@@ -4,8 +4,6 @@ import {
   DatePicker,
   TimePicker,
 } from "../../form/dateTimePicker/dateTimePicker";
-import Checkbox from "../../form/checkbox/Checkbox";
-import Dropdown from "../../form/dropdown/Dropdown";
 import Textarea from "../../form/textarea/Textarea";
 import { url } from "../../../url";
 

@@ -102,10 +102,22 @@ export default function InfoPage() {
         ) : label === "control panel" ? (
           <p>
             The control panel is where you do administrative things. You can
-            add/edit admins on this page. This is also the page that lets you
-            push polls forward. "Pushing a poll forward" is like updating it
-            from one year to the next. It changes who can vote in the poll and
-            it changes questions of type: choose student.
+            add/edit admins on this page.
+            <br />
+            This is also the page that lets you push polls forward. "Pushing a
+            poll forward" is like updating it from one year to the next. It
+            changes who can vote in the poll and it changes questions of type:
+            choose student.
+            <br />
+            Cloning polls is also possible via the Control Panel just select the
+            poll to clone, give it a new name and hit the button.
+            <br />
+            After conducting a poll and tallying the results you can clear the
+            votes via this page. Again, select the poll hit the button. BE
+            ABSOLUTELY SURE that you don't need those votes any more, there is
+            no way to recover them. If you need to keep the votes for your
+            records or for whatever reason export them to a CSV first.
+            <br />
           </p>
         ) : (
           <NotFound />

@@ -26,28 +26,36 @@ export default function Results() {
     return "Closed";
   };
 
-  const setPoll = id => {
+  const setPoll = (id) => {
     hist.push("/results/" + id);
   };
 
   const pollList = loading ? (
     <LoadingScreen />
   ) : (
-    <Table headers={["Poll", "Status"]}>
-      {polls.map((val, index) => [
-        titlecase(val.title),
-        <div className="flex-space-between">
-          <div>{checkDate(val.startDate, val.endDate)}</div>
-          <button
-            style={{ fontStyle: "italic" }}
-            className="btn primary"
-            onClick={() => setPoll(val._id)}
-          >
-            Results &gt;&gt;
-          </button>
-        </div>
-      ])}
-    </Table>
+    <>
+      <div className="big-text">Results</div>
+      <div className="small-text link" onClick={() => hist.goBack()}>
+        &lt;&lt; Back
+      </div>
+      <br />
+      <br />
+      <Table headers={["Poll", "Status"]}>
+        {polls.map((val, index) => [
+          titlecase(val.title),
+          <div className="flex-space-between">
+            <div>{checkDate(val.startDate, val.endDate)}</div>
+            <button
+              style={{ fontStyle: "italic" }}
+              className="btn primary"
+              onClick={() => setPoll(val._id)}
+            >
+              Results &gt;&gt;
+            </button>
+          </div>,
+        ])}
+      </Table>
+    </>
   );
 
   return (
@@ -60,14 +68,14 @@ export default function Results() {
         <>
           <div className="resultsItem">
             <div className="big-text">
-              {titlecase(polls.find(elem => elem._id === pollID).title)}
+              {titlecase(polls.find((elem) => elem._id === pollID).title)}
             </div>
             <div className="small-text link" onClick={() => hist.goBack()}>
               &lt;&lt; Back
             </div>
           </div>
           <QuestionsWithResults
-            poll={polls.find(elem => elem._id === pollID)}
+            poll={polls.find((elem) => elem._id === pollID)}
           />
         </>
       )}
@@ -86,7 +94,7 @@ const QuestionsWithResults = ({ poll, ...props }) => {
     <>
       {questions.map((question, index) => (
         <div key={question._id} className="resultsItem">
-          {question.type === "CS" ? (
+          {question.type.substr(0, 2) === "CS" ? (
             <CSResults key={question._id} question={question} />
           ) : question.type === "OE" ? (
             <OEResults key={question._id} question={question} />

@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { titlecase } from "./../../../pipes";
 import { useSecureFetch } from "./../../../hooks/useSecureFetch";
 import HomeCard from "./../../homeCard/HomeCard.js";
 import UserProvider from "./../../../providers/UserProvider";

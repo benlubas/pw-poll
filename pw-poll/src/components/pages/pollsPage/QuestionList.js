@@ -11,11 +11,21 @@ import { securePut } from "./../../../hooks/securePut";
 export default function QuestionList({ selectedPoll, remove, ...props }) {
   const [questionData] = useSecureFetch(url + "question/");
   const [questions, setQuestions] = useState(questionData);
+  const [filtered, setFiltered] = useState([]);
+  useEffect(() => {
+    setQuestions(questionData);
+  }, [questionData]);
+  useEffect(() => {
+    if (questions)
+      setFiltered(questions.filter((val) => selectedPoll === val.pollID));
+  }, [selectedPoll, questions]);
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
+    console.log("result: ", result);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
+    console.log("reordered: ", result);
 
     return result;
   };
@@ -24,7 +34,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
       return;
     }
     let newOrder = reorder(
-      questions,
+      filtered,
       result.source.index,
       result.destination.index
     );
@@ -35,18 +45,12 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
     }
     setQuestions(newOrder);
   };
-  useEffect(() => {
-    setQuestions(questionData);
-  }, [questionData]);
 
   let shownQuestions = 0;
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="questionList">
         {(provided, outterSnapshot) => {
-          let filtered = [];
-          if (questions)
-            filtered = questions.filter((val) => selectedPoll === val.pollID);
           return (
             <div
               {...provided.droppableProps}

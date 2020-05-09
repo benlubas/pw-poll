@@ -15,6 +15,7 @@ import DevInfo from "./components/pages/DevInfo.js";
 import ControlPanel from "./components/pages/controlPanel/ControlPanel";
 import InfoPage from "./components/pages/home/InfoPage";
 import NotFound from "./components/pages/notFound/NotFound";
+import TestPage from "./components/TestPage";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
               />
               <Route path="/about" exact component={About} />
               <Route path="/devInfo" exact component={DevInfo} />
+              <Route path="/test" exact component={TestPage} />
 
               <Route path={"/"} component={NotFound} />
             </Switch>

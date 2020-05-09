@@ -11,7 +11,6 @@ import {
 
 import Card from "../card/Card";
 import { CircleXSVG, EditSVG } from "../svg";
-import Dropdown from "../form/dropdown/Dropdown";
 
 import "./pollCard.css";
 

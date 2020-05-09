@@ -2,32 +2,39 @@ import React, { useState } from "react";
 
 import "./../InputStyle.css";
 
-export default function Input(props) {
+export default function Input({
+  width,
+  label,
+  value,
+  onEnter,
+  onChange,
+  style,
+  ...props
+}) {
   const [focus, setFocus] = useState(false);
 
   return (
     <div
-      style={{ width: props.width || "150px" }}
-      className={`input-wrapper${
-        props.value !== "" || focus ? " underline" : ""
-      }`}
+      {...props}
+      style={{ width: width || "150px", ...style }}
+      className={`input-wrapper${value !== "" || focus ? " underline" : ""}`}
     >
-      <div className={`label ${focus || props.value !== "" ? "active" : ""}`}>
-        {props.label === undefined ? "" : props.label}
+      <div className={`label ${focus || value !== "" ? "active" : ""}`}>
+        {label === undefined ? "" : label}
       </div>
       <input
-        onKeyUp={e => {
-          if (props.onEnter !== undefined && e.keyCode === 13) {
-            props.onEnter();
+        onKeyUp={(e) => {
+          if (onEnter !== undefined && e.keyCode === 13) {
+            onEnter();
           }
           e.preventDefault();
         }}
         className="input"
-        value={props.value}
+        value={value}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        onChange={e => {
-          props.onChange(e.target.value);
+        onChange={(e) => {
+          onChange(e.target.value);
         }}
         type="text"
       />

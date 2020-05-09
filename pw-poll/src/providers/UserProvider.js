@@ -13,12 +13,11 @@ export function UserProvider(props) {
         Accept: "application/json",
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "http://localhost:3000",
-        "Access-Control-Allow-Credentials": true
-      }
+        "Access-Control-Allow-Credentials": true,
+      },
     })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res);
+      .then((res) => res.json())
+      .then((res) => {
         if (
           res.user &&
           (res.user.email.search("@staff.colonialsd.org") !== -1 ||
@@ -30,9 +29,8 @@ export function UserProvider(props) {
         }
         setUser(res);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
-  console.log("user: ", user);
   return (
     <context.Provider value={user}>
       {user !== null ? props.children : null}

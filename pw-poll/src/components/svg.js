@@ -206,6 +206,6 @@ export function ColunmsIcon(props) {
 }
 
 export function ICON(props) {
-  const onClick = props.onClick ? props.onClick : () => null;
+  // const onClick = props.onClick ? props.onClick : () => null;
   //  onClick={() => onClick()} {...props}
 }

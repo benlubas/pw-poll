@@ -6,6 +6,7 @@ import { url } from "./../../../url";
 
 import "./pollsPage.css";
 import { Modal } from "../../modal/Modal";
+import { secureDelete } from "./../../../hooks/secureDelete";
 
 const PollsPage = () => {
   const [questionData, qLoading] = useFetch(url + "question/");
@@ -29,13 +30,9 @@ const PollsPage = () => {
       temp.splice(index, 1);
       setQuestions(temp);
     }
-    await fetch(url + list + "/" + id, {
-      method: "DELETE"
-    });
+    await secureDelete(url + list + "/" + id);
     if (list === "poll") {
-      await fetch(url + "question/purge/" + id, {
-        method: "DELETE"
-      });
+      await secureDelete(url + "question/purge/" + id);
     }
   };
 

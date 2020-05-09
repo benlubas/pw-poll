@@ -151,6 +151,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                   <br />
                   <div>
                     <Input
+                      style={{ display: "inline-block" }}
                       value={newOption}
                       label="New Option"
                       onChange={(val) => setNewOption(val)}
@@ -162,6 +163,23 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                         setNewOption("");
                       }}
                     />
+                    <button
+                      style={{ marginLeft: "15px" }}
+                      className={`btn btn-small ${
+                        newOption === "" ? "default" : "primary"
+                      }`}
+                      onClick={() => {
+                        if (newOption !== "") {
+                          setEdit({
+                            ...edit,
+                            options: edit.options.concat([newOption]),
+                          });
+                          setNewOption("");
+                        }
+                      }}
+                    >
+                      Add
+                    </button>
                   </div>
                 </>
               ) : edit.type && edit.type.substr(0, 2) === "CS" ? (

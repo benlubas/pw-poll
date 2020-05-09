@@ -7,12 +7,11 @@ export const securePut = async (url, body) => {
         Accept: "application/json",
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "http://localhost:3000",
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
-    await res.json();
-    return true;
+    return await res.json();
   } catch (err) {
     console.log(err);
   }

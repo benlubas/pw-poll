@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./radioGroup.css";
+import "./../checkbox/checkbox.css";
 
 export default function RadioGroup(props) {
   const choose = parseInt(props.choose) || 1;
