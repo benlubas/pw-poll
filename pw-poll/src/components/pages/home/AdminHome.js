@@ -3,10 +3,12 @@ import React from "react";
 import "./adminHome.css";
 import { Link } from "react-router-dom";
 
+import PageHead from "./../../PageHead";
+
 export default function AdminHome() {
   return (
     <div className="page-container">
-      <div className="big-text">Home</div>
+      <PageHead title="Home" noBack />
       <section style={{ marginTop: "10px", marginBottom: "10px" }}>
         Welcome to Poll W! This site allows you to create polls for PW students.
         As an admin, you have control over a bunch of different things. Click on

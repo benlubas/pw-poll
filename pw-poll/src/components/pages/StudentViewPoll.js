@@ -9,6 +9,7 @@ import { url } from "./../../url";
 import RadioGroup from "../form/radioGroup/RadioGroup";
 import Textarea from "../form/textarea/Textarea";
 import StudentSelector from "../form/studentSelector/StudentSelector";
+import PageHead from "../PageHead";
 
 export default function StudentViewPoll(props) {
   const history = useHistory();
@@ -153,11 +154,7 @@ export default function StudentViewPoll(props) {
 
   return (
     <div className="page-container">
-      <div className="big-text">{!loading ? poll.title : "Loading"}</div>
-      <div className="small-text link" onClick={() => history.goBack()}>
-        &lt;&lt; Back
-      </div>
-
+      <PageHead title={!loading ? poll.title : "Loading..."} />
       {questionContent}
       {!questionsLoading ? (
         <button

@@ -11,6 +11,7 @@ import PushPollForward from "./PushPollForward";
 import ClonePoll from "./ClonePoll";
 import ClearVotes from "./ClearVotes";
 import ExportToCSV from "./ExportToCSV";
+import PageHead from "../../PageHead";
 
 const validate = (form) => {
   if (form.email.indexOf("staff.colonialsd.org") !== -1) {
@@ -60,10 +61,7 @@ export default function ControlPanel() {
   };
   return (
     <div className="page-container">
-      <div className="big-text">Control Panel</div>
-      <div className="small-text link" onClick={() => history.goBack()}>
-        &lt;&lt; Back
-      </div>
+      <PageHead title="Control Panel" />
       {admins !== null ? (
         <Card title="Admins">
           <AdminList

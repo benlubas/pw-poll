@@ -53,17 +53,17 @@
   height: 100%;
   top: 0px;
   left: 0px;
-  background: white;
+  background: var(--page-bg);
   z-index: -20;
-  -webkit-filter: drop-shadow(1px 1px 3px grey);
-          filter: drop-shadow(1px 1px 3px grey);
+  -webkit-filter: drop-shadow(1px 1px 3px var(--shadow));
+          filter: drop-shadow(1px 1px 3px var(--shadow));
 }
 
 .card .title {
   position: relative;
   margin-top: auto;
   font: 1.3em var(--title-font);
-  border-bottom: 1px solid #00000033;
+  border-bottom: 1px solid var(--hr);
 }
 
 .card .content {
@@ -73,7 +73,7 @@
 
 .card .footer {
   padding-top: 5px;
-  border-top: 1px solid #00000033;
+  border-top: 1px solid var(--hr);
 }
 
 .card.cardActive {

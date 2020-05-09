@@ -26,8 +26,8 @@
 }
 
 .modal-close {
-  color: black;
-  background: white;
+  color: var(--icon);
+  background: var(--page-bg);
   font-family: "Montserrat";
   position: absolute;
   right: 6px;

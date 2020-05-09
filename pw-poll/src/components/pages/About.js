@@ -2,17 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { TMIcon } from "./../svg";
 
-import { useHistory } from "react-router";
+import PageHead from "../PageHead";
 
 export default function About() {
-  const history = useHistory();
   return (
     <div className="page-container">
-      <div className="big-text">About</div>
-      <div onClick={() => history.goBack()} className="link small-text">
-        &lt;&lt; Back
-      </div>
-      <br /> <br />
+      <PageHead title="About" />
       <section>
         This is the Plymouth Whitemarsh High School polling site, Poll W
         <TMIcon width="1rem" />. In order to use the site, you must log in with

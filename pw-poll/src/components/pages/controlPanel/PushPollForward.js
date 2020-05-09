@@ -31,20 +31,30 @@ export default function PushPollForward() {
           onChange={(val, disp) => {
             setForm({ ...form, pollID: val, pollName: disp });
           }}
-          options={loading ? ["Loading..."] : [...polls.map((p) => p.title)]}
-          values={loading ? ["loading"] : [...polls.map((p) => p._id)]}
+          options={
+            loading
+              ? ["Loading..."]
+              : ["Select Poll", ...polls.map((p) => p.title)]
+          }
+          values={loading ? ["loading"] : [-1, ...polls.map((p) => p._id)]}
         />
         <Dropdown
           label="Year"
           style={{ flexGrow: "1" }}
           value={form.year}
           onChange={(val) => setForm({ ...form, year: val })}
-          values={[...[0, 0, 0, 0].map((v, i) => new Date().getFullYear() + i)]}
+          values={[
+            "Select Year",
+            ...[0, 0, 0, 0].map((v, i) => new Date().getFullYear() + i),
+          ]}
         />
       </div>
       <ModalSet
         customTrigger={
-          form.year !== "" && form.pollID !== "" ? (
+          form.year !== "" &&
+          form.pollID !== "" &&
+          form.pollID !== "-1" &&
+          form.year !== "Select Year" ? (
             <button className="btn primary wide">Update</button>
           ) : (
             <div></div>
@@ -52,13 +62,15 @@ export default function PushPollForward() {
         }
         title="Are you sure?"
         onConfirm={() => {
-          console.log("confirm");
           securePut(url + "poll/pushForward/" + form.pollID + "/" + form.year);
           securePut(
             url + "question/pushForward/" + form.pollID + "/" + form.year
           );
           return true;
         }}
+        height="200px"
+        confirmClass="danger"
+        closeClass="default"
       >
         <div>
           You're about to update "{form.pollName}". Are you sure you want to do

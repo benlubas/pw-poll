@@ -1,15 +1,10 @@
 import React from "react";
-import { useHistory } from "react-router";
+import PageHead from "../PageHead";
 
 export default function DevInfo() {
-  const history = useHistory();
   return (
     <div className="page-container">
-      <div className="big-text">Dev Info</div>
-      <div className="small-text link" onClick={() => history.goBack()}>
-        &lt;&lt; Back
-      </div>
-      <br /> <br />
+      <PageHead title="Dev Info" />
       <section>
         My name is Ben Lubas, I'm currently a senior in the class of 2020. This
         site was developed as a part of an independent study called Advanced Web

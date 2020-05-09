@@ -23,7 +23,7 @@
         }
         padding: 10px;
         padding-left: 0px;
-        border-bottom: 1px solid grey;
+        border-bottom: 1px solid var(--hr);
         background: var(--primary);
         color: white;
       }
@@ -35,10 +35,10 @@
       padding-top: 5px;
       padding-bottom: 5px;
       &:nth-child(even) {
-        background: rgb(235, 235, 235);
+        background: var(--off-page);
       }
       &:hover {
-        background: #c2c2c2;
+        background: var(--off-page-2);
       }
       td {
         margin: 0px;

@@ -10,6 +10,7 @@ import OEResults from "./OEResults";
 import MCResults from "./MCResults";
 
 import "./results.css";
+import PageHead from "../../PageHead";
 
 export default function Results() {
   const [polls, loading] = useSecureFetch(url + "poll/");
@@ -34,12 +35,7 @@ export default function Results() {
     <LoadingScreen />
   ) : (
     <>
-      <div className="big-text">Results</div>
-      <div className="small-text link" onClick={() => hist.goBack()}>
-        &lt;&lt; Back
-      </div>
-      <br />
-      <br />
+      <PageHead title="Results" />
       <Table headers={["Poll", "Status"]}>
         {polls.map((val, index) => [
           titlecase(val.title),
@@ -67,12 +63,9 @@ export default function Results() {
       ) : (
         <>
           <div className="resultsItem">
-            <div className="big-text">
-              {titlecase(polls.find((elem) => elem._id === pollID).title)}
-            </div>
-            <div className="small-text link" onClick={() => hist.goBack()}>
-              &lt;&lt; Back
-            </div>
+            <PageHead
+              title={titlecase(polls.find((elem) => elem._id === pollID).title)}
+            />
           </div>
           <QuestionsWithResults
             poll={polls.find((elem) => elem._id === pollID)}

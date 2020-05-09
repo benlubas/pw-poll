@@ -5,6 +5,7 @@ import UserProvider from "./../../../providers/UserProvider";
 
 import { url } from "./../../../url";
 import LoadingScreen from "../../loadingScreen/LoadingScreen";
+import PageHead from "../../PageHead";
 
 const checkDate = (start, end) => {
   return (
@@ -12,7 +13,7 @@ const checkDate = (start, end) => {
     Date.now() < new Date(end).valueOf()
   );
 };
-export default function StudentHome({ year }) {
+export default function StudentHome({ year, adminView, ...props }) {
   const session = useContext(UserProvider.context);
   let fYear;
   if (year && session.user.class === year) {
@@ -28,6 +29,7 @@ export default function StudentHome({ year }) {
   let empty = true;
   return (
     <div className="page-wrapper">
+      {adminView ? null : <PageHead title="Home" noBack />}
       <div className="cards">
         {!pollLoading ? (
           pollData.map((poll, index) =>

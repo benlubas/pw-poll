@@ -3,6 +3,7 @@ import React from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { titlecase } from "./../../../pipes";
 import NotFound from "./../notFound/NotFound";
+import PageHead from "../../PageHead";
 
 export default function InfoPage() {
   const { label } = useParams();
@@ -16,14 +17,7 @@ export default function InfoPage() {
   ];
   return (
     <div className={existing.includes(label) ? "page-container" : ""}>
-      {existing.includes(label) ? (
-        <>
-          <div className="big-text">{titlecase(label)}</div>
-          <div className="small-text link" onClick={() => hist.goBack()}>
-            &lt;&lt; Back
-          </div>
-        </>
-      ) : null}
+      {existing.includes(label) ? <PageHead title={titlecase(label)} /> : null}
       <section>
         {label === "polls" ? (
           <p>

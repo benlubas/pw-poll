@@ -16,11 +16,11 @@ export default function AdminStudentView() {
       <div style={{ padding: "20px" }}>
         <SelectionBar
           value={parseInt(year)}
-          onChange={val => hist.push("/studentView/" + val)}
+          onChange={(val) => hist.push("/studentView/" + val)}
           options={getGradYears()}
         />
       </div>
-      <StudentHome year={year} />
+      <StudentHome adminView year={year} />
     </div>
   );
 }

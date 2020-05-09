@@ -1,14 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap");
 nav {
-  --background: #242424;
-  --logo-bg: #424242;
+  --logo-bg: var(--nav-logo);
+  --background: var(--nav-bg);
   --text: white;
   --nav-font: "Nunito", sans-serif;
   --nav-font-size: 1.5rem;
-  --icon-color: #a5a5a5;
+  --icon-color: var(--default);
   --icon-alt: var(--primary);
-  --icon-bg: #7a7a7a;
+  --icon-bg: var(--off-page-2, #7a7a7a);
   position: fixed;
   z-index: 10;
   left: 0px;
@@ -100,7 +100,7 @@ nav.hov .nav-item .text {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #ffffff15;
+  background: var(--hov);
 }
 
 .nav-item:first-child {

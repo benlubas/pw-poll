@@ -31,7 +31,7 @@
   /* border-left: 0.5px solid grey; border-right: 0.5px solid grey; */
 }
 .sb-option:hover:after {
-  background: linear-gradient(-10deg, #f3f3f3, #e9e9e9);
+  background: linear-gradient(-10deg, var(--off-page), var(--off-page-2));
 }
 .sb-option:after {
   position: absolute;
@@ -39,7 +39,7 @@
   width: 100%;
   height: 100%;
   /* background: #f3f3f3; */
-  background: linear-gradient(80deg, #f3f3f3, #e9e9e9);
+  background: linear-gradient(80deg, var(--off-page), var(--off-page-2));
   top: 0px;
   left: 0px;
   z-index: -1;

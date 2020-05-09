@@ -20,7 +20,7 @@
 }
 
 .dropWrapper .selectActive {
-  color: black;
+  color: var(--text-color);
 }
 
 .dropWrapper .dropLabel {

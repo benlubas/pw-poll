@@ -136,6 +136,7 @@ export function TMIcon(props) {
   const onClick = props.onClick ? props.onClick : () => null;
   return (
     <svg
+      fill="var(--icon)"
       onClick={() => onClick()}
       {...props}
       xmlns="http://www.w3.org/2000/svg"

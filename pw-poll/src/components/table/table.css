@@ -18,7 +18,7 @@
 .styledTable thead tr th {
   padding: 10px;
   padding-left: 0px;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--hr);
   background: var(--primary);
   color: white;
 }
@@ -38,11 +38,11 @@
 }
 
 .styledTable tbody tr:nth-child(even) {
-  background: #ebebeb;
+  background: var(--off-page);
 }
 
 .styledTable tbody tr:hover {
-  background: #c2c2c2;
+  background: var(--off-page-2);
 }
 
 .styledTable tbody tr td {
