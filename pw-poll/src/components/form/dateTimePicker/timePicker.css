@@ -29,12 +29,14 @@
 .rc-time-picker-panel {
   top: 0px;
   left: 0px;
+  color: var(--text-color);
 }
 .rc-time-picker-panel-inner {
-  background: white;
+  background: var(--page-bg);
   border: none;
   border-radius: 0px;
   padding: 0px;
+  box-shadow: 0px 0px 5px var(--shadow);
 }
 /* .rc-time-picker-input, */
 .rc-time-picker-panel-input {
@@ -43,6 +45,8 @@
   border-radius: 0px;
   font-size: 1.2rem;
   font-family: var(--body-font);
+  color: var(--text-color);
+  background: var(--page-bg);
   padding: 0px;
   margin: 0px;
   width: 160px;
@@ -51,6 +55,7 @@
   margin: 0px;
   padding: 1px;
   color: black;
+  background: var(--page-bg);
 }
 .rc-time-picker-icon {
   display: none;
@@ -68,7 +73,7 @@
 }
 .rc-time-picker-panel-select-active {
   scrollbar-width: 2px;
-  scrollbar-color: black;
+  scrollbar-color: var(--text-color);
 }
 .rc-time-picker-panel-select-active::-webkit-scrollbar {
   width: 2px;
@@ -76,14 +81,14 @@
 .rc-time-picker-panel-select-active::-webkit-scrollbar-thumb {
   background: #6d6d6d65;
 }
-.rc-time-picker-panel-select-active > ul > li:hover:after {
-  position: absolute;
+.rc-time-picker-panel-select-active > ul > li:hover {
+  /* position: absolute;
   content: "";
   top: 0px;
   left: 0px;
   width: 100%;
-  height: 100%;
-  background: #00000015;
+  height: 100%; */
+  background: var(--off-page);
 }
 .rc-time-picker-panel-select-active
   > ul

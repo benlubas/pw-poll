@@ -146,7 +146,7 @@
 }
 
 .homeCard.flip .inner .vote .instructions li {
-  color: var(--text-color);
+  color: white;
   font-size: 1.1rem;
   margin-bottom: 5px;
 }

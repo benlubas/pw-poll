@@ -6,6 +6,7 @@ import {
 } from "../../form/dateTimePicker/dateTimePicker";
 import Textarea from "../../form/textarea/Textarea";
 import { url } from "../../../url";
+import { securePost } from "./../../../hooks/securePost";
 
 export default function AddPoll(props) {
   const [values, setValues] = useState({
@@ -31,15 +32,7 @@ export default function AddPoll(props) {
   };
   const submit = async () => {
     const purl = url + `poll/`;
-    let pollRes = await fetch(purl, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...values }),
-    });
-    pollRes = await pollRes.json();
+    let pollRes = await securePost(purl, values);
     return pollRes._id;
   };
 

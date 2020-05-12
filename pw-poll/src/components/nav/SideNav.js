@@ -13,10 +13,11 @@ import {
   PollsIcon,
   QuestionMarkIcon,
   SingleRightArrow,
-  ColunmsIcon
+  ColunmsIcon,
 } from "./../svg";
 
 import "./sideNav.css";
+import ThemeToggle from "../ThemeToggle";
 
 export default function SideNav() {
   const session = useContext(UserProvider.context);
@@ -43,7 +44,7 @@ export default function SideNav() {
       >
         <div className="nav-items">
           <div
-            onTouchEnd={e => {
+            onTouchEnd={(e) => {
               if (!touched) e.preventDefault();
               setTouched(!touched);
             }}
@@ -55,18 +56,19 @@ export default function SideNav() {
               </div>
               <div className="text">POLL W</div>
               <SingleRightArrow
-                onTouchEnd={e => {
+                onTouchEnd={(e) => {
                   e.preventDefault();
                   setTouched(!touched);
                 }}
                 className="arrows"
               />
+              <ThemeToggle nav />
             </Link>
           </div>
           {session.admin ? (
             <>
               <div
-                onClick={e => {
+                onClick={(e) => {
                   if (!touched) e.preventDefault();
                   setTouched(!touched);
                 }}
@@ -84,7 +86,7 @@ export default function SideNav() {
                 </NavLink>
               </div>
               <div
-                onClick={e => {
+                onClick={(e) => {
                   if (!touched) e.preventDefault();
                   setTouched(!touched);
                 }}
@@ -105,7 +107,7 @@ export default function SideNav() {
                 </NavLink>
               </div>
               <div
-                onClick={e => {
+                onClick={(e) => {
                   if (!touched) e.preventDefault();
                   setTouched(!touched);
                 }}
@@ -127,7 +129,7 @@ export default function SideNav() {
                 </NavLink>
               </div>
               <div
-                onClick={e => {
+                onClick={(e) => {
                   if (!touched) e.preventDefault();
                   setTouched(!touched);
                 }}
@@ -147,7 +149,7 @@ export default function SideNav() {
             </>
           ) : (
             <div
-              onClick={e => {
+              onClick={(e) => {
                 if (!touched) e.preventDefault();
                 setTouched(!touched);
               }}

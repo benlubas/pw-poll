@@ -27,6 +27,7 @@ export function UserProvider(props) {
         } else {
           res.admin = false;
         }
+        console.log(res);
         setUser(res);
       })
       .catch((err) => console.log(err));

@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import Card from "../../card/Card";
-import { bold } from "../../../pipes";
 
 const tally = (votes, options) => {
   let count = new Array(options.length).fill(0);

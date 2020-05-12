@@ -2,18 +2,37 @@
   color: black;
   padding: 10px;
   margin: 10px;
-  width: calc(100% - 20px);
-  position: relative;
+  width: 100%;
+  max-width: 800px;
+  top: 15px;
+  opacity: 0;
+  left: 50%;
+  transform: translate(-50%);
+  position: absolute;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   border: 1px solid #00000062;
   border-radius: 5px;
+  padding-right: 15px;
+  animation: alertIn 0.35s forwards ease;
+}
+
+@keyframes alertIn {
+  from {
+    opacity: 0;
+    top: 15px;
+  }
+  to {
+    opacity: 1;
+    top: 25px;
+  }
 }
 
 .alert .title {
   font-size: 1.1rem;
   display: -webkit-box;
   display: -ms-flexbox;
+  color: inherit;
   display: flex;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
@@ -24,6 +43,7 @@
 .alert .title .close {
   position: absolute;
   top: 0px;
+  color: inherit;
   right: 0px;
   transform: translateY(10%);
   font-family: Arial, Helvetica, sans-serif;

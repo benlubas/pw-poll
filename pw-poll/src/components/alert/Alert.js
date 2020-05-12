@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 
 import "./alert.css";
 
@@ -6,23 +7,27 @@ export default function Alert(props) {
   const [show, setShow] = useState(
     props.show === undefined ? true : props.show
   );
-  return show ? (
-    <div
-      className={`alert ${
-        props.variant === undefined ? "warning" : props.variant
-      }`}
-    >
-      <div className="title">
-        {props.children}
+  const alertRoot = document.getElementById("modal-root");
+  return show
+    ? ReactDOM.createPortal(
         <div
-          onClick={() => {
-            setShow(false);
-          }}
-          className="pointer close"
+          className={`alert ${
+            props.variant === undefined ? "warning" : props.variant
+          }`}
         >
-          X
-        </div>
-      </div>
-    </div>
-  ) : null;
+          <div className="title">
+            {props.children}
+            <div
+              onClick={() => {
+                setShow(false);
+              }}
+              className="pointer close"
+            >
+              X
+            </div>
+          </div>
+        </div>,
+        alertRoot
+      )
+    : null;
 }

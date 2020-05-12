@@ -20,7 +20,12 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  if (req.user && req.user.admin && req.isAuthenticated()) {
+  if (
+    req.user &&
+    req.user.admin &&
+    req.user.class === 9999 &&
+    req.isAuthenticated()
+  ) {
     const admin = new Admin({
       email: req.body.email,
       class: req.body.class,
@@ -39,7 +44,12 @@ router.post("/", async (req, res) => {
   }
 });
 router.put("/", async (req, res) => {
-  if (req.user && req.user.admin && req.isAuthenticated()) {
+  if (
+    req.user &&
+    req.user.admin &&
+    req.user.admin === 9999 &&
+    req.isAuthenticated()
+  ) {
     Admin.findByIdAndUpdate(
       req.body._id,
       {
@@ -63,7 +73,12 @@ router.put("/", async (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-  if (req.user && req.user.admin && req.isAuthenticated()) {
+  if (
+    req.user &&
+    req.user.admin &&
+    req.user.class === 9999 &&
+    req.isAuthenticated()
+  ) {
     Admin.findByIdAndRemove(
       req.params.id,
       { useFindAndModify: false },

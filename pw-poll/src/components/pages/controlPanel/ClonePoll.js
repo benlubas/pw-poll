@@ -38,6 +38,7 @@ export default function ClonePoll() {
         value={form.cloneName}
         onChange={(val) => setForm({ ...form, cloneName: val })}
       />
+      <br />
       {form.poll !== "" && form.cloneName !== "" ? (
         <button
           onClick={async () => {

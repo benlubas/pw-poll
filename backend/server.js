@@ -10,7 +10,6 @@ const oAuthStrategy = require("passport-google-oauth20");
 require("dotenv").config();
 
 const pollRouter = require("./routes/poll.route");
-const groupRouter = require("./routes/group.route");
 const adminRouter = require("./routes/admin.route");
 const questionRouter = require("./routes/question.route");
 const authRouter = require("./routes/auth");
@@ -29,7 +28,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/poll", pollRouter);
-app.use("/group", groupRouter);
 app.use("/question", questionRouter);
 app.use("/admin", adminRouter);
 

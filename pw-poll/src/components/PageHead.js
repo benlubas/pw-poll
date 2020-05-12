@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router";
-import ThemeToggle from "./ThemeToggle";
 
 export default function PageHead({ title, noBack, ...props }) {
   const hist = useHistory();
@@ -18,7 +17,6 @@ export default function PageHead({ title, noBack, ...props }) {
           </div>
         )}
       </div>
-      <ThemeToggle />
     </div>
   );
 }

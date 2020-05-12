@@ -2,30 +2,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap");
 
 nav {
-  // --background: #242424;
-  // // --background: #e60000;
-  // --logo-bg: #424242;
-  // // --logo-bg: #b80000;
-  // --text: white;
-  // --nav-font: "Nunito", sans-serif;
-  // --nav-font-size: 1.5rem;
-  // --icon-color: #a5a5a5;
-  // // --icon-color: #ffffff;
-  // --icon-alt: var(--primary);
-  // // --icon-alt: white;
-  // --icon-bg: #7a7a7a;
   --logo-bg: var(--nav-logo);
   --background: var(--nav-bg);
   --text: white;
   --nav-font: "Nunito", sans-serif;
   --nav-font-size: 1.5rem;
-  --icon-color: var(--default);
+  --icon-color: var(--nav-icon);
   --icon-alt: var(--primary);
-  --icon-bg: var(--off-page-2, #7a7a7a);
+  --icon-bg: var(--off-page-2);
 
   position: fixed;
   z-index: 10;
-  // top: 0px;
   left: 0px;
 
   background: var(--background);
@@ -39,7 +26,9 @@ nav {
 
   transition: width 0.15s ease-out;
   overflow: hidden;
-
+  .nav-theme {
+    display: none;
+  }
   .logo {
     transform: translate(0px);
   }
@@ -54,6 +43,11 @@ nav {
       .text {
         display: inline-block;
       }
+    }
+    .nav-theme {
+      display: inline-block;
+      margin-left: auto;
+      margin-right: 5px;
     }
   }
 }
@@ -139,8 +133,9 @@ nav {
         background: var(--logo-bg);
       }
       .arrows {
-        transform: translateY(-50%) rotate(-180deg);
-        left: calc(100% - 20px);
+        // transform: translateY(-50%) rotate(-180deg);
+        // left: calc(100% - 20px);
+        display: none;
       }
     }
   }

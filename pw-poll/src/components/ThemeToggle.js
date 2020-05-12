@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function ThemeToggle() {
+export default function ThemeToggle(props) {
   const [dark, setDark] = useState(
     window.localStorage.getItem("dark") === "true"
   );
@@ -8,18 +8,34 @@ export default function ThemeToggle() {
   if (dark) body.classList.add("dark");
   else body.classList.remove("dark");
 
+  const update = () => {
+    const body = document.querySelector("body");
+    if (!dark) body.classList.add("dark");
+    else body.classList.remove("dark");
+    window.localStorage.setItem("dark", !dark);
+    setDark(!dark);
+  };
+
   return (
     <div
-      className="theme-toggle pointer"
-      onClick={() => {
-        const body = document.querySelector("body");
-        if (!dark) body.classList.add("dark");
-        else body.classList.remove("dark");
-        window.localStorage.setItem("dark", !dark);
-        setDark(!dark);
+      className={
+        (props.children ? "" : "theme-toggle pointer") +
+        (props.nav ? " nav-theme" : "")
+      }
+      onTouchStart={(e) => {
+        e.preventDefault();
+        update();
+      }}
+      onClick={(e) => {
+        e.preventDefault();
+        update();
       }}
     >
-      <i className="fas fa-lg fa-moon"></i>
+      {props.children ? (
+        props.children
+      ) : (
+        <i className={"fas fa-lg fa-moon"}></i>
+      )}
     </div>
   );
 }
