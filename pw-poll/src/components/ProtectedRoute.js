@@ -12,12 +12,14 @@ export default function ProtectedRoute(props) {
       view = false;
     } else if (
       props.user === "student" &&
-      session.user.email.search("@student.colonialsd.org") === -1
+      session.user.email.search("@student.colonialsd.org") === -1 &&
+      !session.admin
     ) {
       view = false;
     }
   } else {
     view = false;
   }
-  return view ? <Route {...props} /> : <div>{hist.push("/")}</div>;
+  if (!view) hist.push("/");
+  return view ? <Route {...props} /> : <div></div>;
 }

@@ -36,7 +36,7 @@ export default function MCResults({ question, ...props }) {
       title={
         <div className="flex-space-between">
           <div>{question.text}</div>
-          <div>MC Choose {question.type.charAt(question.type.length - 1)}</div>
+          <div>MC - Choose {question.type.options.choose}</div>
         </div>
       }
     >

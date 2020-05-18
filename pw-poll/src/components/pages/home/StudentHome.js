@@ -28,7 +28,7 @@ export default function StudentHome({ year, adminView, ...props }) {
   const [pollData, pollLoading] = useSecureFetch(url + "poll/stud/" + fYear);
   let empty = true;
   return (
-    <div className="page-wrapper">
+    <div className="page-container">
       {adminView ? null : <PageHead title="Home" noBack />}
       <div className="cards">
         {!pollLoading ? (

@@ -22,10 +22,10 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
-    console.log("result: ", result);
+    // console.log("result: ", result);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
-    console.log("reordered: ", result);
+    // console.log("reordered: ", result);
 
     return result;
   };

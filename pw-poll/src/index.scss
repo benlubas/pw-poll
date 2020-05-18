@@ -41,7 +41,7 @@ $warningBg: #ffdc15;
   --off-page: #353535;
   --off-page-2: #454545;
   --primary: #c0141c;
-  --primary-darker: #9e0e16;
+  --primary-darker: #a70e16;
   --success: #82e26a;
   --danger: #d12e2e;
   --warning: #ffea71;
@@ -264,10 +264,10 @@ pre {
   display: flex;
   box-sizing: border-box;
   align-items: center;
-  width: 100%;
+  width: 95%;
   max-width: 750px;
   flex-direction: column;
-  padding: 100px 15px 100px 15px;
+  padding: 70px 15px 70px 15px;
   margin: 10px;
   position: relative;
   &:hover:after {

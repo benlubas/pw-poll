@@ -155,7 +155,7 @@ app.listen(port, () => {
 
 app.get("/students/:class", (req, res) => {
   console.log("/students/:class");
-  const sql = `SELECT firstName, middleName, lastName, id FROM students WHERE class = '${req.params.class}'`;
+  const sql = `SELECT firstName, middleName, lastName, id, gender FROM students WHERE class = '${req.params.class}'`;
   try {
     conn.query(sql, (err, names) => {
       if (err) {

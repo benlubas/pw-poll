@@ -23,7 +23,6 @@ export default function ThemeToggle(props) {
         (props.nav ? " nav-theme" : "")
       }
       onTouchStart={(e) => {
-        e.preventDefault();
         update();
       }}
       onClick={(e) => {

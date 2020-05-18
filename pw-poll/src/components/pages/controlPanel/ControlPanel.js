@@ -79,10 +79,9 @@ export default function ControlPanel() {
           </Card>
           <Card title={`${editing === null ? "Add an" : "Edit"} Admin`}>
             <div className="md-padding">
-              There are two levels of admin: "normal" and "super". Normal admins
-              have a grad year, and they can only interact with polls for that
-              assigned year. Super admins can do everything and are also able to
-              create and manage other admins.
+              There are two levels of admin: "normal" and "super". The only
+              difference is that super admins are allowed to add and edit other
+              admins.
             </div>
             {!showAdminForm ? (
               <div className="flex-container">

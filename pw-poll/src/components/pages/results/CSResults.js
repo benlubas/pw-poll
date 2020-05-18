@@ -25,7 +25,10 @@ export default function CSResults({ question, ...props }) {
       title={
         <div className="flex-space-between">
           <div>{question.text}</div>
-          <div>Choose Student</div>
+          <div>
+            Choose {question.type.options.choose} Student
+            {question.type.options.choose === 1 ? "" : "s"}
+          </div>
         </div>
       }
     >

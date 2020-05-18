@@ -31,6 +31,7 @@ export default function Results() {
     hist.push("/results/" + id);
   };
 
+  //!this page needs to be updated for the quesiton.type.options.choose thing
   const pollList = loading ? (
     <LoadingScreen />
   ) : (
@@ -87,13 +88,13 @@ const QuestionsWithResults = ({ poll, ...props }) => {
     <>
       {questions.map((question, index) => (
         <div key={question._id} className="resultsItem">
-          {question.type.substr(0, 2) === "CS" ? (
+          {question.type.str === "CS" ? (
             <CSResults key={question._id} question={question} />
-          ) : question.type === "OE" ? (
+          ) : question.type.str === "OE" ? (
             <OEResults key={question._id} question={question} />
-          ) : (
+          ) : question.type.str === "MC" ? (
             <MCResults key={question._id} question={question} />
-          )}
+          ) : null}
         </div>
       ))}
     </>

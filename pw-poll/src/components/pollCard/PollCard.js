@@ -41,7 +41,7 @@ const PollCard = ({ data, ...props }) => {
       </div>
       <div className="flex-space-between">
         {!editing ? (
-          <EditSVG onClick={() => setEditing(true)} />
+          <EditSVG className="pointer" onClick={() => setEditing(true)} />
         ) : (
           <button
             onClick={() => {
@@ -54,7 +54,7 @@ const PollCard = ({ data, ...props }) => {
           </button>
         )}
         <ModalSet
-          customTrigger={<CircleXSVG />}
+          customTrigger={<CircleXSVG className="pointer" />}
           height="200px"
           onConfirm={() => {
             props.remove("poll", data._id);
@@ -135,20 +135,6 @@ const PollCard = ({ data, ...props }) => {
         </div>
         <br />
         <div className="otherInfo">
-          {/* <div>
-            {bold("Who can view results: ")}
-            {editing ? (
-              <Dropdown
-                clicked={true}
-                label="Viewable By"
-                values={["Admins", "Sponsors", "Teachers", "Students", "All"]}
-                value={edit.viewableBy}
-                onChange={(val) => setEdit({ ...edit, viewableBy: val })}
-              />
-            ) : (
-              data.viewableBy
-            )}
-          </div> */}
           <div>
             {bold("Who can vote? ")}
             {edit.gradYears.map((eVal, index) => (

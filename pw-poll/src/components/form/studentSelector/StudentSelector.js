@@ -11,6 +11,7 @@ export default function StudentSelector({
   label,
   gradYear,
   onFullName,
+  gender,
   ...props
 }) {
   const [names] = useFetch(url + "students/" + gradYear);
@@ -18,6 +19,7 @@ export default function StudentSelector({
   const [disp, setDisp] = useState("");
   const [error, setError] = useState(false);
   const ref = useRef(null);
+  const nGender = gender[0] === "Male" ? 0 : gender[0] === "Female" ? 1 : 2;
 
   useEffect(() => {
     if (names) {
@@ -108,23 +110,25 @@ export default function StudentSelector({
       <div className="input-error">{error}</div>
       <div className={`sd-dropdown ${!focus ? "smol" : ""}`}>
         {names
-          ? names.map((v, i) => {
-              let name = makeName(v);
-              return name.toLowerCase().includes(disp.toLowerCase()) ? (
-                <div
-                  role="button"
-                  onMouseDown={() => {
-                    setDisp(name);
-                    onFullName({ id: v.id, name: name });
-                  }}
-                  value={v.id}
-                  key={i}
-                  className="sd-drop-item"
-                >
-                  {name}
-                </div>
-              ) : null;
-            })
+          ? names
+              .filter((s) => s.gender === nGender || nGender === 2)
+              .map((v, i) => {
+                let name = makeName(v);
+                return name.toLowerCase().includes(disp.toLowerCase()) ? (
+                  <div
+                    role="button"
+                    onMouseDown={() => {
+                      setDisp(name);
+                      onFullName({ id: v.id, name: name });
+                    }}
+                    value={v.id}
+                    key={i}
+                    className="sd-drop-item"
+                  >
+                    {name}
+                  </div>
+                ) : null;
+              })
           : null}
       </div>
     </div>

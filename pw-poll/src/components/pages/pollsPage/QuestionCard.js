@@ -3,33 +3,18 @@ import Card from "./../../card/Card";
 import Input from "./../../form/input/Input";
 import { EditSVG, CircleXSVG } from "./../../svg";
 import { ModalSet } from "./../../modal/Modal";
-import { bold, getGradYears } from "./../../../pipes";
+import { bold, getGradYears, removeBlanks } from "./../../../pipes";
 import RadioGroup from "./../../form/radioGroup/RadioGroup";
 import SelectionBar from "./../../form/selectionBar/SelectionBar";
 import EditableListItem from "../../editableListItem/EditableListItem";
 import { securePut } from "./../../../hooks/securePut";
 import { url } from "./../../../url";
 
-const removeBlanks = (arr) => {
-  let c = [];
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] !== "") {
-      c.push(arr[i]);
-    }
-  }
-  return c;
-};
-
 export default function QuestionCard({ remove, info, index, ...props }) {
   const [data, setData] = useState({ ...info });
   const [edit, setEdit] = useState({ ...data });
   const [editing, setEditing] = useState(false);
-  const [choose, setChoose] = useState(
-    //MC or CS (Choose Student) will have a number after them.
-    info.type.charAt(0) === "M" || info.type.charAt(0) === "C"
-      ? info.type.substring(2)
-      : 1
-  );
+  const [choose, setChoose] = useState(info.type.options.choose);
   const [newOption, setNewOption] = useState("");
 
   const title = (
@@ -61,6 +46,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
           </div>
         ) : (
           <EditSVG
+            className="pointer"
             onClick={() => {
               setEditing(true);
             }}
@@ -68,7 +54,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
         )}
         <ModalSet
           title="Are you sure you want to delete this question?"
-          customTrigger={<CircleXSVG />}
+          customTrigger={<CircleXSVG className="pointer" />}
           onConfirm={() => {
             remove("question", data._id, index);
             return true;
@@ -90,22 +76,30 @@ export default function QuestionCard({ remove, info, index, ...props }) {
           <>
             <div className="md-padding-v">
               {bold("Type:")}
-              {data.type && data.type.substr(0, 2) === "MC"
-                ? " Multiple Choice - Choose " +
-                  data.type.charAt(data.type.length - 1)
+              {data.type && data.type.str === "MC"
+                ? " Multiple Choice - Choose " + data.type.options.choose
                 : data.type === "OE"
                 ? " Open Ended"
-                : " Choose " + data.type.substr(2) + " Student(s)"}
+                : " Choose " +
+                  data.type.options.choose +
+                  " Student" +
+                  (data.type.options.choose === 1 ? "" : "s")}
             </div>
             <div className="md-padding-v">
-              {data.type && data.type.substr(0, 2) === "MC"
+              {data.type && data.type.str === "MC"
                 ? bold("Options: ")
-                : data.type && data.type.substr(0, 2) === "CS"
+                : data.type && data.type.str === "CS"
                 ? bold("Voters choose from students in the class of: ")
                 : null}
               {data.options.map((v, i) => (
                 <div key={v + i}>- {v}</div>
               ))}
+              <br />
+              {data.type.str === "CS" ? (
+                <div>
+                  {bold("Gender: ")} {data.type.options.gender}
+                </div>
+              ) : null}
             </div>
           </>
         ) : (
@@ -114,12 +108,18 @@ export default function QuestionCard({ remove, info, index, ...props }) {
               <SelectionBar
                 options={["Multiple Choice", "Open Ended", "Choose Student"]}
                 optionValues={["MC", "OE", "CS"]}
-                value={edit.type.substr(0, 2)}
-                onChange={(val) => setEdit({ ...edit, options: [], type: val })}
+                value={edit.type.str}
+                onChange={(val) =>
+                  setEdit({
+                    ...edit,
+                    options: [],
+                    type: { ...edit.type, str: val },
+                  })
+                }
               />
             </div>
             <div>
-              {edit.type && edit.type.substr(0, 2) === "MC" ? (
+              {edit.type && edit.type.str === "MC" ? (
                 <>
                   <br />
                   <Input
@@ -182,13 +182,28 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                     </button>
                   </div>
                 </>
-              ) : edit.type && edit.type.substr(0, 2) === "CS" ? (
+              ) : edit.type && edit.type.str === "CS" ? (
                 <>
                   <div>Which class will voters select from?</div>
                   <RadioGroup
                     options={getGradYears()}
                     value={edit.options}
                     onChange={(val) => setEdit({ ...edit, options: val })}
+                    inline
+                  />
+                  <div>Gender:</div>
+                  <RadioGroup
+                    options={["Male", "Female", "Neutral"]}
+                    value={edit.type.options.gender}
+                    onChange={(val) =>
+                      setEdit({
+                        ...edit,
+                        type: {
+                          ...edit.type,
+                          options: { ...edit.type.options, gender: val },
+                        },
+                      })
+                    }
                     inline
                   />
                   <br />
@@ -213,21 +228,24 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                   options: removeBlanks(edit.options),
                   pollID: props.pollID,
                 };
-                if (
-                  edit.type.substr(0, 2) === "MC" ||
-                  edit.type.substr(0, 2) === "CS"
-                ) {
-                  body = { ...body, type: body.type.substr(0, 2) + choose };
+                if (edit.type.str === "MC" || edit.type.str === "CS") {
+                  body = {
+                    ...body,
+                    type: {
+                      str: body.type.str,
+                      options: { ...body.type.options, choose: choose },
+                    },
+                  };
                 }
                 securePut(url + "question/" + edit._id, body);
-                if (
-                  edit.type.substr(0, 2) === "MC" ||
-                  edit.type.substr(0, 2) === "CS"
-                ) {
+                if (edit.type.str === "MC" || edit.type.str === "CS") {
                   setData({
                     ...edit,
                     options: removeBlanks(edit.options),
-                    type: edit.type.substr(0, 2) + choose,
+                    type: {
+                      str: body.type.str,
+                      options: { ...edit.type.options, choose: choose },
+                    },
                   });
                   setEdit({ ...edit, options: removeBlanks(edit.options) });
                 } else {

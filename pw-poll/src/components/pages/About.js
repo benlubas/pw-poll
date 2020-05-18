@@ -15,6 +15,8 @@ export default function About() {
         class elections and Seinor event voting (Homecomming and Superlatives);
         however, your class sponsors can create polls for anything at any time.
         <br /> <br />
+        Polls that you can vote in will show up on the home page.
+        <br /> <br />
         For more information about how the site was made you can click{" "}
         <Link className="link" to="/devInfo">
           here.

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useSecureFetch } from "./../../hooks/useSecureFetch";
 import { securePut } from "./../../hooks/securePut";
 import { useParams, useHistory } from "react-router";
@@ -10,9 +10,11 @@ import RadioGroup from "../form/radioGroup/RadioGroup";
 import Textarea from "../form/textarea/Textarea";
 import StudentSelector from "../form/studentSelector/StudentSelector";
 import PageHead from "../PageHead";
+import UserProvider from "../../providers/UserProvider";
 
 export default function StudentViewPoll(props) {
   const history = useHistory();
+  const session = useContext(UserProvider.context);
   const { id } = useParams();
   const [poll, loading] = useSecureFetch(url + "poll/" + id);
   const [questions, questionsLoading] = useSecureFetch(
@@ -31,15 +33,17 @@ export default function StudentViewPoll(props) {
   }, [questions]);
 
   const submit = () => {
-    let a = [];
-    answers.forEach((ans) => {
-      if (ans.value !== null) {
-        a.push(ans);
-      }
-    });
-    a.forEach((ans) => {
-      securePut(url + "question/addVote/" + ans._id, { vote: ans.value });
-    });
+    if (session && !session.admin) {
+      let a = [];
+      answers.forEach((ans) => {
+        if (ans.value !== null) {
+          a.push(ans);
+        }
+      });
+      a.forEach((ans) => {
+        securePut(url + "question/addVote/" + ans._id, { vote: ans.value });
+      });
+    }
   };
 
   const questionContent = questionsLoading ? (
@@ -47,12 +51,12 @@ export default function StudentViewPoll(props) {
   ) : (
     questions.map((q, i) => (
       <Card title={q.text} key={q._id}>
-        {q.type.substr(0, 2) === "MC" ? (
+        {q.type.str === "MC" ? (
           //MC
           <>
             <div className="small-text">
-              Please Select {q.type.charAt(q.type.length - 1)} Option
-              {q.type.charAt(q.type.length - 1) !== "1" ? "s" : ""}
+              Please Select {q.type.options.choose} Option
+              {q.type.options.choose !== "1" ? "s" : ""}
             </div>
             <RadioGroup
               value={answers ? answers[i].value : null}
@@ -61,11 +65,11 @@ export default function StudentViewPoll(props) {
                 c[i].value = val;
                 setAnswers(c);
               }}
-              choose={parseInt(q.type.charAt(q.type.length - 1))}
+              choose={parseInt(q.type.options.choose)}
               options={q.options}
             />
           </>
-        ) : q.type === "OE" ? (
+        ) : q.type.str === "OE" ? (
           //OE
           <Textarea
             label="Type your answer here"
@@ -79,11 +83,11 @@ export default function StudentViewPoll(props) {
               setAnswers(c);
             }}
           />
-        ) : q.type.substr(0, 2) === "CS" ? (
+        ) : q.type.str === "CS" ? (
           <div style={{ width: "var(--ta-width)" }}>
             <div>
-              Choose {q.type.substr(2)} student{" "}
-              {parseInt(q.type.substr(2)) === 1 ? "" : "s"}:
+              Choose {q.type.options.choose} student
+              {parseInt(q.type.options.choose) === 1 ? "" : "s"}:
             </div>
             <section className="selected-students">
               {answers &&
@@ -119,6 +123,7 @@ export default function StudentViewPoll(props) {
                   : []
               }
               gradYear={q.options[0]}
+              gender={q.type.options.gender}
               onFullName={(val) => {
                 let c = [...answers];
                 if (Array.isArray(c[i].value)) {
@@ -133,11 +138,7 @@ export default function StudentViewPoll(props) {
                 } else {
                   c[i].value = [val];
                 }
-                //check for number of answers;
-                console.log(parseInt(q.type.substr(2)));
-                console.log(c[i].value.length);
-                console.log(c[i].value);
-                if (c[i].value.length > parseInt(q.type.substr(2))) {
+                if (c[i].value.length > parseInt(q.type.options.choose)) {
                   c[i].value.shift();
                 }
                 setAnswers(c);
@@ -146,7 +147,7 @@ export default function StudentViewPoll(props) {
             <br />
           </div>
         ) : (
-          console.log("invalid question type: ", q.type)
+          console.log("invalid question type: ", q.type.str)
         )}
       </Card>
     ))
@@ -156,7 +157,7 @@ export default function StudentViewPoll(props) {
     <div className="page-container">
       <PageHead title={!loading ? poll.title : "Loading..."} />
       {questionContent}
-      {!questionsLoading ? (
+      {!questionsLoading && !session.admin ? (
         <button
           onClick={async (e) => {
             e.preventDefault();
@@ -166,6 +167,10 @@ export default function StudentViewPoll(props) {
           className="btn primary wide"
         >
           Submit
+        </button>
+      ) : session.admin ? (
+        <button className="btn primary wide">
+          This button doesn't work for admins
         </button>
       ) : null}
     </div>

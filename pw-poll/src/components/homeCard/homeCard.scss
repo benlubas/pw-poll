@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  min-height: 80vh;
   padding: 5px;
 }
 .homeCard {
@@ -70,7 +70,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      transition: transform 0.25s ease-in-out;
+      transition: all 0.25s ease-in-out;
       transform-style: preserve-3d;
       .front {
         backface-visibility: hidden;
