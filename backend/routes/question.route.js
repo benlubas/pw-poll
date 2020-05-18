@@ -264,19 +264,19 @@ router.delete("/purge/:pollID/", async (req, res) => {
 });
 
 router.delete("/all/reallyAll/", async (req, res) => {
-  // if (req.user && req.user.admin && req.isAuthenticated()) {
-  Question.deleteMany({}, (err, removed) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    } else res.json({ message: "All of the questions are gone" });
-  });
-  // } else {
-  //   res.json({
-  //     error: "Access Denied",
-  //     message: "You do not have the required access to do that",
-  //   });
-  // }
+  if (req.user && req.user.admin && req.isAuthenticated()) {
+    Question.deleteMany({}, (err, removed) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+      } else res.json({ message: "All of the questions are gone" });
+    });
+  } else {
+    res.json({
+      error: "Access Denied",
+      message: "You do not have the required access to do that",
+    });
+  }
 });
 
 module.exports = router;
