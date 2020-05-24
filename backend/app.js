@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -116,26 +115,6 @@ app.get("/", (req, res) => {
   res.send(process.env.SERVER_URL);
 });
 
-try {
-  mongoose.connect(
-    process.env.DB_CONN,
-    { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true },
-    (err) => {
-      if (!err) {
-        console.log("Connected to MongoDB");
-      } else {
-        console.log("Error");
-        console.log(err);
-      }
-    }
-  );
-} catch (err) {
-  console.log("error");
-  console.log(err);
-}
-mongoose.connection.on("error", (err) => {
-  console.log(err);
-});
 const conn = sql.createConnection({
   host: "localhost",
   user: "root",
