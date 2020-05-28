@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import "./dropdown.css";
 
-//?  @param values Array
-//?  @param value String
-//?  @param onChange () => {}
 export default function Dropdown({
   clicked,
   value,
@@ -23,12 +20,12 @@ export default function Dropdown({
     <div
       {...props}
       className={`dropWrapper ${
-        value !== "" || state.clicked ? "underline" : ""
+        (value !== "" && value !== -1) || state.clicked ? "underline" : ""
       } ${classes || ""}`}
     >
       <div
         className={`dropLabel ${
-          state.clicked || value !== "" ? "labelActive" : ""
+          state.clicked || (value !== "" && value !== -1) ? "labelActive" : ""
         }`}
       >
         {label === undefined ? "" : label}
@@ -37,9 +34,11 @@ export default function Dropdown({
         className={`select ${
           state.focus || value !== "" ? "selectActive" : ""
         }`}
+        value={value}
         onFocus={() => setState({ focus: true, clicked: true })}
         onBlur={() => setState({ ...state, focus: false })}
         onChange={(e) => {
+          console.log(e.target.value, options, values);
           onChange(
             e.target.value,
             options ? options[values.indexOf(e.target.value)] : false
@@ -49,7 +48,11 @@ export default function Dropdown({
       >
         {!state.clicked ? <option value="-1"></option> : null}
         {values.map((val, i) => (
-          <option key={val + i} value={val} disabled={disableFirst && i === 0}>
+          <option
+            key={val + i + Math.random()}
+            value={val}
+            disabled={disableFirst && i === 0}
+          >
             {options ? options[i] : val}
           </option>
         ))}

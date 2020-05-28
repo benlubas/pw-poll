@@ -19,7 +19,7 @@ export default function HomeCard(props) {
           </div>
           <div className="bottom">
             <div className="content">
-              <div className="descText">{props.desc}</div>
+              <div className="descText">{props.description}</div>
               <div className="endDate">Closes: {dateFormat(props.endDate)}</div>
             </div>
           </div>

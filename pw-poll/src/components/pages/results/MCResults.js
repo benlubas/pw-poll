@@ -4,15 +4,15 @@ import Card from "../../card/Card";
 const tally = (votes, options) => {
   let count = new Array(options.length).fill(0);
   for (let i = 0; i < votes.length; i++) {
-    if (Array.isArray(votes[i].vote)) {
-      votes[i].vote.forEach((vote) => {
+    if (Array.isArray(votes[i].response)) {
+      votes[i].response.forEach((vote) => {
         if (options.indexOf(vote) !== -1) {
           count[options.indexOf(vote)]++;
         }
       });
     } else {
-      if (options.indexOf(votes[i].vote) !== -1) {
-        count[options.indexOf(votes[i].vote)]++;
+      if (options.indexOf(votes[i].response) !== -1) {
+        count[options.indexOf(votes[i].response)]++;
       }
     }
   }
@@ -36,7 +36,7 @@ export default function MCResults({ question, ...props }) {
       title={
         <div className="flex-space-between">
           <div>{question.text}</div>
-          <div>MC - Choose {question.type.options.choose}</div>
+          <div>MC - Choose {question.typeOptions.choose}</div>
         </div>
       }
     >

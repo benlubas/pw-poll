@@ -43,7 +43,7 @@ export default function PollList({ remove, selected, setSelected, ...props }) {
             key={poll._id}
             remove={remove}
             onClick={() => setSelected(poll._id)}
-            onSave={newPoll => {
+            onSave={(newPoll) => {
               savePoll(newPoll, index);
             }}
           />
@@ -78,9 +78,8 @@ export default function PollList({ remove, selected, setSelected, ...props }) {
         >
           {props.showAddPoll ? (
             <AddPoll
-              save={(id, saved) => {
-                let np = { ...saved, _id: id };
-                delete np.questions;
+              save={(newPoll) => {
+                let np = { ...newPoll };
                 setPolls([np, ...polls]);
                 props.setShowAddPoll(false);
               }}

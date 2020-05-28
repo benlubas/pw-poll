@@ -16,7 +16,7 @@ export default function OEResults({ question, ...props }) {
       <div style={{ maxHeight: "500px", overflow: "scroll" }}>
         {question.votes.map((res, index) => (
           <div key={res.email + index}>
-            <div>{res.vote}</div>
+            <div>{res.response}</div>
             <hr />
           </div>
         ))}

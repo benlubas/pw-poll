@@ -33,6 +33,7 @@
 .selectedPoll {
   position: relative;
   transform: translate(10px);
+  z-index: 15;
 }
 
 .noQuestions {

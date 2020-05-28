@@ -26,22 +26,34 @@ export default function StudentViewPoll(props) {
     if (questions)
       setAnswers(
         questions.map((v) => ({
-          _id: v._id,
-          value: v.vote,
+          value: v.response,
+          qID: v.qID,
+          vID: v.vID,
+          pollID: v.pollID,
+          type: v.type,
         }))
       );
   }, [questions]);
-
   const submit = () => {
     if (session && !session.admin) {
       let a = [];
       answers.forEach((ans) => {
         if (ans.value !== null) {
-          a.push(ans);
+          a.push({ ...ans });
         }
       });
       a.forEach((ans) => {
-        securePut(url + "question/addVote/" + ans._id, { vote: ans.value });
+        console.log(ans);
+        securePut(url + "question/addVote/" + ans.vID, {
+          pollID: id,
+          vote:
+            ans.type === "OE"
+              ? [ans.value.replace(/['"\\]/g, "\\$&")]
+              : !Array.isArray(ans.value)
+              ? []
+              : ans.value,
+          qID: ans.qID,
+        });
       });
     }
   };
@@ -50,13 +62,13 @@ export default function StudentViewPoll(props) {
     <LoadingScreen />
   ) : (
     questions.map((q, i) => (
-      <Card title={q.text} key={q._id}>
-        {q.type.str === "MC" ? (
+      <Card title={q.text} key={q._id + q.text}>
+        {q.type === "MC" ? (
           //MC
           <>
             <div className="small-text">
-              Please Select {q.type.options.choose} Option
-              {q.type.options.choose !== "1" ? "s" : ""}
+              Please Select {q.typeOptions.choose} Option
+              {q.typeOptions.choose !== 1 ? "s" : ""}
             </div>
             <RadioGroup
               value={answers ? answers[i].value : null}
@@ -65,11 +77,11 @@ export default function StudentViewPoll(props) {
                 c[i].value = val;
                 setAnswers(c);
               }}
-              choose={parseInt(q.type.options.choose)}
+              choose={parseInt(q.typeOptions.choose)}
               options={q.options}
             />
           </>
-        ) : q.type.str === "OE" ? (
+        ) : q.type === "OE" ? (
           //OE
           <Textarea
             label="Type your answer here"
@@ -83,11 +95,11 @@ export default function StudentViewPoll(props) {
               setAnswers(c);
             }}
           />
-        ) : q.type.str === "CS" ? (
+        ) : q.type === "CS" ? (
           <div style={{ width: "var(--ta-width)" }}>
             <div>
-              Choose {q.type.options.choose} student
-              {parseInt(q.type.options.choose) === 1 ? "" : "s"}:
+              Choose {q.typeOptions.choose} student
+              {parseInt(q.typeOptions.choose) === 1 ? "" : "s"}:
             </div>
             <section className="selected-students">
               {answers &&
@@ -96,12 +108,12 @@ export default function StudentViewPoll(props) {
                 Array.isArray(answers[i].value) &&
                 answers[i].value.map((n, ni) => (
                   <div className="flex-space-between" key={ni}>
-                    <span style={{ marginBottom: "5px" }}>{n.name}</span>
+                    <span style={{ marginBottom: "5px" }}>{n}</span>
                     <i
                       onClick={() => {
                         let c = [...answers];
                         let t = c[i].value.filter(
-                          (filterVal) => filterVal.id !== n.id
+                          (filterVal) => filterVal !== n
                         );
                         c[i].value = t;
                         setAnswers(c);
@@ -123,22 +135,21 @@ export default function StudentViewPoll(props) {
                   : []
               }
               gradYear={q.options[0]}
-              gender={q.type.options.gender}
+              gender={q.typeOptions.gender}
               onFullName={(val) => {
                 let c = [...answers];
                 if (Array.isArray(c[i].value)) {
                   if (
-                    c[i].value.find(
-                      (selected) => selected.id === val.id + ""
-                    ) === undefined &&
-                    val.id !== null
+                    c[i].value.find((selected) => selected === val) ===
+                      undefined &&
+                    val !== ""
                   ) {
                     c[i].value.push(val);
                   }
                 } else {
                   c[i].value = [val];
                 }
-                if (c[i].value.length > parseInt(q.type.options.choose)) {
+                if (c[i].value.length > parseInt(q.typeOptions.choose)) {
                   c[i].value.shift();
                 }
                 setAnswers(c);
@@ -147,7 +158,7 @@ export default function StudentViewPoll(props) {
             <br />
           </div>
         ) : (
-          console.log("invalid question type: ", q.type.str)
+          console.log("invalid question type (this shouldn't happen): ", q.type)
         )}
       </Card>
     ))
@@ -156,6 +167,7 @@ export default function StudentViewPoll(props) {
   return (
     <div className="page-container">
       <PageHead title={!loading ? poll.title : "Loading..."} />
+      {!loading ? console.log("title", poll.title) : null}
       {questionContent}
       {!questionsLoading && !session.admin ? (
         <button

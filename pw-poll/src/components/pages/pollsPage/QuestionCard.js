@@ -14,8 +14,10 @@ export default function QuestionCard({ remove, info, index, ...props }) {
   const [data, setData] = useState({ ...info });
   const [edit, setEdit] = useState({ ...data });
   const [editing, setEditing] = useState(false);
-  const [choose, setChoose] = useState(info.type.options.choose);
+  const [choose, setChoose] = useState(info.typeOptions.choose);
   const [newOption, setNewOption] = useState("");
+
+  // console.log(data);
 
   const title = (
     <div className="flex-space-between">
@@ -76,28 +78,28 @@ export default function QuestionCard({ remove, info, index, ...props }) {
           <>
             <div className="md-padding-v">
               {bold("Type:")}
-              {data.type && data.type.str === "MC"
-                ? " Multiple Choice - Choose " + data.type.options.choose
+              {data.type === "MC"
+                ? " Multiple Choice - Choose " + data.typeOptions.choose
                 : data.type === "OE"
                 ? " Open Ended"
                 : " Choose " +
-                  data.type.options.choose +
+                  data.typeOptions.choose +
                   " Student" +
-                  (data.type.options.choose === 1 ? "" : "s")}
+                  (data.typeOptions.choose === 1 ? "" : "s")}
             </div>
             <div className="md-padding-v">
-              {data.type && data.type.str === "MC"
+              {data.type === "MC"
                 ? bold("Options: ")
-                : data.type && data.type.str === "CS"
+                : data.type === "CS"
                 ? bold("Voters choose from students in the class of: ")
                 : null}
-              {data.options.map((v, i) => (
-                <div key={v + i}>- {v}</div>
-              ))}
+              {data.type === "MC" || data.type === "CS"
+                ? data.options.map((v, i) => <div key={v + i}>- {v}</div>)
+                : null}
               <br />
-              {data.type.str === "CS" ? (
+              {data.type === "CS" ? (
                 <div>
-                  {bold("Gender: ")} {data.type.options.gender}
+                  {bold("Gender: ")} {data.typeOptions.gender}
                 </div>
               ) : null}
             </div>
@@ -108,7 +110,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
               <SelectionBar
                 options={["Multiple Choice", "Open Ended", "Choose Student"]}
                 optionValues={["MC", "OE", "CS"]}
-                value={edit.type.str}
+                value={edit.type}
                 onChange={(val) =>
                   setEdit({
                     ...edit,
@@ -119,7 +121,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
               />
             </div>
             <div>
-              {edit.type && edit.type.str === "MC" ? (
+              {edit.type === "MC" ? (
                 <>
                   <br />
                   <Input
@@ -182,7 +184,7 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                     </button>
                   </div>
                 </>
-              ) : edit.type && edit.type.str === "CS" ? (
+              ) : edit.type === "CS" ? (
                 <>
                   <div>Which class will voters select from?</div>
                   <RadioGroup
@@ -194,14 +196,11 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                   <div>Gender:</div>
                   <RadioGroup
                     options={["Male", "Female", "Neutral"]}
-                    value={edit.type.options.gender}
+                    value={edit.typeOptions.gender}
                     onChange={(val) =>
                       setEdit({
                         ...edit,
-                        type: {
-                          ...edit.type,
-                          options: { ...edit.type.options, gender: val },
-                        },
+                        typeOptions: { ...edit.typeOptions, gender: val },
                       })
                     }
                     inline
@@ -228,24 +227,19 @@ export default function QuestionCard({ remove, info, index, ...props }) {
                   options: removeBlanks(edit.options),
                   pollID: props.pollID,
                 };
-                if (edit.type.str === "MC" || edit.type.str === "CS") {
+                if (edit.type === "MC" || edit.type === "CS") {
                   body = {
                     ...body,
-                    type: {
-                      str: body.type.str,
-                      options: { ...body.type.options, choose: choose },
-                    },
+                    typeOptions: { ...body.typeOptions, choose: choose },
                   };
                 }
                 securePut(url + "question/" + edit._id, body);
-                if (edit.type.str === "MC" || edit.type.str === "CS") {
+                if (edit.type === "MC" || edit.type === "CS") {
                   setData({
                     ...edit,
                     options: removeBlanks(edit.options),
-                    type: {
-                      str: body.type.str,
-                      options: { ...edit.type.options, choose: choose },
-                    },
+                    type: body.type,
+                    typeOptions: { ...edit.typeOptions, choose: choose },
                   });
                   setEdit({ ...edit, options: removeBlanks(edit.options) });
                 } else {

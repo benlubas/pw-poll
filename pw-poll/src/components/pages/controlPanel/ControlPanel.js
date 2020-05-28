@@ -43,16 +43,12 @@ export default function ControlPanel() {
         console.log(newAdmin);
         setAdmins([...admins, newAdmin]);
       } else {
-        await securePut(url + "admin", {
-          ...form,
-          _id: editing,
-        });
         let c = [...admins];
         let i = c.findIndex((v) => v._id === editing);
-        c[i] = { ...c[i], ...form };
+        c[i] = { _id: c[i]._id, ...form };
+        await securePut(url + "admin", c[i]);
         setAdmins(c);
       }
-      console.log(admins);
       setForm({ email: "", class: "" });
       setEditing(null);
     }

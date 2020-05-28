@@ -14,22 +14,26 @@ export default function Textarea(props) {
 
       str
         .split("\n")
-        .forEach(l => (linecount += 1 + Math.floor(l.length / cols)));
+        .forEach((l) => (linecount += 1 + Math.floor(l.length / cols)));
 
       ref.current.rows = linecount;
     }
   }, [ref, props.value]);
-
   return (
     <div
       style={{ width: props.width || "150px" }}
       className={`taWrapper ${
-        props.value !== "" || focus ? "taUnderline" : ""
+        (props.value !== "" && props.value !== [""]) || focus
+          ? "taUnderline"
+          : ""
       }`}
     >
       <div
         className={
-          "outlines" + (focus || props.value !== "" ? " taActives" : "")
+          "outlines" +
+          (focus || (props.value !== "" && props.value !== [""])
+            ? " taActives"
+            : "")
         }
       >
         <span className="top"></span>
@@ -40,13 +44,17 @@ export default function Textarea(props) {
         <span></span>
       </div>
       <div
-        className={`taLabel ${focus || props.value !== "" ? "taActive" : ""}`}
+        className={`taLabel ${
+          focus || (props.value !== "" && props.value !== [""])
+            ? "taActive"
+            : ""
+        }`}
       >
         {props.label === undefined ? "" : props.label}
       </div>
       <textarea
         ref={ref}
-        onKeyUp={e => {
+        onKeyUp={(e) => {
           if (props.onEnter !== undefined && e.keyCode === 13) {
             props.onEnter();
           }
@@ -56,7 +64,7 @@ export default function Textarea(props) {
         value={props.value}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        onChange={e => {
+        onChange={(e) => {
           props.onChange(e.target.value);
         }}
       />

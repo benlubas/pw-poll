@@ -11,10 +11,9 @@ import { securePost } from "./../../../hooks/securePost";
 export default function AddPoll(props) {
   const [values, setValues] = useState({
     title: "",
-    desc: "",
+    description: "",
     startDate: new Date().toISOString().substr(0, 10),
     endDate: new Date().toISOString().substr(0, 10),
-    questions: [],
     gradYears: [],
   });
   const [ng, setNg] = useState("");
@@ -33,7 +32,7 @@ export default function AddPoll(props) {
   const submit = async () => {
     const purl = url + `poll/`;
     let pollRes = await securePost(purl, values);
-    return pollRes._id;
+    return pollRes;
   };
 
   return (
@@ -48,8 +47,10 @@ export default function AddPoll(props) {
         <div>
           <Textarea
             label="Description"
-            value={values.desc}
-            onChange={(newDesc) => setValues({ ...values, desc: newDesc })}
+            value={values.description}
+            onChange={(newDesc) =>
+              setValues({ ...values, description: newDesc })
+            }
             width="100%"
           />
         </div>
@@ -119,17 +120,15 @@ export default function AddPoll(props) {
         onClick={async (e) => {
           e.preventDefault();
           if (validate()) {
-            props.save(await submit(), values);
+            const res = await submit();
             setValues({
               title: "",
-              desc: "",
+              description: "",
               startDate: new Date().toISOString().substr(0, 10),
               endDate: new Date().toISOString().substr(0, 10),
-              viewInProgress: false,
-              questions: [],
               gradYears: [],
-              viewableBy: "",
             });
+            props.save(res);
           } else {
             console.log("invalid");
           }

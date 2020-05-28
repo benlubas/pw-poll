@@ -8,7 +8,7 @@ import { securePut } from "./../../../hooks/securePut";
 
 export default function PushPollForward() {
   const [form, setForm] = useState({
-    pollID: "",
+    pollID: -1,
     pollName: "",
     year: "",
   });
@@ -28,8 +28,14 @@ export default function PushPollForward() {
           style={{ flexGrow: "3", marginRight: "10px" }}
           label="Poll"
           value={form.pollID}
+          disableFirst
           onChange={(val, disp) => {
-            setForm({ ...form, pollID: val, pollName: disp });
+            setForm({
+              ...form,
+              pollID: val,
+              pollName: disp,
+              year: polls.find((p) => p._id + "" === val).gradYears[0],
+            });
           }}
           options={
             loading
@@ -43,10 +49,7 @@ export default function PushPollForward() {
           style={{ flexGrow: "1" }}
           value={form.year}
           onChange={(val) => setForm({ ...form, year: val })}
-          values={[
-            "Select Year",
-            ...[0, 0, 0, 0].map((v, i) => new Date().getFullYear() + i),
-          ]}
+          values={[...[0, 0, 0, 0].map((v, i) => new Date().getFullYear() + i)]}
         />
       </div>
       <ModalSet

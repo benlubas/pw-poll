@@ -12,13 +12,14 @@ export default function AddQuestion(props) {
     number: props.number,
     text: "",
     options: [],
-    type: { str: "MC", options: { choose: 1 } },
+    type: "MC",
+    typeOptions: { choose: 1 },
   });
   const [newOption, setNewOption] = useState("");
 
   const validate = () => {
     if (values.text === "") return false;
-    if (values.type.str === "MC" || values.type.str === "CS") {
+    if (values.type === "MC" || values.type === "CS") {
       if (values.options.length === 0) return false;
     }
     return true;
@@ -48,7 +49,7 @@ export default function AddQuestion(props) {
       />
       <div className="md-padding">
         <OptionBar
-          value={values.type.str}
+          value={values.type}
           options={[
             "Multiple Choice",
             "Open Ended",
@@ -60,44 +61,35 @@ export default function AddQuestion(props) {
             setValues({
               ...values,
               options: [],
-              type: { ...values.type, str: val },
+              type: val,
             })
           }
         />
       </div>
-      {values.type.str === "MC" ? (
+      {values.type === "MC" ? (
         <>
           <div>How many options may a student select? </div>
           <br />
           <Input
             label="Choose"
-            value={values.type.options.choose}
+            value={values.typeOptions.choose}
             onChange={(num) => {
               if (!isNaN(parseInt(num))) {
                 setValues({
                   ...values,
-                  type: {
-                    ...values.type,
-                    options: { ...values.type.options, choose: parseInt(num) },
-                  },
+                  typeOptions: { ...values.typeOptions, choose: num },
                 });
                 if (parseInt(num) === 0) {
                   setValues({
                     ...values,
-                    type: {
-                      ...values.type,
-                      options: { ...values.type.options, choose: "" },
-                    },
+                    typeOptions: { ...values.typeOptions, choose: "" },
                   });
                 }
               }
               if (num === "") {
                 setValues({
                   ...values,
-                  type: {
-                    ...values.type,
-                    options: { ...values.type.options, choose: "" },
-                  },
+                  typeOptions: { ...values.typeOptions, choose: "" },
                 });
               }
             }}
@@ -151,7 +143,7 @@ export default function AddQuestion(props) {
             </button>
           </div>
         </>
-      ) : values.type.str === "CS" ? (
+      ) : values.type === "CS" ? (
         <>
           <div>Which class will voters select from?</div>
           <RadioGroup
@@ -163,14 +155,11 @@ export default function AddQuestion(props) {
           <div>Gender:</div>
           <RadioGroup
             options={["Male", "Female", "Neutral"]}
-            value={values.type.options.gender}
+            value={values.typeOptions.gender}
             onChange={(val) =>
               setValues({
                 ...values,
-                type: {
-                  ...values.type,
-                  options: { ...values.type.options, gender: val },
-                },
+                typeOptions: { ...values.typeOptions, gender: val },
               })
             }
             inline
@@ -179,33 +168,27 @@ export default function AddQuestion(props) {
           <br />
           <Input
             label="Choose"
-            value={values.type.options.choose}
+            value={values.typeOptions.choose}
             onChange={(num) => {
               if (!isNaN(parseInt(num))) {
                 setValues({
                   ...values,
-                  type: {
-                    ...values.type,
-                    options: { ...values.type.options, choose: parseInt(num) },
+                  typeOptions: {
+                    ...values.typeOptions,
+                    choose: parseInt(num),
                   },
                 });
                 if (parseInt(num) === 0) {
                   setValues({
                     ...values,
-                    type: {
-                      ...values.type,
-                      options: { ...values.type.options, choose: "" },
-                    },
+                    typeOptions: { ...values.typeOptions, choose: "" },
                   });
                 }
               }
               if (num === "") {
                 setValues({
                   ...values,
-                  type: {
-                    ...values.type,
-                    options: { ...values.type.options, choose: "" },
-                  },
+                  typeOptions: { ...values.typeOptions, choose: "" },
                 });
               }
             }}
@@ -217,9 +200,9 @@ export default function AddQuestion(props) {
           if (validate()) {
             const res = await submit(props._id, values);
             if (res.error) {
-              alert("Error Adding Question" + res.error);
+              alert("Error Adding Question" + res.error + res.message);
             } else {
-              props.save(res);
+              props.save({ ...res[0] });
             }
           }
         }}

@@ -1,30 +1,44 @@
 const express = require("express");
 const router = express.Router();
 const Question = require("./../models/question.model");
+const conn = require("./../db");
 
 router.get("/", async (req, res) => {
+  const sql = `SELECT * FROM Questions`;
   try {
-    const foundQuestions = await Question.find().sort({ pollID: 1, number: 1 });
-    for (let i = 0; i < foundQuestions.length; i++) {
-      foundQuestions[i].votes = "privilaged";
-    }
-    res.json(foundQuestions);
+    conn.query(sql, (err, result) => {
+      if (err) {
+        res.status(400).json({ error: err });
+      } else {
+        result = result.map((r) => ({
+          ...r,
+          options: r.options.split(":::"),
+          typeOptions: JSON.parse(r.typeOptions),
+        }));
+        res.json(result);
+      }
+    });
   } catch (err) {
-    res.json({ message: err });
+    res.json({ error: err });
   }
 });
 router.get("/votes/:pollID", async (req, res) => {
-  // console.log("question/votes/");
   if (req.user && req.user.admin && req.isAuthenticated()) {
+    const sql = `SELECT * FROM Votes WHERE pollID='${req.params.pollID}'`;
     try {
-      const foundQuestions = await Question.find({
-        pollID: req.params.pollID,
-      }).sort({
-        number: 1,
+      conn.query(sql, (err, result) => {
+        if (err) {
+          res.status(400).json({ error: err });
+        } else {
+          result = result.map((r) => ({
+            ...r,
+            response: r.response.split(":::"),
+          }));
+          res.json(result);
+        }
       });
-      res.json(foundQuestions);
     } catch (err) {
-      res.json({ message: err });
+      res.json({ error: err });
     }
   } else {
     res.json({
@@ -34,46 +48,61 @@ router.get("/votes/:pollID", async (req, res) => {
   }
 });
 // Get all the questions from one poll;
+// with the votes
 router.get("/poll/:pollID", async (req, res) => {
+  // const sql = `SELECT *, Questions._id qID, Votes._id vID FROM Questions LEFT JOIN Votes ON Votes.questionID = Questions._id WHERE Questions.pollID='${req.params.pollID}'`;
+  const sql = `SELECT * FROM Questions WHERE Questions.pollID='${req.params.pollID}'`;
   try {
-    let foundQuestions = await Question.find({
-      pollID: req.params.pollID,
-    }).sort({ number: 1 });
-    let qs = [];
-    foundQuestions.forEach((val) => {
-      qs.push({ ...val._doc });
+    conn.query(sql, (err, result) => {
+      if (err) {
+        res.status(400).json({ error: err });
+      } else {
+        result = result.map((r) => ({
+          ...r,
+          options: r.options.split(":::"),
+          typeOptions: JSON.parse(r.typeOptions),
+          response: r.response ? r.response.split(":::") : "",
+        }));
+        res.json(result);
+      }
     });
-    for (let i = 0; i < qs.length; i++) {
-      for (let j = 0; j < qs[i].votes.length; j++) {
-        if (qs[i].votes[j].email === req.user.email) {
-          qs[i].vote = qs[i].votes[j].vote;
-        }
-      }
-      if (!qs[i].vote) {
-        qs[i].vote = null;
-      }
-      delete qs[i].votes;
-    }
-    res.json(qs);
   } catch (err) {
-    res.json({ message: err });
+    res.json({ error: err });
   }
 });
 
 router.post("/", async (req, res) => {
+  // console.log("question/");
   if (req.user && req.user.admin && req.isAuthenticated()) {
-    const question = new Question({
-      number: req.body.number,
-      text: req.body.text,
-      type: req.body.type,
-      pollID: req.body.pollID,
-      options: req.body.options || [],
-    });
+    // console.log(req.body);
+    const sql = `INSERT INTO Questions (text, number, type, typeOptions, options, pollID) VALUES ('${
+      req.body.text
+    }', '${req.body.number}', '${req.body.type}', '${JSON.stringify(
+      req.body.typeOptions
+    )}', '${req.body.options.join(":::")}', '${req.body.pollID}')`;
+    // console.log("SQL: " + sql);
     try {
-      const savedQuestion = await question.save();
-      res.json(savedQuestion);
+      conn.query(sql, (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(400).json({ error: err });
+        } else {
+          conn.query(
+            "SELECT * FROM Questions WHERE _id=LAST_INSERT_ID()",
+            (err, newQ) => {
+              if (err) throw err;
+              newQ = newQ.map((r) => ({
+                ...r,
+                options: r.options.split(":::"),
+                typeOptions: JSON.parse(r.typeOptions),
+              }));
+              res.json(newQ);
+            }
+          );
+        }
+      });
     } catch (err) {
-      res.json({ message: err });
+      res.json({ error: err });
     }
   } else {
     res.json({
@@ -86,12 +115,24 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   // console.log("question/:id");
   if (req.user && req.user.admin && req.isAuthenticated()) {
-    let q = await Question.findById(req.body._id);
-    q.options = req.body.options;
-    q.type = req.body.type;
-    q.text = req.body.text;
-    await q.save();
-    res.json({ message: "Updated" });
+    const sql = `UPDATE Questions SET text='${
+      req.body.text
+    }', options='${req.body.options.join(":::")}', type='${
+      req.body.type
+    }', typeOptions='${JSON.stringify(req.body.typeOptions)}' WHERE _id='${
+      req.params.id
+    }'`;
+    try {
+      conn.query(sql, (err, result) => {
+        if (err) {
+          res.status(400).json({ error: err });
+        } else {
+          res.json(result);
+        }
+      });
+    } catch (err) {
+      res.json({ error: err });
+    }
   } else {
     res.json({
       error: "Access Denied",
@@ -102,13 +143,17 @@ router.put("/:id", async (req, res) => {
 router.put("/order/:id/", async (req, res) => {
   // console.log("/question/order/:id");
   if (req.user && req.user.admin && req.isAuthenticated()) {
+    const sql = `UPDATE Questions SET number='${req.body.number}' WHERE _id='${req.params.id}'`;
     try {
-      let q = await Question.findById(req.params.id);
-      q.number = req.body.number;
-      await q.save();
-      res.json({ message: "Reordered" });
-    } catch (e) {
-      console.log(e);
+      conn.query(sql, (err, result) => {
+        if (err) {
+          res.status(400).json({ error: err });
+        } else {
+          res.json(result);
+        }
+      });
+    } catch (err) {
+      res.json({ error: err });
     }
   } else {
     res.json({
@@ -118,23 +163,28 @@ router.put("/order/:id/", async (req, res) => {
   }
 });
 
-router.put("/addVote/:id", async (req, res) => {
+router.put("/addVote/:voteID", async (req, res) => {
+  // console.log("/addVote");
   if (req.user) {
-    let q = await Question.findById(req.params.id);
-    let changing = false;
-    for (let i = 0; i < q.votes.length; i++) {
-      if (q.votes[i].email === req.user.email) {
-        changing = true;
-        q.votes[i].vote = req.body.vote;
-        break;
-      }
+    const sql = `INSERT INTO Votes (_id, questionID, pollID, studentEmail, response) VALUES (${
+      req.params.voteID === "null" ? null : req.params.voteID
+    }, '${req.body.qID}', '${req.body.pollID}', '${
+      req.user.email
+    }', '${req.body.vote.join(
+      ":::"
+    )}') ON DUPLICATE KEY UPDATE response='${req.body.vote.join(":::")}'`;
+    try {
+      conn.query(sql, (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(400).json({ error: err });
+        } else {
+          res.json(result);
+        }
+      });
+    } catch (err) {
+      res.json({ error: err });
     }
-    if (!changing) {
-      q.votes.push({ email: req.user.email, vote: req.body.vote });
-    }
-    q.markModified("votes");
-    let response = await q.save();
-    res.json({ message: "done", res: response });
   } else {
     res.json({ message: "no user" });
   }
@@ -142,25 +192,18 @@ router.put("/addVote/:id", async (req, res) => {
 
 router.put("/pushForward/:pollID/:year", (req, res) => {
   if (req.user && req.user.admin && req.isAuthenticated()) {
-    Question.find({ pollID: req.params.pollID }, (err, questions) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(questions);
-        try {
-          questions.map((q, index) => {
-            if (q.type.substr(0, 2) === "CS") {
-              q.options = [req.params.year];
-            }
-            return q;
-          });
-          questions.forEach((q) => q.save());
-        } catch (err) {
-          console.log(err);
-          res.json({ message: "It worked" });
+    const sql = `UPDATE Questions SET options='${req.params.year}' WHERE pollID='${req.params.pollID}'`;
+    try {
+      conn.query(sql, (err, result) => {
+        if (err) {
+          res.status(400).json({ error: err });
+        } else {
+          res.json(result);
         }
-      }
-    });
+      });
+    } catch (err) {
+      res.json({ error: err });
+    }
   } else {
     res.json({
       error: "Access Denied",
@@ -170,26 +213,28 @@ router.put("/pushForward/:pollID/:year", (req, res) => {
 });
 router.put("/clone/:pollID/:newPollID", (req, res) => {
   if (req.user && req.user.admin && req.isAuthenticated()) {
+    const sql = `INSERT INTO Questions (text, number, options, type, typeOptions) SELECT text, number, options, type, typeOptions FROM Questions WHERE pollID='${req.params.pollID}'`;
     try {
-      Question.find({ pollID: req.params.pollID }, (err, questions) => {
+      conn.query(sql, (err, result) => {
         if (err) {
           console.log(err);
+          res.status(400).json({ error: err });
         } else {
-          try {
-            questions.forEach((q) => {
-              let n = { ...q._doc, pollID: req.params.newPollID, votes: [] };
-              delete n._id;
-              delete n.__v;
-              let nq = new Question({ ...n });
-              nq.save();
-            });
-          } catch (err) {
-            console.log(err);
-          }
+          conn.query(
+            `UPDATE Questions SET pollID='${req.params.newPollID}' WHERE pollID IS NULL`,
+            (err, response2) => {
+              if (err) {
+                console.log(err);
+                res.status(400).json({ error: err });
+              } else {
+                res.json(response2);
+              }
+            }
+          );
         }
       });
     } catch (err) {
-      console.log(err);
+      res.json({ error: err });
     }
   } else {
     res.json({
@@ -201,23 +246,17 @@ router.put("/clone/:pollID/:newPollID", (req, res) => {
 
 router.put("/clearVotes/:pollID", (req, res) => {
   if (req.user && req.user.admin && req.isAuthenticated()) {
+    const sql = `DELETE FROM Votes WHERE pollID='${req.params.pollID}'`;
     try {
-      Question.find({ pollID: req.params.pollID }, (err, questions) => {
+      conn.query(sql, (err, result) => {
         if (err) {
-          console.log(err);
+          res.status(400).json({ error: err });
         } else {
-          try {
-            questions.forEach((q) => {
-              q.votes = [];
-              q.save();
-            });
-          } catch (err) {
-            console.log(err);
-          }
+          res.json(result);
         }
       });
     } catch (err) {
-      console.log(err);
+      res.json({ error: err });
     }
   } else {
     res.json({
@@ -229,16 +268,18 @@ router.put("/clearVotes/:pollID", (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   if (req.user && req.user.admin && req.isAuthenticated()) {
-    Question.findByIdAndRemove(
-      req.params.id,
-      { useFindAndModify: false },
-      (err, removed) => {
+    const sql = `DELETE FROM Questions WHERE _id='${req.params.id}'`;
+    try {
+      conn.query(sql, (err, result) => {
         if (err) {
-          console.log(err);
-          res.json({ message: "Server Error" });
-        } else res.json(removed);
-      }
-    );
+          res.status(400).json({ error: err });
+        } else {
+          res.json(result);
+        }
+      });
+    } catch (err) {
+      res.json({ error: err });
+    }
   } else {
     res.json({
       error: "Access Denied",
@@ -249,12 +290,18 @@ router.delete("/:id", async (req, res) => {
 
 router.delete("/purge/:pollID/", async (req, res) => {
   if (req.user && req.user.admin && req.isAuthenticated()) {
-    Question.deleteMany({ pollID: req.params.pollID }, (err, removed) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send(err);
-      } else res.json({ message: "questions clensed" });
-    });
+    const sql = `DELETE FROM Questions WHERE pollID='${req.params.pollID}'`;
+    try {
+      conn.query(sql, (err, result) => {
+        if (err) {
+          res.status(400).json({ error: err });
+        } else {
+          res.json(result);
+        }
+      });
+    } catch (err) {
+      res.json({ error: err });
+    }
   } else {
     res.json({
       error: "Access Denied",

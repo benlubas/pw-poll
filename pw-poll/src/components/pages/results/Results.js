@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSecureFetch } from "../../../hooks/useSecureFetch";
 import LoadingScreen from "../../loadingScreen/LoadingScreen";
 import Table from "./../../table/Table";
@@ -65,11 +65,13 @@ export default function Results() {
         <>
           <div className="resultsItem">
             <PageHead
-              title={titlecase(polls.find((elem) => elem._id === pollID).title)}
+              title={titlecase(
+                polls.find((elem) => elem._id + "" === pollID).title
+              )}
             />
           </div>
           <QuestionsWithResults
-            poll={polls.find((elem) => elem._id === pollID)}
+            poll={polls.find((elem) => elem._id + "" === pollID)}
           />
         </>
       )}
@@ -78,25 +80,62 @@ export default function Results() {
 }
 
 const QuestionsWithResults = ({ poll, ...props }) => {
-  const [questions, questionsLoading] = useSecureFetch(
+  const [votes, votesLoading] = useSecureFetch(
     url + "question/votes/" + poll._id
   );
+  const [questionsData, questionsLoading] = useSecureFetch(
+    url + "question/poll/" + poll._id
+  );
+  //everything is named really stupidly now b/c I used a different DB at first.
+  //But questions.map, that questions obj needs to contain questions and their
+  //votes in a way that they used to be stored, So I'm creating that obj here.
+  const [questions, setQuestions] = useState(null);
+  useEffect(() => {
+    console.log(votes);
+    if (!votesLoading && !questionsLoading) {
+      setQuestions(
+        questionsData.map((qData, index) => {
+          console.log(qData);
+          //new data
+          let nData = { ...qData };
+          nData.votes = votes.filter((vote) => vote.questionID === qData.qID);
+          return { ...nData };
+        })
+      );
+    }
+  }, [questionsData, questionsLoading, votes, votesLoading]);
+  console.log(questions);
 
-  return questionsLoading ? (
+  return !questions ? (
     <LoadingScreen />
   ) : (
     <>
-      {questions.map((question, index) => (
-        <div key={question._id} className="resultsItem">
-          {question.type.str === "CS" ? (
-            <CSResults key={question._id} question={question} />
-          ) : question.type.str === "OE" ? (
-            <OEResults key={question._id} question={question} />
-          ) : question.type.str === "MC" ? (
-            <MCResults key={question._id} question={question} />
-          ) : null}
+      {questions.length > 0 ? (
+        questions.map((question, index) => (
+          <div key={question._id} className="resultsItem">
+            {question.type === "CS" ? (
+              <CSResults key={question._id} question={question} />
+            ) : question.type === "OE" ? (
+              <OEResults key={question._id} question={question} />
+            ) : question.type === "MC" ? (
+              <MCResults key={question._id} question={question} />
+            ) : null}
+          </div>
+        ))
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "65vh",
+          }}
+        >
+          <div className="big-text">Akward...</div>
+          <div>This Poll has no questions.</div>
         </div>
-      ))}
+      )}
     </>
   );
 };

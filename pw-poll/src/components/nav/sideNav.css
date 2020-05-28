@@ -10,7 +10,7 @@ nav {
   --icon-alt: var(--primary);
   --icon-bg: var(--off-page-2);
   position: fixed;
-  z-index: 10;
+  z-index: 20;
   left: 0px;
   background: var(--background);
   padding-top: 15px;

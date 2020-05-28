@@ -12,7 +12,7 @@ nav {
   --icon-bg: var(--off-page-2);
 
   position: fixed;
-  z-index: 10;
+  z-index: 20;
   left: 0px;
 
   background: var(--background);
@@ -133,8 +133,6 @@ nav {
         background: var(--logo-bg);
       }
       .arrows {
-        // transform: translateY(-50%) rotate(-180deg);
-        // left: calc(100% - 20px);
         display: none;
       }
     }
@@ -145,9 +143,6 @@ nav {
   .logo-item {
     position: relative;
     display: initial;
-    // display: flex;
-    // flex-direction: row;
-    // align-items: center;
     background: var(--background);
     pointer-events: visible;
     > .nav-link {

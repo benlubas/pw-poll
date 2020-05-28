@@ -1,3 +1,4 @@
+import { furl } from "./../url";
 export const securePost = async (url, body) => {
   try {
     let res = await fetch(url, {
@@ -6,10 +7,10 @@ export const securePost = async (url, body) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:3000",
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Origin": furl,
+        "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
     return await res.json();
   } catch (err) {

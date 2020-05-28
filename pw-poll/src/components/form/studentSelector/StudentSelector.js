@@ -24,7 +24,7 @@ export default function StudentSelector({
   useEffect(() => {
     if (names) {
       for (let i = 0; i < names.length; i++) {
-        if (names[i].id === value) {
+        if (makeName(names[i]) === value) {
           setDisp(makeName(names[i]));
         }
       }
@@ -85,8 +85,8 @@ export default function StudentSelector({
             ? setError("Ambiguity")
             : setError("");
           if (c === 1) {
-            const [n, id] = findName(disp);
-            onFullName({ id: id, name: n });
+            const [n] = findName(disp);
+            onFullName(n);
             setDisp("");
           }
           if (disp === "") setError("");
@@ -101,7 +101,7 @@ export default function StudentSelector({
           className="input-times"
           onClick={() => {
             setDisp("");
-            onFullName({ id: null, name: "" });
+            onFullName("");
           }}
         >
           &times;
@@ -119,7 +119,7 @@ export default function StudentSelector({
                     role="button"
                     onMouseDown={() => {
                       setDisp(name);
-                      onFullName({ id: v.id, name: name });
+                      onFullName(name);
                     }}
                     value={v.id}
                     key={i}

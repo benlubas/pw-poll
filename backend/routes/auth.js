@@ -8,7 +8,7 @@ router.get(
 );
 router.get("/logout", (req, res) => {
   // console.log("/logout");
-  req.session.destroy(err => {
+  req.session.destroy((err) => {
     if (err) {
       res.json({ message: "error", error: err });
     } else {
@@ -21,7 +21,7 @@ router.get(
   "/callback",
   passport.authenticate("google", {
     successRedirect: process.env.FRONT_END_URL,
-    failureRedirect: process.env.FRONT_END_URL
+    failureRedirect: process.env.FRONT_END_URL,
   })
 );
 
@@ -33,7 +33,7 @@ router.get("/user", (req, res) => {
         success: true,
         message: "user authenticated",
         user: req.user,
-        cookies: req.cookies
+        cookies: req.cookies,
       });
     } else if (
       req.user.email.search(
@@ -42,20 +42,20 @@ router.get("/user", (req, res) => {
     ) {
       res.json({
         succes: false,
-        message: "non csd email"
+        message: "non csd email",
       });
     } else {
       res.json({
         success: true,
         message: "user authenticated",
         user: req.user,
-        cookies: req.cookies
+        cookies: req.cookies,
       });
     }
   } else {
     res.json({
       success: false,
-      message: "no one is signed in"
+      message: "no one is signed in",
     });
   }
 });

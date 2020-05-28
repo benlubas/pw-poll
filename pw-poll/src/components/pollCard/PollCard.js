@@ -79,14 +79,14 @@ const PollCard = ({ data, ...props }) => {
       {editing ? (
         <Textarea
           label="Description"
-          value={edit.desc}
-          onChange={(val) => setEdit({ ...edit, desc: val })}
+          value={edit.description}
+          onChange={(val) => setEdit({ ...edit, description: val })}
           width="100%"
         />
       ) : (
         <span>
           {bold("Description:")}
-          <pre style={{ margin: "0px" }}>{data.desc}</pre>
+          <pre style={{ margin: "0px" }}>{data.description}</pre>
         </span>
       )}
       <br />

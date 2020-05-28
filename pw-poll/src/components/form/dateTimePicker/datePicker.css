@@ -2,9 +2,12 @@
   border: none;
   -webkit-filter: drop-shadow(0px 0px 2px var(--shadow));
   filter: drop-shadow(0px 0px 2px var(--shadow));
+  z-index: 1000;
+  position: relative;
 }
 .react-datepicker-popper {
-  z-index: 3;
+  position: relative;
+  z-index: 1000;
 }
 
 .react-datepicker .react-datepicker__triangle {

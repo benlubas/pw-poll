@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSecureFetch } from "../../../hooks/useSecureFetch";
 import { securePut } from "../../../hooks/securePut";
 import { url } from "../../../url";
@@ -9,11 +9,11 @@ import Input from "./../../form/input/Input";
 
 export default function ClonePoll() {
   const [form, setForm] = useState({
-    pollID: "",
+    pollID: -1,
     pollName: "",
     cloneName: "",
   });
-  const [polls, loading] = useSecureFetch(url + "poll");
+  const [polls] = useSecureFetch(url + "poll");
 
   return (
     <Card title="Clone a Poll">
@@ -24,11 +24,23 @@ export default function ClonePoll() {
         style={{ width: "var(--ta-width)" }}
         label="Poll"
         value={form.pollID}
+        disableFirst
         onChange={(val, disp) => {
-          setForm({ ...form, pollID: val, cloneName: disp + " (Clone)" });
+          // console.log(val, disp);
+          setForm({
+            ...form,
+            pollID: val,
+            pollName: polls.find((p) => p._id + "" === "" + val).title,
+            cloneName:
+              polls.find((p) => p._id + "" === "" + val).title + " (Clone)",
+          });
         }}
-        options={loading ? ["Loading..."] : [...polls.map((p) => p.title)]}
-        values={loading ? [-1] : [...polls.map((p) => p._id)]}
+        options={
+          !polls
+            ? ["Loading..."]
+            : ["Choose a Poll", ...polls.map((p) => p.title)]
+        }
+        values={!polls ? [-1] : [-1, ...polls.map((p) => p._id)]}
       />
       <br />
       <br />
@@ -42,12 +54,11 @@ export default function ClonePoll() {
       {form.poll !== "" && form.cloneName !== "" ? (
         <button
           onClick={async () => {
-            let res = await securePut(
-              url + "poll/clone/" + form.pollID + "/" + form.cloneName
-            );
-            securePut(
-              url + "question/clone/" + form.pollID + "/" + res.poll._id
-            );
+            let res = await securePut(url + "poll/clone/" + form.pollID, {
+              cloneName: form.cloneName,
+            });
+            console.log(res);
+            securePut(url + "question/clone/" + form.pollID + "/" + res._id);
             setForm({
               pollID: "",
               pollName: "",

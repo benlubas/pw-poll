@@ -2,11 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const sql = require("mysql");
+// const sql = require("mysql");
 const passport = require("passport");
 const oAuthStrategy = require("passport-google-oauth20");
 
 require("dotenv").config();
+
+const conn = require("./db.js");
 
 const pollRouter = require("./routes/poll.route");
 const adminRouter = require("./routes/admin.route");
@@ -53,12 +55,17 @@ passport.deserializeUser((id, done) => {
             done(null, rows[0]);
           } else {
             //check the admin db.
-            const found = await Admin.findOne({ _id: id });
-            if (!found.errors) {
-              done(null, { ...found._doc, admin: true });
-            } else {
-              console.log("no User Found for deserialization");
-            }
+            conn.query(
+              `SELECT * FROM Admins WHERE _id='${id}'`,
+              (err, rows) => {
+                const found = rows[0];
+                if (!found.errors) {
+                  done(null, { ...found, admin: true });
+                } else {
+                  console.log("no User Found for deserialization");
+                }
+              }
+            );
           }
         }
       );
@@ -88,17 +95,17 @@ passport.use(
             } else {
               //check admin table;
               try {
-                const found = await Admin.findOne({
-                  email: profile._json.email,
+                let sql = `SELECT * FROM Admins WHERE email='${profile._json.email}'`;
+                conn.query(sql, (err, found) => {
+                  if (found[0]) {
+                    console.log(found[0]);
+                    done(null, { id: found[0]._id, ...found[0], admin: true });
+                  } else {
+                    //this triggers the failureRoute
+                    //which just sends you back to Localhost:3000;
+                    done(null, false);
+                  }
                 });
-                if (found) {
-                  console.log(found);
-                  done(null, { id: found._id, ...found, admin: true });
-                } else {
-                  //this triggers the failureRoute
-                  //which just sends you back to Localhost:3000;
-                  done(null, false);
-                }
               } catch (err) {
                 console.log("error", err);
               }
@@ -113,19 +120,6 @@ app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send(process.env.SERVER_URL);
-});
-
-const conn = sql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "allTheStudents",
-});
-conn.connect((err) => {
-  if (err) console.log(err);
-  else {
-    console.log("Connected to SQL DB");
-  }
 });
 
 app.listen(port, () => {

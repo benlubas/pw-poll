@@ -2,15 +2,40 @@ import React, { useState } from "react";
 import Card from "../../card/Card";
 import Dropdown from "./../../form/dropdown/Dropdown";
 import { useSecureFetch } from "../../../hooks/useSecureFetch";
-import { url } from "../../../url";
+import { url, furl } from "../../../url";
 
 import Papa from "papaparse";
 
 async function getQuestions(pollID) {
   try {
-    let res = await fetch(url + "question/votes/" + pollID);
-    res = await res.json();
-    return res;
+    let votes = await fetch(url + "question/votes/" + pollID, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": furl,
+        "Access-Control-Allow-Credentials": true,
+      },
+    });
+    let questions = await fetch(url + "question/poll/" + pollID, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": furl,
+        "Access-Control-Allow-Credentials": true,
+      },
+    });
+    votes = await votes.json();
+    questions = await questions.json();
+
+    questions = questions.map((q) => ({
+      ...q,
+      votes: votes.filter((v) => v.questionID === q._id),
+    }));
+    return questions;
   } catch (err) {
     console.log(err);
     return "error";
@@ -18,7 +43,7 @@ async function getQuestions(pollID) {
 }
 
 export default function ExportToCSV() {
-  const [form, setForm] = useState({ pollID: "", pollName: "" });
+  const [form, setForm] = useState({ pollID: -1, pollName: "" });
   const [polls, loading] = useSecureFetch(url + "poll");
 
   return (
@@ -29,6 +54,7 @@ export default function ExportToCSV() {
         style={{ width: "var(--ta-width)" }}
         label="Poll"
         value={form.pollID}
+        disableFirst
         onChange={(val, disp) => {
           setForm({ pollID: val, pollName: disp });
         }}
@@ -37,34 +63,23 @@ export default function ExportToCSV() {
             ? ["Loading..."]
             : ["Choose a Poll", ...polls.map((p) => p.title)]
         }
-        values={loading ? [-1] : [-1, ...polls.map((p) => p._id)]}
+        values={loading ? [-1] : [-1, ...polls.map((p) => p._id + "")]}
       />
       {form.pollID !== "" && form.pollID !== "-1" ? (
         <button
           onClick={async () => {
             const questions = await getQuestions(form.pollID);
-            console.log(questions);
-            // let j = "[";
-            // questions.forEach((q, i) => {
-            //   j += "{";
-            //   q.votes.forEach((v, vi) => {
-            //     j += `"${q.text}": "${v.email} - ${v.vote}"${
-            //       vi < q.votes.length - 1 ? ", " : ""
-            //     }`;
-            //   });
-            //   j += i < questions.length - 1 ? "}," : "}";
-            // });
-            // j += "]";
-
             const formatted = {};
             formatted.fields = [...questions.map((q) => q.text)];
             formatted.data = [
               questions.map((q) =>
                 q.votes.map(
                   (v) =>
-                    (Array.isArray(v.vote) ? v.vote.join(" & ") : v.vote) +
+                    (Array.isArray(v.response)
+                      ? v.response.join(" & ")
+                      : v.response) +
                     " - " +
-                    v.email
+                    v.studentEmail
                 )
               ),
             ];

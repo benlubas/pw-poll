@@ -37,7 +37,7 @@ export default function StudentHome({ year, adminView, ...props }) {
               <HomeCard
                 key={poll._id + (empty = false)}
                 title={poll.title}
-                desc={poll.desc}
+                description={poll.description}
                 endDate={poll.endDate}
                 _id={poll._id}
               />

@@ -63,7 +63,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
                 filtered.map((question, index) => (
                   <Draggable
                     key={question._id}
-                    draggableId={question._id}
+                    draggableId={"" + question._id}
                     index={index}
                   >
                     {(provided, snapshot) => {
@@ -128,6 +128,7 @@ export default function QuestionList({ selectedPoll, remove, ...props }) {
                   >
                     <AddQuestion
                       save={(saved) => {
+                        console.log(saved);
                         setQuestions([...questions, saved]);
                         props.setShowAddQuestion(false);
                       }}
